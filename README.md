@@ -16,7 +16,3 @@ If  anyone needs anything between our meetings, please type here.
 ## Vishal
 
 
-
-Regards,
-
-Alec Larsen
