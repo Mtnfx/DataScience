@@ -10,6 +10,7 @@ If  anyone needs anything between our meetings, please type here.
 ## Alec
 - Currently cleaning Excel data (fixing typos)
   - Double commas and periods have been fixed (thanks Excel find function)
+  - Years have been fixed
 
 ## Aditya
 
