@@ -17,4 +17,5 @@ If  anyone needs anything between our meetings, please type here.
 
 
 ## Vishal
-
+- Importing supplement data
+- Forming questions and looking for respective external data
