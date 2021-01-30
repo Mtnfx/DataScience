@@ -13,6 +13,8 @@ If  anyone needs anything between our meetings, please type here.
   - Years have been fixed
   - One exercise set needs fixing (waiting for response from client)
   
+- Currently analyzing data to check for potential correlations (This may potentially generate new questions or give better foundation for answering already existing questions)
+  
 ## Aditya
 
 
