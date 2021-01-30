@@ -5,3 +5,7 @@
   3. Compare efficiency of aircrafts
   
 - Ask client about outlying data points (odd years, unclear training exercise numbers missing commas)
+
+## Project Proposall
+- Specify questions addressed
+- 
