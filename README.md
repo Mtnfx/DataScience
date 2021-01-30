@@ -11,7 +11,8 @@ If  anyone needs anything between our meetings, please type here.
 - Currently cleaning Excel data (fixing typos)
   - Double commas and periods have been fixed (thanks Excel find function)
   - Years have been fixed
-
+  - One exercise set needs fixing (waiting for response from client)
+  
 ## Aditya
 
 
