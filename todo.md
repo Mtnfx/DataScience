@@ -6,6 +6,5 @@
   
 - Ask client about outlying data points (odd years, unclear training exercise numbers missing commas)
 
-## Project Proposall
+## Project Proposal
 - Specify questions addressed
-- 
