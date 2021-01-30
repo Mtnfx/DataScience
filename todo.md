@@ -6,5 +6,7 @@
   
 - Ask client about outlying data points (odd years, unclear training exercise numbers missing commas)
 
+- Clean all data (or as much as possible)
+
 ## Project Proposal
 - Specify questions addressed
