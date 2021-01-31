@@ -1,4 +1,5 @@
 # Meeting Minutes
+As compiled by Aditya and annotated/updated by Alec
 
 ## Meeting 1 - January 30th 2021 (8:00-9:30)
 
