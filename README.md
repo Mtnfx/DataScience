@@ -24,6 +24,6 @@ If  anyone needs anything between our meetings, please type here.
 ## Vishal
 - Importing supplement data : Done (table name : variables) 
   - exercises_key : Exercise_id, Exercise_name
-  - decimal_key : Decimal, Lower_bound, Upper_bound
+  - decimal_key : Decimal, Lower_bound, Upper_bound // bounds in mins
   - seasons_four and seasons_two : Season, Start, End // Start and End are in MM/DD format
 - Forming questions and looking for respective external data
