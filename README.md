@@ -14,6 +14,7 @@ If  anyone needs anything between our meetings, please type here.
   - One exercise set needs fixing (waiting for response from client)
   
 - Currently analyzing data to check for potential correlations (This may potentially generate new questions or give better foundation for answering already existing questions)
+  - Preliminary Excel analysis of instructors 1, 3, and 4 shows a fairly clear negative correlation between training time and efficiency. Unsure of whether this is causation or whether other factors may be the reason for correlation.
   
 ## Aditya
 
