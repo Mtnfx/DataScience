@@ -22,5 +22,8 @@ If  anyone needs anything between our meetings, please type here.
 
 
 ## Vishal
-- Importing supplement data
+- Importing supplement data : Done
+-- exercises_key : Exercise_id, Exercise_name
+-- deciaml_key : Decimal, Lower_bound, Upper_bound
+-- seasons_four and seasons_two : Season, Start, End // Start and End are in MM/DD format
 - Forming questions and looking for respective external data
