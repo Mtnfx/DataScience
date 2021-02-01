@@ -46,3 +46,8 @@ clean_data %>%
   # and expand list contents into multiple rows w/ unnest()
   unnest( Exercises)
 
+for (i in 2:nrow(clean_data)-1){
+  if (clean_data[i,4] < 2015 && clean_data[i-1,4] == clean_data[i+1,4]){
+    clean_data[i,4] = clean_data[i-1,4]
+  }
+}
