@@ -1,5 +1,8 @@
 # Data Files
 
+### Initial Data
+- Unedited initial source data from RStudio Cloud proposal project
+
 ### Clean Data
 - Has every data point both complete and incomplete with as much fixing as was possible
 
