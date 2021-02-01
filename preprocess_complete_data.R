@@ -37,7 +37,7 @@ raw_data %>%
           Aircraft = na_if(Aircraft, "NA")) %>% 
   select( Instructor_ID, Student_ID, Session_ID, Year, Month, Day, 
           Aircraft, Duration, Training_Type, Exercises, Licence ) %>% 
-          filter(! is.na(Duration)) -> clean_data
+          filter(! is.na(Duration)) -> clean_data #The filter function I added just deletes any datapoints with no duration.
 
 clean_data %>% 
   distinct( Session_ID, .keep_all = T) %>% 
@@ -46,6 +46,9 @@ clean_data %>%
   # and expand list contents into multiple rows w/ unnest()
   unnest( Exercises)
 
+# Loops through every observation except the first and last. Since data is date sorted and clearly begins at the year 2015, this loop replaces any year less than 2015.
+# Since data is date sorted, this loop will automatically replace any invalid year with the year of the cell to the left and right of it assuming they match.
+# There is no procedure for what to do if the dates on either side do not match as there are no invalid years that fall under this scenario.
 for (i in 2:nrow(clean_data)-1){
   if (clean_data[i,4] < 2015 && clean_data[i-1,4] == clean_data[i+1,4]){
     clean_data[i,4] = clean_data[i-1,4]
