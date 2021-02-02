@@ -37,7 +37,7 @@ raw_data %>%
           Aircraft = na_if(Aircraft, "NA")) %>% 
   select( Instructor_ID, Student_ID, Session_ID, Year, Month, Day, 
           Aircraft, Duration, Training_Type, Exercises, Licence ) %>% 
-          filter(! is.na(Duration)) -> clean_data #The filter function I added just deletes any datapoints with no duration.
+          filter(! is.na(Duration)) -> clean_data
 
 clean_data %>% 
   distinct( Session_ID, .keep_all = T) %>% 
@@ -46,11 +46,22 @@ clean_data %>%
   # and expand list contents into multiple rows w/ unnest()
   unnest( Exercises)
 
-# Loops through every observation except the first and last. Since data is date sorted and clearly begins at the year 2015, this loop replaces any year less than 2015.
-# Since data is date sorted, this loop will automatically replace any invalid year with the year of the cell to the left and right of it assuming they match.
-# There is no procedure for what to do if the dates on either side do not match as there are no invalid years that fall under this scenario.
+# This for loop iterates through each training session's year data. If the year is listed below 2015, it replaces the year with the year of the entries above and below it (assuming they match, but there have been no cases where they didn't in our data sets).
+# This works, as by this point in the processing, sessions are sorted by date for each instructor, then by each student.
 for (i in 2:nrow(clean_data)-1){
   if (clean_data[i,4] < 2015 && clean_data[i-1,4] == clean_data[i+1,4]){
     clean_data[i,4] = clean_data[i-1,4]
   }
 }
+
+# This for loop iterates through each exercise list and checks for periods as separators. If there is a period, it replaces it with a comma.
+for (i in 1:nrow(clean_data)){
+  exercises = clean_data[i,10]
+  for (j in 1:nchar(exercises)){
+    if (substr(exercises, j, j) == '.'){
+      exercises = paste(substr(exercises, 1, j-1), ",", substr(exercises, j+1, nchar(exercises)), sep="")
+    }
+  }
+  clean_data[i,10]= exercises
+}
+# If efficiency matters, I may merge both for loops I wrote. However, I'd prefer to keep them separate as it makes it a lot easier to understand what's happening.
