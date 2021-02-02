@@ -12,7 +12,7 @@ If  anyone needs anything between our meetings, please type here.
   
 - Writing R Script to automatically do the filtering I did manually.
   - Our results (Including filtering) must be reproducible
-  - preprocess_complete_data.R currently does all preprocessing (as initial code preprocess_data.R did), removes all observations with a duration of NULL, replaces all incorrectly labelled years with the assumed correct year, and replaces all period seperators in exercise lists with commas. `I believe all that's left is to fix double commas`
+  - preprocess_complete_data.R currently does all preprocessing (as initial code preprocess_data.R did), removes all observations with a duration of NULL, replaces all incorrectly labelled years with the assumed correct year, and replaces all period and double comma seperators in exercise lists with single commas. `Program is now up to date with my manual sorting`
   - Since data is mostly date sorted, I know for almost certain what the incorrect dates should be and thus the years should be correct if my for loop replaces data in the same fashion I did manually.
   - clean_data_sta.csv in the data folder shows the current output of running preprocess_complete_data.R
   
