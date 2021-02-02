@@ -64,4 +64,15 @@ for (i in 1:nrow(clean_data)){
   }
   clean_data[i,10]= exercises
 }
+
+#This for loop replaces all double commas in exercise lists with single commas.
+for (i in 1:nrow(clean_data)){
+  exercises = clean_data[i,10]
+  for (j in 1:nchar(exercises)-1){
+    if (substr(exercises, j, j+1) == ',,'){
+      exercises = paste(substr(exercises, 1, j-1), ",", substr(exercises, j+2, nchar(exercises)), sep="")
+    }
+  }
+  clean_data[i,10]= exercises
+}
 # If efficiency matters, I may merge both for loops I wrote. However, I'd prefer to keep them separate as it makes it a lot easier to understand what's happening.
