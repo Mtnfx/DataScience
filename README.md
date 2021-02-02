@@ -14,8 +14,9 @@ If  anyone needs anything between our meetings, please type here.
   
 - Writing R Script to automatically do the filtering I did manually.
   - Our results (Including filtering) must be reproducible
-  - preprocess_complete_data.R currently does all preprocessing (as initial code preprocess_data.R did), removes all observations with a duration of NULL, and replaces all incorrectly labelled years with the assumed correct year
+  - preprocess_complete_data.R currently does all preprocessing (as initial code preprocess_data.R did), removes all observations with a duration of NULL, replaces all incorrectly labelled years with the assumed correct year, and replaces all period seperators in exercise lists with commas. `I believe all that's left is to fix double commas`
   - Since data is mostly date sorted, I know for almost certain what the incorrect dates should be and thus the years should be correct if my for loop replaces data in the same fashion I did manually.
+  - clean_data_sta.csv in the data folder shows the current output of running preprocess_complete_data.R
   
 - Currently analyzing data to check for potential correlations (This may potentially generate new questions or give better foundation for answering already existing questions)
   - Preliminary Excel analysis of instructors 1, 3, and 4 shows a fairly clear negative correlation between training time and efficiency. Unsure of whether this is causation or    whether other factors may be the reason for correlation.
