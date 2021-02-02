@@ -11,3 +11,6 @@
 
 ### Extra Analysis
 - Just a couple graphs mapping correlation between session time and number of exercises completed in the session
+
+### Clean Data Sta
+- This is what preprocess_complete_data.R outputs when it writes to a csv file `Note that this program does not auto write a csv file. I manually input the command to write csv since when modifying data, we probably don't need a csv file outputted`
