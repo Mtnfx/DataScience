@@ -8,9 +8,7 @@ This will act as a sort of message board for our group.
 If  anyone needs anything between our meetings, please type here.
 
 ## Alec
-- Currently cleaning Excel data (attempting to fill in missing data)
-  - One exercise remains unfixed (waiting for response from client) `Analysis can probably be started just omitting that one data point`
-  - Several missing flight times have also been discovered (waiting for response from client) `Prof. Damouras has responded on Piazza and told me that we can remove any data points that are incomplete. I have uploaded a supplementary file with all incomplete data removed.`
+- Done manual Excel cleaning as best as possible `Prof. Damouras has responded on Piazza and told me that we can remove any data points that are incomplete. I have uploaded a supplementary file with all incomplete data removed. This can be used until I finish the automatic processing algorithm on the R file.`
   
 - Writing R Script to automatically do the filtering I did manually.
   - Our results (Including filtering) must be reproducible
