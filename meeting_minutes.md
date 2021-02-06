@@ -5,14 +5,14 @@ As compiled by Aditya and annotated/updated by Alec
 
 - Introductions
 - Discussion of problems with the dataset(s)
-  - Several missing data points `Unsure if we can fix some of these`
-  - Typing errors `All fixed with exception of 1 exercise set (Instructor 6, student E)`
+  - Several missing data points `After deleting all unfixable points, we still have 2852 data points to work with`
+  - Typing errors `All fixed`
   
 - Set up this GitHub Repository
   - Aditya and Vishal confirmed to have full access
   - Wasim still needs to be added
   
-- Goal set to have data cleaning done by February 6th `Cleaning is done except for 1 month data entry`
+- Goal set to have data cleaning done by February 6th `Cleaning is completely done unless another unexpected typo is found`
   - Alec is responsible for manually fixing all fixable data and inquiring on potentially unfixable points
   - Given extra time, others may see it fit to scan excel data and fix up anty missed spots
   - Procedure for editing data in excel file:
@@ -28,7 +28,8 @@ As compiled by Aditya and annotated/updated by Alec
 
 ## Meeting 2 - February 6th 2021 (8:00 - 8:40)
 
-- Addressed minor error in data cleaning R script `Should be fixed soon but not listed as urgent`
+- Addressed minor error in data cleaning R script `Fixed`
+
 - Discussion of efficency metrics
   - Duration by itself is not concrete enough to be an actual efficiency metric
   - `That being said, I have way too much free time, so I'll try to get an associated time for as many individual exercises as possible`
