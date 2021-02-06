@@ -1,17 +1,25 @@
 # STAA57 Project Proposal
-`Avoid deleting other people's work when possible (anything in backticks is not final and can be deleted)`
+`Avoid deleting other people's work when possible (anything in backticks is not intended to be final and can be deleted)`
 
 ### Analysis Plan
 `Specify questions to be adressed`
+With the data given and additional data on weather and seasons, the following questions will be adressed by our analysis: `Ideally we'll end up with 3 questions so  some may be      cut or combined to give more concrete analysis`
+
+  - Are longer sessions more beneficial to student performance? `This may/may not be concrete enough to make the final draft depending on what further analysis concludes`
+  - Which season(s) see the best average student performance?
+  - Instructor/student data relationship (Do some students fare better with certain instructors?) `The wording of this is unclear. Feel free to delete and reword this if you have    a better description`
+  - What is the ideal time between training sessions to maximise student performance? 
 
 `Describe data analysis plan`
 
 ### Data
 `List/specify external data sources and types of data`
-`R Code for importing data will not go  in this section (since it is 100+ lines ideally it goes in the appendix)`
+`R Code for importing data will not go  in this section (since it is 100+ lines, ideally it goes in the appendix)`
 
 ### Preliminary Analysis
 `Put in >= 3 graphs/DaVis' relating to analysis and comment on preliminary findings.`
 
+Based on preliminary analysis, there seems to be some 
+
 ### Appendix
-`R Code for cleaning data goes here (I will put it in when I implement the last cleaning loop)`
+`R Code for cleaning and importing data goes here (I will put my code in when I implement the last cleaning loop)`
