@@ -9,4 +9,9 @@ Of course, this cannot be finalized until we plot all graphs of this (assuming w
 
 ### Does Aircraft Model Impact training time?
 
-### 
+
+### How does season/weather impact the effectiveness of training?
+
+
+### Analysis Plan
+- Analyze by student
