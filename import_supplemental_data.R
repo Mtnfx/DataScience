@@ -22,15 +22,22 @@ decimal_key <- tibble(
 #View(decimal_key)
 
 seasons_four <- tibble(
-  Season = c("Spring", "Summer", "Fall", "Winter"),
-  Start = c("03-01", "06-01", "09-01", "12-01"),
-  End = c("05-31", "08-31", "11-30", "02-29")
+  #This method may be more useful.
+  Month = 1:12,
+  Season = c(rep("Winter", 2), rep("Spring", 3), rep("Summer", 3), rep("Fall", 3), "Winter")
+  
+  #Season = c("Spring", "Summer", "Fall", "Winter")
+  #Start = c("03-01", "06-01", "09-01", "12-01"),
+  #End = c("05-31", "08-31", "11-30", "02-29")
 )
 #View(seasons_four)
 
 seasons_two <- tibble(
-  Season = c("Summer", "Winter"),
-  Start = c("03-01", "09-01"),
-  End = c("08-31","02-29")
+  Month = 1:12,
+  Season = c(rep("Winter", 2), rep("Summer", 6), rep("Winter", 4))
+  
+  #Season = c("Summer", "Winter"),
+  #Start = c("03-01", "09-01"),
+  #End = c("08-31","02-29")
 )
 #View(seasons_two)
