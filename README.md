@@ -19,7 +19,9 @@ If  anyone needs anything between our meetings, please type here.
   - Preliminary Excel analysis of instructors 1, 3, and 4 shows a fairly clear negative correlation between training time and efficiency. Unsure of whether this is causation or    whether other factors may be the reason for correlation.
   
 - I did try to analyze the average duration of single exercise sessions but most exercises either have no data or the average is unreasonably high (ex. average for sessiosn where only exercise 1 was completed was 1.05 while several 5 exercise sets including exercise 1 ran for 1.1). Thus, simply averaging single sessions won't cut it.
-  
+
+- Graphed Total and Average Hours for each student and for each instructor. These graphs may help if we choose to try and make judgements on scheduling and could be used to conclude which instructors should get more hours and which insturctors are overworked (This stuff is in Graphs.R).
+
 ## Aditya
 
 
