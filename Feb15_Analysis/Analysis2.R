@@ -38,7 +38,7 @@ c1 %>% unite("Date", c(Year, Month, Day), sep = "-") %>%
   summarise( mean(avg, na.rm = T) )
   #View()
 
-#How often was an Aircraft-Training_Type used?
+#How often was an Aircraft-Training_Type pair used?
 c1 %>% group_by(Aircraft, Training_Type) %>% 
   summarise(n = n()) %>% #summarise(s = sum(num)) %>% 
   View()
