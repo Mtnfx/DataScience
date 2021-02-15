@@ -36,10 +36,10 @@ If  anyone needs anything between our meetings, please type here.
   - exercises_key : Exercise_id, Exercise_name
   - decimal_key : Decimal, Lower_bound, Upper_bound // bounds in mins
   - seasons_four and seasons_two : Month, Season
-- Check Feb15_Analysis for all analysis I showed in meeting 2.
+- Check Feb15_Analysis folder for all analysis I showed in meeting 2.
   - Keep in mind the library, data, tables/tibbles you need before running the code.
   - I have tried to mention everything I can in the header of the respective files.
   - Do read the comments for a better understanding and the questions I was trying to answer.
-  - Analysis3(solo).R is the final file with the questions and code for the solo question, I am working on the comments and will upload soon.
+  - Analysis3(solo).R is the final file with the questions and code for the solo question, I am working on the comments and will upload soon. EDIT: It is now up, I realised that most code when read will make sense - it just took me a while to think about how to code it. If something is not clear, let me know.
   - The comments with code in between were left when I was exploring, I keep them because they might be handy later. You do not need to worry about it.
   - Also it is possible I missed something so let me know.
