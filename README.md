@@ -40,4 +40,4 @@ If  anyone needs anything between our meetings, please type here.
   - Do read the comments for a better understanding and the questions I was trying to answer.
   - Analysis3(solo).R is the final file with the questions and code for the solo question, I am working on the comments and will upload soon.
   - The comments with code in between were left when I was exploring, I keep them because they might be handy later. You do not need to worry about it.
-  - Also it is possible I missed something so let me know if you find something.
+  - Also it is possible I missed something so let me know.
