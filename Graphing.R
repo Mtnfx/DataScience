@@ -6,8 +6,11 @@ ggplot(data = new_clean_data) + geom_point(mapping = aes(x = Duration, y = Exerc
 
 Instructor_Data = new_clean_data %>% group_by(Instructor_ID) %>% summarise(Total_Hours = sum(Duration), Total_Exercises = sum(Exercise_Count), Hourly_Exercises = Total_Exercises/Total_Hours)
 ggplot(Instructor_Data) + geom_col(mapping = aes(x = Instructor_ID, y = Total_Hours)) #This plot is Instructors vs total hours worked.
-ggplot(data = Instructor_Data) + geom_point(mapping = aes(x = Total_Hours, y = Total_Exercises)) # Plot total hours vs total exercises. This plot shows that exercises are strongly correlated to time over longer periods of time.
-ggplot(Instructor_Data) + geom_col(mapping = aes(x = Instructor_ID, y = Hourly_Exercises)) # This plot shows the number of exercises each instructors students completed per hour.
+ggplot(data = Instructor_Data) + geom_point(mapping = aes(x = Total_Hours, y = Total_Exercises)) + ggsave("img/Exercises_Vs_Duration.png") # Plot total hours vs total exercises. This plot shows that exercises are strongly correlated to time over longer periods of time.
+ggplot(Instructor_Data) + geom_col(mapping = aes(x = Instructor_ID, y = Hourly_Exercises)) + ggsave("img/Hourly_Exercises.png") # This plot shows the number of exercises each instructors students completed per hour.
+
+Instructor_Trendline_Data = Instructor_Data %>% summarize(X_Mean = mean(Average_Hours), Y_Mean = mean(Hourly_Exercises), m = sum((Average_Hours - X_Mean)*(Hourly_Exercises - Y_Mean))/sum((Average_Hours - X_Mean)^2), b = Y_Mean - X_Mean*m)
+ggplot(data = NULL) + geom_point(data = Instructor_Data, mapping = aes(x = Average_Hours, y = Hourly_Exercises)) + geom_abline(data = Instructor_Trendline_Data, mapping = aes(slope = m, intercept = b)) + ggsave("img/Average_Hours_Vs_Hourly_Exercises")
 
 Instructor_Average_Data = new_clean_data %>% group_by(Instructor_ID) %>% summarise(Average_Hours = (sum(Duration)/(max(Year) - min(Year))))
 ggplot(Instructor_Average_Data) + geom_col(mapping = aes(x = Instructor_ID, y = Average_Hours)) # This plot is the average hours of instruction per year for each instructor.
