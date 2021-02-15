@@ -19,7 +19,9 @@ With the data given and additional data on weather and seasons, the following qu
 ### Preliminary Analysis
 `Put in >= 3 graphs/DaVis' relating to analysis and comment on preliminary findings.`
 
-Based on preliminary analysis, there seems to be some 
+Comparing the general trend of the number of exercises completed in each session to the duration of the sessions shows that a longer session duration does not guarantee more exercises will be completed. The correlations is also very weak implying that there is a significant difference between the length of exercises and/or that there are too many extra factors that cannot be accounted for such as adverse conditions or unexpected issues with the airplane.
+
+Upon comparing the average length of sessions where only one exercise was completed, this implication was confirmed. The length of single exercise sessions, even when comparing sessiosn where the same one exercise was completed, varied widely on some exercises. In addition, most single exercises either had no sessions or very few sessions to compare.
 
 ### Appendix
-`R Code for cleaning and importing data goes here (I will put my code in when I implement the last cleaning loop)`
+`R Code for cleaning and importing data goes here (I am rewriting my code to be more space efficient. If I can compress it enough, I might be able to move it into the data section`
