@@ -1,4 +1,4 @@
-#This code requires aircraft_movements, clean_data, weather data, seasons_four[see import_supplemental_data.R]. 
+#This code requires air_movements, clean_data, weather data, seasons_four [see import_supplemental_data.R]. 
 
 #a1 - air_movements with Season 
 #-- Remember to download file "23100003.csv" and change location
