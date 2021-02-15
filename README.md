@@ -34,7 +34,7 @@ If  anyone needs anything between our meetings, please type here.
   - exercises_key : Exercise_id, Exercise_name
   - decimal_key : Decimal, Lower_bound, Upper_bound // bounds in mins
   - seasons_four and seasons_two : Month, Season
-- Check Feb15_analysis for all analysis I showed in meeting 2.
+- Check Feb15_Analysis for all analysis I showed in meeting 2.
   - Keep in mind the library, data, tables/tibbles you need before running the code.
   - I have tried to mention everything I can in the header of the respective files.
   - Do read the comments for a better understanding and the questions I was trying to answer.
