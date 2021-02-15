@@ -26,7 +26,10 @@ With the data given and additional data on weather and seasons, the following qu
 `Put in >= 3 graphs/DaVis' relating to analysis and comment on preliminary findings.`
 
 To properly establish the  most efficient method of training students, first we must establish a measure of efficiency. By graphing exercises completed in each individual session, we determined that on a session by session basis, the exercises completed cannote be related to the duration of the session. However, by graphing the total session hours completed against the total exercises completed under each instructors suppervision, we found that there is a significant correlation between training time and the number of exercises completed in the long term.
-Given this, we concluded that for ananlysis spanning several months or years, the number of exercises completed per hour is a reliable efficiency metric.
+
+![](img/Exercises_Vs_Duration.png)
+
+Given this, we concluded that for analysis spanning several months or years, the number of exercises completed per hour is a reliable efficiency metric.
 
 ### Appendix
 `R Code for cleaning and importing data goes here (I am rewriting my code to be more space efficient. If I can compress it enough, I might be able to move it into the data section`
