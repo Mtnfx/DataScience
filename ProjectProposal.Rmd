@@ -8,7 +8,8 @@ With the data given and additional data on weather and seasons, the following qu
   - Are longer sessions more beneficial to student performance? `This may/may not be concrete enough to make the final draft depending on what further analysis concludes`
   - Which season(s) see the best average student performance?
   - Instructor/student data relationship (Do some students fare better with certain instructors?) `The wording of this is unclear. Feel free to delete and reword this if you have    a better description`
-  - What is the ideal time between training sessions to maximise student performance? 
+  - What is the ideal time between training sessions to maximise student performance?
+  - How can students succeed the quickest?  `Success can be defined as flying solo, flying cross country, completing all exercises at least once?`
 
 `Describe data analysis plan`
 
