@@ -33,5 +33,10 @@ If  anyone needs anything between our meetings, please type here.
   - (table name : variables) 
   - exercises_key : Exercise_id, Exercise_name
   - decimal_key : Decimal, Lower_bound, Upper_bound // bounds in mins
-  - seasons_four and seasons_two : Season, Start, End // Start and End are in "MM-DD" format
-- Forming questions and looking for respective external data
+  - seasons_four and seasons_two : Month, Season
+- Check Feb15_analysis for all analysis I showed in meeting 2.
+  - Keep in mind the library, data, tables/tibbles you need before running the code.
+  - I have tried to mention everything I can in the header of the respective files.
+  - Do read the comments for a better understanding and the questions I was trying to answer.
+  - Also it is possible I missed something so let me know if you find something.
+  - Analysis3(solo).R is the final file with the questions and code for the solo question, I am working on the comments and will upload soon.
