@@ -22,6 +22,8 @@ If  anyone needs anything between our meetings, please type here.
 
 - Graphed Total and Average Hours for each student and for each instructor. These graphs may help if we choose to try and make judgements on scheduling and could be used to conclude which instructors should get more hours and which insturctors are overworked (This stuff is in Graphs.R).
 
+- I've imported all the graphs I've made that I think could end up being useful to our final draft of the proposal (Hourly Exercises/Training Hours for instructors, Average Exercises per training hour for instructors, Average Exercises per Hour vs Hours fpr instructors with line of best fit, Average Exercises completed per hour for different training types).
+
 ## Aditya
 
 
