@@ -1,5 +1,12 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+
 # STAA57 Project Proposal
 `Avoid deleting other people's work when possible (anything in backticks is not intended to be final and can be deleted)`
+`Document Length: ~2 pages`
 
 ### Analysis Plan
 `Specify questions to be adressed`
