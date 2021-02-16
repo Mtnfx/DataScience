@@ -11,8 +11,9 @@ With the data given and additional data on monthly air traffic, weather and seas
     - Is each instructor getting the appropriate number of hours?
     - Which season(s) see the best average student performance?
     - Time between each sessions
+    - Student density (How many students come in every month/ how many sessions)
   
-  - How can students succeed the quickest?
+  - How do students succeed the quickest?
    - Which training type yields the highest efficiency (by exercises completed per training hour)? `Spoiler: it appears to be Aircraft Instrument followed by Solo Cross Country and then Dual Cross Country. Additionally, since both solo training categories are more efficient than their dual counterparts, this implies that we do indeed want to get students able to fly solo as soon as they're experienced enough for it to be safe.`
    
    - Instructor/student data relationship (Do some students fare better with certain instructors?) `This is most likely not concrete enough to make the final proposal. Only use if we need an extra question.`
@@ -20,10 +21,12 @@ With the data given and additional data on monthly air traffic, weather and seas
    - What defines success/effectiveness of training? So far we have suggested the following:
      - Exercises per hour of training (Only works for long term data)
      - Milestones achieved (Like flying solo, completing all exercises at least once?) `Flying solo at the very least is much more efficient for completing exercises`
+      - If solo flight hypothesis has significant correlation, school is doing well to judge when to do solo flights. If no correlation, flight school either is not judging solo         flights well or there is no relationship between when a student takes a solo flight and what they have accomplished.
      
   - As an extension, can we determine what benchmarks students should/have to meet in order to fly solo?
     - Analysis for individual students' milestone that have hit milestones vs those who have not
     - Have all/most students who have flown solo done something the non-solo students haven't?
+    - 
     
 `Describe data analysis plan`
 
@@ -31,7 +34,7 @@ With the data given and additional data on monthly air traffic, weather and seas
 `List/specify external data sources and types of data`
 `R Code for importing data will not go  in this section (since it is 100+ lines, ideally it goes in the appendix)`
 
-To help determine when air traffic is the lowest, and thus flight accident risk is the lowest, we acquired air traffic data from `Insert source where air traffic data came from here`.
+To help determine when air traffic is the lowest, and thus flight accident risk is the lowest, we acquired air traffic data from the supplemmentary data. To determine when flying is the safest (lowest wind, lowest precipitation), we used weather data from.
 
 ### Preliminary Analysis
 `Put in >= 3 graphs/DaVis' relating to analysis and comment on preliminary findings.`
