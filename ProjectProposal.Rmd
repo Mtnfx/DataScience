@@ -36,6 +36,7 @@ With the data given and additional data on monthly air traffic, weather and seas
     - 
     
 `Describe data analysis plan`
+Our group has several different approaches to getting the most useful conclusions out of this data.
 
 ### Data
 `List/specify external data sources and types of data`
