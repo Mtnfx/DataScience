@@ -22,7 +22,7 @@ This will act as a sort of message board for our group.
 
 - I've imported all the graphs I've made that I think could end up being useful to our final draft of the proposal (Hourly Exercises/Training Hours for instructors, Average Exercises per training hour for instructors, Average Exercises per Hour vs Hours fpr instructors with line of best fit, Average Exercises completed per hour for different training types).
 
- - Currently compressing the code so it fits in our proposal.
+ - Currently compressing the code so it fits in our proposal. `I've chopped off 31 lines  so far`
 
 #### Proposal - Special Notes
 - I have created a new folder (img) for our data visualizations. Feel free to put in any graphs that you think might be nice to have for our proposal. Better to have too many graphs than not enough grpahs.
