@@ -61,12 +61,12 @@ Weather data - https://climate.weather.gc.ca/historical_data/search_historic_dat
 
 To properly establish the  most efficient method of training students, first we must establish a measure of efficiency. By graphing exercises completed in each individual session, we determined that on a session by session basis, the exercises completed cannot be related to the duration of the session. However, by graphing the total session hours completed against the total exercises completed under each instructors supervision, we found that there is a significant correlation between training time and the number of exercises completed in the long term.
 
-![](img/Exercises_Vs_Duration.png) `Maybe this will stay in here if we choose to use this efficiency metric. If not, it's at least a good template for inserting images`
+![](img/Exercises_Vs_Duration.png)
 
 Since both Total Hours and Total Exercises are roughly continuous, we can use calculate Pearson's Linear Correlation Coefficient
-We found that r ~ 0.98, which shows strong positive correlation between the variables.
+We found that r ~ 0.98, which shows strong positive correlation between the variables. Given this, we concluded that for analysis spanning several months or years, the number of exercises completed per hour is a reliable efficiency metric.
 
-Given this, we concluded that for analysis spanning several months or years, the number of exercises completed per hour is a reliable efficiency metric.
+`Instuctor average hours vs efficiency`
 
 
 ### Appendix
