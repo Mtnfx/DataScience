@@ -33,7 +33,6 @@ With the data given and additional data on monthly air traffic, weather and seas
   - As an extension, can we determine what benchmarks students should/have to meet in order to fly solo?
     - Analysis for individual students' milestone that have hit milestones vs those who have not
     - Have all/most students who have flown solo done something the non-solo students haven't?
-    - 
     
 `Describe data analysis plan`
 Our group has several different approaches to getting the most useful conclusions out of this data.
