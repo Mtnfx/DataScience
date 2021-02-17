@@ -23,12 +23,12 @@ ggplot(Instructor_Data) + geom_col(mapping = aes(x = Instructor_ID, y = Average_
 Instructor_Trendline_Data = Instructor_Data %>% summarize(X_Mean = mean(Average_Hours), Y_Mean = mean(Hourly_Exercises), m = sum((Average_Hours - X_Mean)*(Hourly_Exercises - Y_Mean))/sum((Average_Hours - X_Mean)^2), b = Y_Mean - X_Mean*m)
 ggplot(data = Instructor_Data, mapping = aes(x = Average_Hours, y = Hourly_Exercises)) + geom_point() + geom_smooth(method = 'lm', formula = y~x, se = FALSE) + ggtitle("Average Hours Instructed per Year vs Average Hourly Exercises Students Completed") + ggsave("img/Average_Hours_Vs_Hourly_Exercises.png")
 
-# Graphing information on student training times and efficiency
+# Graphing information on student training times and efficiency. May delete if we choose not to pursue this.
 Student_Data = new_clean_data %>% group_by(Student_ID) %>% summarise(Total_Hours = sum(Duration), Average_Hours = (sum(Duration)/(max(Year) - min(Year))))
 ggplot(Student_Data) + geom_col(mapping = aes(x = Student_ID, y = Total_Hours)) # Plots total flight hours by each student
 ggplot(Student_Data) + geom_col(mapping = aes(x = Student_ID, y = Average_Hours)) # Plots average flight hours by each student
 
-# Graphing Information on individual exercise sets (Deemed to be non-significant)
+# Graphing Information on individual exercise sets (Deemed to be non-significant and will most likely delete)
 clean_data_sums = clean_data %>% group_by(Exercises) %>% summarize(Average_Duration = mean(Duration), Max_Duration = max(Duration), Min_Duration = min(Duration), Duration_Range = Max_Duration - Min_Duration, Std = sd(Duration))
 ggplot(data = clean_data_sums) + geom_col(mapping = aes(x = Exercises, y = Average_Duration)) # Plot for average duration of all specific exercise sets.
 ggplot(data = clean_data_sums) + geom_col(mapping = aes(x = Exercises, y = Duration_Range)) # Plot for range of durations for each unique exercise set.
@@ -39,7 +39,7 @@ new_clean_data %>% group_by(Training_Type) %>% summarize(Average_Eff = mean(Exer
 
 
 
-#This section works with Aditya's Air Traffic Data
+#This section works with Aditya's Air Traffic Data. I may delete this since it most likely won't make the final proposal as there's not much to say about the graph.
 
 h = read_xlsx("Total movements final.xlsx")
 p = h %>% filter(YEAR >= 2015) %>% group_by(YEAR, MONTH) %>% summarize(Monthly_Total = sum(TOTAL_VALUE), Date_Stamp = paste(MONTH,YEAR, sep="-")) %>% distinct(Date_Stamp, .keep_all = TRUE)
