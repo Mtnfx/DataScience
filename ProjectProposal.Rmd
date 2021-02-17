@@ -52,6 +52,8 @@ To properly establish the  most efficient method of training students, first we 
 
 ![](img/Exercises_Vs_Duration.png) `Maybe this will stay in here if we choose to use this efficiency metric. If not, it's at least a good template for inserting images`
 
+Since both Total Hours and Total Exercises are roughly continuous, we can use calculate Pearson's Linear Correlation Coefficient
+We found that r ~ 0.98, which shows strong positive correlation between the variables.
 Given this, we concluded that for analysis spanning several months or years, the number of exercises completed per hour is a reliable efficiency metric.
 
 ### Appendix
