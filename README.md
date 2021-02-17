@@ -6,7 +6,7 @@ Welcome everyone!
 This will act as a sort of message board for our group.
 
 ## Alec
-- Done manual Excel cleaning as best as possible `Prof. Damouras has responded on Piazza and told me that we can remove any data points that are incomplete. I have uploaded a supplementary file with all incomplete data removed. This can be used until I finish the automatic processing algorithm on the R file.`
+- Done manual Excel cleaning as best as possible.
   
 - Writing R Script to automatically do the filtering I did manually. `Unless another unexpected typo in the data is found, this should be finished`
   - Our results (Including filtering) must be reproducible
@@ -21,6 +21,8 @@ This will act as a sort of message board for our group.
 - Graphed Total and Average Hours for each student and for each instructor. These graphs may help if we choose to try and make judgements on scheduling and could be used to conclude which instructors should get more hours and which insturctors are overworked (This stuff is in Graphs.R).
 
 - I've imported all the graphs I've made that I think could end up being useful to our final draft of the proposal (Hourly Exercises/Training Hours for instructors, Average Exercises per training hour for instructors, Average Exercises per Hour vs Hours fpr instructors with line of best fit, Average Exercises completed per hour for different training types).
+
+ - Currently compressing the code so it fits in our proposal.
 
 #### Proposal - Special Notes
 - I have created a new folder (img) for our data visualizations. Feel free to put in any graphs that you think might be nice to have for our proposal. Better to have too many graphs than not enough grpahs.
