@@ -38,6 +38,7 @@ This will act as a sort of message board for our group.
  - Modified some of Alec's code to add a linear regression and compute pearson's correlation coeffiecient
  - r = 0.98 !!!! This undoubtly shows strong correlation, unless I messed something up in the code
 -Import github project to RStudio Cloud (we only have 15 hours of processing time there)
+ -if you see this then RStudio Cloud is synched
 
 ## Vishal
 - Importing supplement data : "import_supplemental_data.R"
