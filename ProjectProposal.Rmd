@@ -25,7 +25,16 @@ With the data given and additional data on monthly air traffic, weather and seas
     - Milestones achieved (Like flying solo, completing all exercises at least once?)
     - If solo flight hypothesis has significant correlation, school is doing well to judge when to do solo flights. If no correlation, flight school either is not judging solo        flights well or there is no relationship between when a student takes a solo flight and what they have accomplished.
     - *Instructor/student data relationship (Do some students fare better with certain instructors?)*
-   
+    
+    Just a few questions I thought you should consider while writing the description.
+    1) How long/many sessions did students train before flying solo?
+    2) How long/many sessions did they fly dual? local? A particular aircraft?
+    3) Was there a common set of exercises that was required?
+    4) How was the first solo flight? (Did they fly solo again?)
+    5) What was the weather like?
+    6) Do our answers to the above questions change with instructors?
+    7) How does the above information relate with students that never flew solo?
+    
   - **What defines success/effectiveness of training?
     - Analysis for individual students' milestone that have hit milestones vs those who have not
     - Have all/most students who have flown solo done something the non-solo students haven't?    
