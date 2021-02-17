@@ -21,7 +21,7 @@ ggplot(data = Instructor_Data, aes(x = Total_Hours, y = Total_Exercises)) + geom
 ggplot(Instructor_Data) + geom_col(mapping = aes(x = Instructor_ID, y = Hourly_Exercises)) + ggtitle("Average Exercises Students Completed per Hour by Instructor") + ggsave("img/Hourly_Exercises.png") # This plot shows the number of exercises each instructors students completed per hour.
 ggplot(Instructor_Data) + geom_col(mapping = aes(x = Instructor_ID, y = Average_Hours)) + ggtitle("Average Number of Instructing Hours by Instructor") + ggsave("img/Hours_Per_Year.png") # This plot is the average hours of instruction per year for each instructor.
 Instructor_Trendline_Data = Instructor_Data %>% summarize(X_Mean = mean(Average_Hours), Y_Mean = mean(Hourly_Exercises), m = sum((Average_Hours - X_Mean)*(Hourly_Exercises - Y_Mean))/sum((Average_Hours - X_Mean)^2), b = Y_Mean - X_Mean*m)
-ggplot(data = NULL) + geom_point(data = Instructor_Data, mapping = aes(x = Average_Hours, y = Hourly_Exercises)) + geom_abline(data = Instructor_Trendline_Data, mapping = aes(slope = m, intercept = b)) + ggtitle("Average Hours Instructed per Year vs Average Hourly Exercises Students Completed") + ggsave("img/Average_Hours_Vs_Hourly_Exercises.png")
+ggplot(data = Instructor_Data, mapping = aes(x = Average_Hours, y = Hourly_Exercises)) + geom_point() + geom_smooth(method = 'lm', formula = y~x, se = FALSE) + ggtitle("Average Hours Instructed per Year vs Average Hourly Exercises Students Completed") + ggsave("img/Average_Hours_Vs_Hourly_Exercises.png")
 
 # Graphing information on student training times and efficiency
 Student_Data = new_clean_data %>% group_by(Student_ID) %>% summarise(Total_Hours = sum(Duration), Average_Hours = (sum(Duration)/(max(Year) - min(Year))))
