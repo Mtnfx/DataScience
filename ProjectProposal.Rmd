@@ -53,8 +53,31 @@ Our group has several different approaches to getting the most useful conclusion
 To help determine when air traffic is the lowest, and thus flight accident risk is the lowest, we acquired air traffic data from the supplemmentary data. 
 Air Traffic - https://open.canada.ca/data/en/dataset/b91772ed-edae-4fd4-8b80-a3e4c1d29976
 
-To determine when flying is the safest (lowest wind, lowest precipitation), we used weather data from.
+--------------------------------------------------------------------------------------------------------------
+air_movements <- read_csv("ext-data/aircraft-movements/23100003.csv") %>% 
+  filter( Airports == "Oshawa, Ontario",  str_detect(REF_DATE, "2015|2016|2017|2018|2019|2020") ) %>% 
+  select( REF_DATE, `Civil and military movements`, VALUE) %>%
+  separate(REF_DATE, c("Year", "Month"), sep = "-") %>% 
+  mutate(Year = as.integer(Year), Month = as.integer(Month))
+--------------------------------------------------------------------------------------------------------------
+
+To determine when flying is the safest (lowest wind, lowest precipitation), we used weather data from Government Of Canada's Website.
 Weather data - https://climate.weather.gc.ca/historical_data/search_historic_data_e.html
+
+--------------------------------------------------------------------------------------------------------------
+read_csv("data/en_climate_daily_ON_6155875_2015_P1D.csv", 
+         col_types = cols(Year = col_integer(), Month = col_integer(), Day = col_integer())) %>% 
+  select(Year, Month, Day, `Max Temp (°C)`, `Min Temp (°C)`, `Mean Temp (°C)`, `Heat Deg Days (°C)`,
+         `Cool Deg Days (°C)`, `Total Precip (mm)`, `Spd of Max Gust (km/h)`) -> weather
+
+for(i in 2016:2020) {
+  loc = c("data/en_climate_daily_ON_6155875_", as.character(i), "_P1D.csv")
+  read_csv(str_c(loc, collapse = ""),
+           col_types = cols(Year = col_integer(), Month = col_integer(), Day = col_integer(),
+                            `Spd of Max Gust (km/h)` = col_character())) %>% 
+    select(Year, Month, Day, `Max Temp (°C)`, `Min Temp (°C)`, `Mean Temp (°C)`, `Heat Deg Days (°C)`,
+           `Cool Deg Days (°C)`, `Total Precip (mm)`, `Spd of Max Gust (km/h)`) %>% union(weather) -> weather }
+---------------------------------------------------------------------------------------------------------------
 
 ### Preliminary Analysis
 `Put in >= 3 graphs/DaVis' relating to analysis and comment on preliminary findings.`
