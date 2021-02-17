@@ -39,7 +39,7 @@ Our group has several different approaches to getting the most useful conclusion
 
 ### Data
 `List/specify external data sources and types of data`
-`R Code for importing data will not go  in this section (since it is 100+ lines, ideally it goes in the appendix)`
+`R Code for importing data will not go in this section (since it is 100+ lines, ideally it goes in the appendix)`
 
 To help determine when air traffic is the lowest, and thus flight accident risk is the lowest, we acquired air traffic data from the supplemmentary data. 
 Air Traffic - https://open.canada.ca/data/en/dataset/b91772ed-edae-4fd4-8b80-a3e4c1d29976
