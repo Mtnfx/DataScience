@@ -193,13 +193,26 @@ for(i in 2016:2020) {
 
 To properly establish the  most efficient method of training students, first we must establish a measure of efficiency. By graphing exercises completed in each individual session, we determined that on a session by session basis, the exercises completed cannot be related to the duration of the session. However, by graphing the total session hours completed against the total exercises completed under each instructors supervision, we found that there is a significant correlation between training time and the number of exercises completed in the long term.
 
-![](img/Exercises_Vs_Duration.png)
+```{r, echo=FALSE, warnings=FALSE}
+new_clean_data = clean_data %>% mutate(Exercise_Count = str_count(Exercises, ',') + 1)
 
+# Graphing Information on Instructors
+Instructor_Data = new_clean_data %>% group_by(Instructor_ID) %>% summarise(Total_Hours = sum(Duration), Total_Exercises = sum(Exercise_Count), Hourly_Exercises = Total_Exercises/Total_Hours, Average_Hours = (sum(Duration)/(max(Year) - min(Year))))
+
+# Graph total hours against total exercises students completed under each instructor (with line of best fit and r value
+Coeftext = paste("r =" , toString(cor(Instructor_Data %>% select(Total_Hours), Instructor_Data %>% select(Total_Exercises), method = c("pearson"))[1][1]))
+ggplot(data = Instructor_Data, aes(x = Total_Hours, y = Total_Exercises)) + geom_point()  +
+  geom_smooth(method='lm', formula= y~x, se = FALSE)+  geom_text(aes(x = 250, y = 300), label = Coeftext) +
+  ggtitle("Hours of Instruction by Instructors vs Total Exercises Students Completed")
+```
 Since both Total Hours and Total Exercises are roughly continuous, we can use calculate Pearson's Linear Correlation Coefficient
 We found that r ~ 0.98, which shows strong positive correlation between the variables. Given this, we concluded that for analysis spanning several months or years, the number of exercises completed per hour is a reliable efficiency metric.
 
-`Instuctor average hours vs efficiency`
-
+From this efficiency metric, we graphed the average hours each instructor worked per year against the average number of exercises students completed per hour.
+``` {r, echo=FALSE, warnings=FALSE}
+ggplot(data = Instructor_Data, mapping = aes(x = Average_Hours, y = Hourly_Exercises)) + geom_point() + geom_smooth(method = 'lm', formula = y~x, se = FALSE) + ggtitle("Average Hours Instructed per Year vs Average Hourly Exercises Students Completed")
+```
+This graph clearly shows no clear correlation between average yearly hours worked and the exercises completed per hour by students. This lead us to conclude that instructors do not necessarily get better the more frequently they teach, but rather that some instructors are more effective than others. The line of best fit on this graph is not to show correlation but rather to plot the expected hours that each instructor should get based on their efficiency. Points above the line are, by our metric getting too few hours and instructors below the line are being scheduled for too many hours.
 
 ### Appendix
 `R Code for cleaning and importing data goes here (I am rewriting my code to be more space efficient. If I can compress it enough, I might be able to move it into the data section`
