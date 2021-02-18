@@ -149,7 +149,7 @@ We will utilise information in the following variables for observations of air t
 - `Civil and military movements`: Description of the air traffic
 - VALUE: The number of aiplanes
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.height = 4}
 air_movements <- read_csv("data/Aircraft_Movements.csv") %>% 
   filter( Airports == "Oshawa, Ontario",  str_detect(REF_DATE, "2015|2016|2017|2018|2019|2020") ) %>% 
   select( REF_DATE, `Civil and military movements`, VALUE) %>%
@@ -163,7 +163,7 @@ Weather data - https://climate.weather.gc.ca/historical_data/search_historic_dat
 We will utilise information in the following variables:
 Year, Month, Day, `Max Temp (°C)`, `Min Temp (°C)`, `Mean Temp (°C)`, `Total Precip (mm)`, `Spd of Max Gust (km/h)`
 
-```{r,  echo=FALSE, warning=FALSE, message=FALSE}
+```{r,  echo=FALSE, warning=FALSE, message=FALSE, fig.height = 4}
 read_csv("data/en_climate_daily_ON_6155875_2015_P1D.csv", 
          col_types = cols(Year = col_integer(), Month = col_integer(), Day = col_integer())) %>% 
   select(Year, Month, Day, `Max Temp (°C)`, `Min Temp (°C)`, `Mean Temp (°C)`, `Total Precip (mm)`, `Spd of Max Gust (km/h)`) -> weather
@@ -180,7 +180,8 @@ for(i in 2016:2020) {
 
 To suggest ways to improve scheduling we begin by understanding the current scheduling patterns.
 We graphed seasons against the total number of sessions conducted.
-``` {r, echo=FALSE, warnings=FALSE}
+
+``` {r, echo=FALSE, warnings=FALSE, fig.height = 4}
 # Creating seasons_four table
 seasons_four <- tibble(Month = 1:12, Season = c(rep("Winter", 2), rep("Spring", 3), rep("Summer", 3), rep("Fall", 3), "Winter"))
 
@@ -192,7 +193,7 @@ clean_data %>% inner_join(seasons_four, by = c("Month")) %>% group_by(Season) %>
 This graph clearly displays that the number of sessions conducted differed greatly from season to season with Summer being favoured the most. This suggests that either Summer presented better conditions for flying and hence for training sessions or it drew more customers or both.
 
 We graphed seasons against the efficiency of student 3.
-``` {r, echo=FALSE, warnings=FALSE} 
+``` {r, echo=FALSE, warnings=FALSE, fig.height = 4} 
 # Graphing Seasons against Efficiency of Student 3.
 clean_data %>% inner_join(seasons_four, by = c("Month")) %>% mutate(numEx = str_count(Exercises, ",") + 1, Efficiency = numEx/Duration) %>% 
   filter(Student_ID==3) %>% group_by(Season) %>% summarise(Efficiency = mean(Efficiency, na.rm = T)) %>% ggplot(aes(x=Season, y=Efficiency)) + 
@@ -201,15 +202,18 @@ clean_data %>% inner_join(seasons_four, by = c("Month")) %>% mutate(numEx = str_
 From this graph, we can infer that student's performance differed from season to season.
 
 We graphed speed of maximum gust against the number of sessions.
-``` {r, echo=FALSE, warnings=FALSE}
+
+``` {r, echo=FALSE, warnings=FALSE, fig.height = 4}
 weather %>% drop_na(`Spd of Max Gust (km/h)`) %>% inner_join(clean_data, by = c("Year", "Month", "Day")) %>% ggplot(aes(x=`Spd of Max Gust (km/h)`)) + 
 geom_bar(stat="count") + labs(y = "Number of Sessions") + ggtitle("Speed Of Maximum Gust (km/h) vs Number Of Sessions") + 
 theme(plot.title = element_text(hjust = 0.5))
 ```
+
 This graph suggets that in general the num of sessions conducted decreases with increase in speed of maximum gust.
 
 To properly establish the  most efficient method of training students, first we must establish a measure of efficiency. By graphing exercises completed in each individual session, we determined that on a session by session basis, the exercises completed cannot be related to the duration of the session. However, by graphing the total session hours completed against the total exercises completed under each instructors supervision, we found that there is a significant correlation between training time and the number of exercises completed in the long term.
-```{r, echo=FALSE, warnings=FALSE}
+
+```{r, echo=FALSE, warnings=FALSE, fig.height = 4}
 new_clean_data = clean_data %>% mutate(Exercise_Count = str_count(Exercises, ',') + 1)
 
 # Graphing Information on Instructors
@@ -221,17 +225,20 @@ ggplot(data = Instructor_Data, aes(x = Total_Hours, y = Total_Exercises)) + geom
   geom_smooth(method='lm', formula= y~x, se = FALSE)+  geom_text(aes(x = 250, y = 300), label = Coeftext) +
   ggtitle("Hours of Instruction by Instructors vs Total Exercises Students Completed")
 ```
+
 Since both Total Hours and Total Exercises are roughly continuous, we can use calculate Pearson's Linear Correlation Coefficient
 We found that r ~ 0.98, which shows strong positive correlation between the variables. Given this, we concluded that for analysis spanning several months or years, the number of exercises completed per hour is a reliable efficiency metric.
 
 From this efficiency metric, we graphed the average hours each instructor worked per year against the average number of exercises students completed per hour.
-``` {r, echo=FALSE, warnings=FALSE}
+
+``` {r, echo=FALSE, warnings=FALSE, fig.height = 4, fig.width=7}
 ggplot(data = Instructor_Data, mapping = aes(x = Average_Hours, y = Hourly_Exercises)) + geom_point() + geom_smooth(method = 'lm', formula = y~x, se = FALSE) + ggtitle("Average Hours Instructed per Year vs Average Hourly Exercises Students Completed")
 ```
 This graph clearly shows no clear correlation between average yearly hours worked and the exercises completed per hour by students. This lead us to conclude that instructors do not necessarily get better the more frequently they teach, but rather that some instructors are more effective than others. The line of best fit on this graph is not to show correlation but rather to plot the expected hours that each instructor should get based on their efficiency. Points above the line are, by our metric getting too few hours and instructors below the line are being scheduled for too many hours.
 
 To establish that flying solo can be considered to be a metric for students progress we found the mean number of exercises completed by students that flew solo including the exercises performed during first solo flight(a) and also the mean number of exercises completed by students that never flew solo(b).
-``` {r, echo=FALSE, warnings=FALSE}
+
+``` {r, echo=FALSE, warnings=FALSE, fig.height = 4}
 y = as.data.frame(clean_data %>% unite("Date", c(Year, Month, Day), sep = "-") %>% 
   mutate(Date = as.Date(Date), numEx = str_count(Exercises, ",") + 1) %>% 
   group_by(Student_ID) %>% arrange(Student_ID, Date) %>% 
@@ -244,7 +251,8 @@ y = as.data.frame(clean_data %>% unite("Date", c(Year, Month, Day), sep = "-") %
   summarise( `Flew Solo` = mean(totalEx) ))
 print(paste("mean (a)= ",toString(as.double(y[1][1]))))
 ```
-``` {r, echo=FALSE, warnings=FALSE} 
+
+``` {r, echo=FALSE, warnings=FALSE, fig.height = 4} 
 x = as.data.frame(clean_data %>% unite("Date", c(Year, Month, Day), sep = "-") %>% 
   mutate(Date = as.Date(Date), numEx = str_count(Exercises, ",") + 1) %>% 
   group_by(Student_ID) %>% arrange(Student_ID, Date) %>% 
@@ -264,4 +272,5 @@ x = as.data.frame(clean_data %>% unite("Date", c(Year, Month, Day), sep = "-") %
   summarise( `Never Flew Solo` = mean(totalEx) ))
 print(paste("mean (b)= ",toString(as.double(x[1][1]))))
 ```
+
 We note that the mean number of exercises completed by students that flew solo is more than twice the mean number of exercises completed by students that never flew solo which suggests that there might be a certain level of experience or progress that a student must achieve before they fly solo.
