@@ -123,8 +123,7 @@ Link to the share RStudio Cloud project that created this report: https://rstudi
 With the data given and additional data on monthly air traffic, weather and seasons, the following questions will be adressed by our analysis:
   
 ##### How can scheduling be made the most efficient?
-We plan to suggest ways to enhance the quality and efficiency of scheduling training sessions by gauging patterns in the efficiency of instructors, duration between 
- two sessions, the density of student enrollment every month, student performance per season. 
+We plan to suggest ways to enhance the quality and efficiency of scheduling training sessions by gauging patterns in the efficiency of instructors, duration between two sessions, the density of student enrollment every month, student performance per season. The efficiency of instructors is assessed based on the amount of time they spent conducting sessions for a certain set of exercises. The density of student enrollment was estimated using the number of sessions that took place per month. The student performance was calculated based on the number of exercises completed by a student in a given time frame per session. All of these metrics indicate patterns that could help us increase the efficiency of scheduling sessions. Above results could also be used to optimize the recruitment of instructors with regards to the density of sessions per season.
   
 ##### What are the optimal conditions for student success?
 Our goal is to identify the conditions during training sessions that impact and, in turn, lead to student success. We consider a milestone like the first solo flight of 
