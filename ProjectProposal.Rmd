@@ -140,13 +140,13 @@ In answering these questions, we made the assumption in analyzing our data that 
 no unmeasurable external factors impacting the duration or efficiency of sessions. That is to say, unless a factor can be measured, it cannot be accounted for in our
 analysis.
 
-To help determine when air traffic is the lowest, and thus flight accident risk is the lowest, we acquired air traffic data from the suggested supplementary data.
+To help determine when air traffic is the lowest, and thus flight accident risk is the lowest, we acquired air traffic data from the suggested supplementary data.\
 Air Traffic - https://open.canada.ca/data/en/dataset/b91772ed-edae-4fd4-8b80-a3e4c1d29976
 
 We will utilise information in the following variables for observations of air traffic in Airports of Oshawa, Ontario for years 2015-2020:
-- REF_DATE: Date of Reference provided in character "YYYY-MM" format which we will separate to two columns of type integer "Year" and "Month".
-- `Civil and military movements`: Description of the air traffic
-- VALUE: The number of aiplanes
+- REF_DATE: Date of Reference provided in character "YYYY-MM" format which we will separate to two columns of type integer "Year" and "Month".\
+- `Civil and military movements`: Description of the air traffic.\
+- VALUE: The number of aiplanes.\
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.height = 4}
 air_movements <- read_csv("data/Aircraft_Movements.csv") %>% 
@@ -156,7 +156,7 @@ air_movements <- read_csv("data/Aircraft_Movements.csv") %>%
   mutate(Year = as.integer(Year), Month = as.integer(Month))
 ```
 
-To determine when flying is the safest (lowest wind, lowest precipitation), we used weather data from Government Of Canada's Website.
+To determine when flying is the safest (lowest wind, lowest precipitation), we used weather data from Government Of Canada's Website.\
 Weather data - https://climate.weather.gc.ca/historical_data/search_historic_data_e.html
 
 We will utilise information in the following variables:
