@@ -117,43 +117,27 @@ for (i in 1:length(invalid_points)){
 `Avoid deleting other people's work when possible (anything in backticks is not intended to be final and can be deleted)`
 `Document Length: ~2 pages`
 
+Link to the share RStudio Cloud project that created this report: 'needs to be added'
+
 ### Analysis Plan
 `Specify questions to be addressed`
 
 With the data given and additional data on monthly air traffic, weather and seasons, the following questions will be adressed by our analysis:
   
   - **How can scheduling be made the most efficient?
-    - Is each instructor getting the appropriate number of hours?
-    - Which season(s) see the best average student performance?
-    - Time between each sessions
-    - How many students come in every month/ how many sessions?
+	We plan to suggest ways to enhance the quality and efficiency of scheduling training sessions by gauging patterns in the efficiency of instructors, duration between 
+  two sessions, the density of student enrollment every month, student performance per season. 
   
   - **What are the optimal conditions for student success?
-    - Which training type yields the highest efficiency (by exercises completed per training hour)?
-    - Exercises per hour of training (Only works for long term data)
-    - Milestones achieved (Like flying solo, completing all exercises at least once?)
-    - If solo flight hypothesis has significant correlation, school is doing well to judge when to do solo flights. If no correlation, flight school either is not judging solo        flights well or there is no relationship between when a student takes a solo flight and what they have accomplished.
-    - *Instructor/student data relationship (Do some students fare better with certain instructors?)*
-    
-    Just a few questions I thought you should consider while writing the description.
-    1) How long/many sessions did students train before flying solo?
-    2) How long/many sessions did they fly dual? local? A particular aircraft?
-    3) Was there a common set of exercises that was required?
-    4) How was the first solo flight? (Did they fly solo again?)
-    5) What was the weather like?
-    6) Do our answers to the above questions change with instructors?
-    7) How does the above information relate with students that never flew solo?
-    
-  - **What defines success/effectiveness of training?
-    - Analysis for individual students' milestone that have hit milestones vs those who have not
-    - Have all/most students who have flown solo done something the non-solo students haven't?    
-    - **As an extension, can we determine what benchmarks students should/have to meet in order to fly solo?
-  
-In answering these questions, we made the assumption in analyzing our data that all students begin their training at the same skill level. Additionally, we assume there were no unmeasurable external factors impacting the duration or efficiency of sessions. That is to say, unless a factor can be measured, it cannot be accounted for in our analysis.
+	Our goal is to identify the conditions during training sessions that impact and, in turn, lead to student success. We consider a milestone like the first solo flight of 
+  the student as the factor expressing student training success. We account for a diverse array of metrics such as the number of exercises per hour of training, the 
+  weather and seasons during training sessions, the change in student performance for each instructor, the number of sessions required for the student to complete a
+  milestone, most efficient training type, duration of particular exercises like dual flights, completion of a common set of exercises, comparison of students who didn't
+  achieve particular milestones, etc.
 
-Our analysis plan consists of answering the following sub-questions related to the main questions we seek to answer:
-
-Our group has several different approaches to getting the most useful conclusions out of this data.
+In answering these questions, we made the assumption in analyzing our data that all students begin their training at the same skill level. Additionally, we assume there were
+no unmeasurable external factors impacting the duration or efficiency of sessions. That is to say, unless a factor can be measured, it cannot be accounted for in our
+analysis.
 
 ### Data
 `List/specify external data sources and types of data`
