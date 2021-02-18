@@ -116,7 +116,9 @@ for (i in 1:length(invalid_points)){
 # STAA57 Project Proposal 
 ### Group 14 - Aditya Sandeep Kulkarni, Alec Larsen, Md Wasim Zaman, Vishal Deb Sahoo
 
-Link to the share RStudio Cloud project that created this report: https://rstudio.cloud/spaces/115177/project/2210076
+Link to the share RStudio Cloud project that created this report:
+
+https://rstudio.cloud/spaces/115177/project/2210076
 
 ### Analysis Plan
 
@@ -144,6 +146,7 @@ To help determine when air traffic is the lowest, and thus flight accident risk 
 Air Traffic - https://open.canada.ca/data/en/dataset/b91772ed-edae-4fd4-8b80-a3e4c1d29976
 
 We will utilise information in the following variables for observations of air traffic in Airports of Oshawa, Ontario for years 2015-2020:
+
 - REF_DATE: Date of Reference provided in character "YYYY-MM" format which we will separate to two columns of type integer "Year" and "Month".\
 - `Civil and military movements`: Description of the air traffic.\
 - VALUE: The number of aiplanes.\
@@ -232,7 +235,7 @@ We found that r ~ 0.98, which shows strong positive correlation between the vari
 
 From this efficiency metric, we graphed the average hours each instructor worked per year against the average number of exercises students completed per hour.
 
-``` {r, echo=FALSE, warnings=FALSE, fig.height = 4, fig.width=7}
+``` {r, echo=FALSE, warnings=FALSE, fig.height = 4, fig.width=7.5}
 ggplot(data = Instructor_Data, mapping = aes(x = Average_Hours, y = Hourly_Exercises)) + geom_point() + geom_text(aes(x = Average_Hours, y = Hourly_Exercises, label = Instructor_ID, hjust = 0), nudge_x = 1) + geom_smooth(method = 'lm', formula = y~x, se = FALSE) + ggtitle("Average Hours Instructed per Year vs Average Hourly Exercises Students Completed")
 ```
 
