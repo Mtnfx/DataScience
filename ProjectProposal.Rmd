@@ -190,9 +190,11 @@ clean_data %>% inner_join(seasons_four, by = c("Month")) %>% group_by(Season) %>
   ggplot(aes(x = Season, y = Sessions)) + geom_bar(stat = "identity") + ggtitle("Seasons vs Total Number Of Sessions") + 
   theme(plot.title = element_text(hjust = 0.5))
 ```
+
 This graph clearly displays that the number of sessions conducted differed greatly from season to season with Summer being favoured the most. This suggests that either Summer presented better conditions for flying and hence for training sessions or it drew more customers or both.
 
 We graphed seasons against the efficiency of student 3.
+
 ``` {r, echo=FALSE, warnings=FALSE, fig.height = 4} 
 # Graphing Seasons against Efficiency of Student 3.
 clean_data %>% inner_join(seasons_four, by = c("Month")) %>% mutate(numEx = str_count(Exercises, ",") + 1, Efficiency = numEx/Duration) %>% 
