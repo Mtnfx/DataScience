@@ -163,7 +163,7 @@ Weather data - https://climate.weather.gc.ca/historical_data/search_historic_dat
 We will utilise information in the following variables:
 Year, Month, Day, `Max Temp (°C)`, `Min Temp (°C)`, `Mean Temp (°C)`, `Total Precip (mm)`, `Spd of Max Gust (km/h)`
 
-```{r,  echo=FALSE, warning=FALSE}
+```{r,  echo=FALSE, warning=FALSE, message=FALSE}
 read_csv("data/en_climate_daily_ON_6155875_2015_P1D.csv", 
          col_types = cols(Year = col_integer(), Month = col_integer(), Day = col_integer())) %>% 
   select(Year, Month, Day, `Max Temp (°C)`, `Min Temp (°C)`, `Mean Temp (°C)`, `Total Precip (mm)`, `Spd of Max Gust (km/h)`) -> weather
