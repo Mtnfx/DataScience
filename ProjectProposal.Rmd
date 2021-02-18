@@ -143,8 +143,13 @@ analysis.
 `List/specify external data sources and types of data`
 `R Code for importing data will not go in this section (since it is 100+ lines, ideally it goes in the appendix)`
 
-To help determine when air traffic is the lowest, and thus flight accident risk is the lowest, we acquired air traffic data from the supplemmentary data. 
+To help determine when air traffic is the lowest, and thus flight accident risk is the lowest, we acquired air traffic data from the suggested supplementary data. 
 Air Traffic - https://open.canada.ca/data/en/dataset/b91772ed-edae-4fd4-8b80-a3e4c1d29976
+
+We will utilise information in the following variables for observations of air traffic in Airports of Oshawa, Ontario for years 2015-2020:
+- REF_DATE: Date of Reference provided in character "YYYY-MM" format which we will separate to two columns of type integer "Year" and "Month".
+- `Civil and military movements`: Description of the air traffic
+- VALUE: The number of aiplanes
 
 ```{r, echo=FALSE, warning=FALSE}
 air_movements <- read_csv("ext-data/aircraft-movements/23100003.csv") %>% 
@@ -157,19 +162,27 @@ air_movements <- read_csv("ext-data/aircraft-movements/23100003.csv") %>%
 To determine when flying is the safest (lowest wind, lowest precipitation), we used weather data from Government Of Canada's Website.
 Weather data - https://climate.weather.gc.ca/historical_data/search_historic_data_e.html
 
+We will utilise information in the following variables:
+- Year
+- Month
+- Day
+- `Max Temp (°C)`
+- `Min Temp (°C)`
+- `Mean Temp (°C)`
+- `Total Precip (mm)`: Total Precipitation in milimeters during the day
+- `Spd of Max Gust (km/h)`: Speed of Maximum Gust in km/h during the day
+
 ```{r,  echo=FALSE, warning=FALSE}
 read_csv("data/en_climate_daily_ON_6155875_2015_P1D.csv", 
          col_types = cols(Year = col_integer(), Month = col_integer(), Day = col_integer())) %>% 
-  select(Year, Month, Day, `Max Temp (°C)`, `Min Temp (°C)`, `Mean Temp (°C)`, `Heat Deg Days (°C)`,
-         `Cool Deg Days (°C)`, `Total Precip (mm)`, `Spd of Max Gust (km/h)`) -> weather
+  select(Year, Month, Day, `Max Temp (°C)`, `Min Temp (°C)`, `Mean Temp (°C)`, `Total Precip (mm)`, `Spd of Max Gust (km/h)`) -> weather
 
 for(i in 2016:2020) {
   loc = c("data/en_climate_daily_ON_6155875_", as.character(i), "_P1D.csv")
   read_csv(str_c(loc, collapse = ""),
            col_types = cols(Year = col_integer(), Month = col_integer(), Day = col_integer(),
                             `Spd of Max Gust (km/h)` = col_character())) %>% 
-    select(Year, Month, Day, `Max Temp (°C)`, `Min Temp (°C)`, `Mean Temp (°C)`, `Heat Deg Days (°C)`,
-           `Cool Deg Days (°C)`, `Total Precip (mm)`, `Spd of Max Gust (km/h)`) %>% union(weather) -> weather }
+    select(Year, Month, Day, `Max Temp (°C)`, `Min Temp (°C)`, `Mean Temp (°C)`, `Total Precip (mm)`, `Spd of Max Gust (km/h)`) %>% union(weather) -> weather }
 ```
 
 ### Preliminary Analysis
