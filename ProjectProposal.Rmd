@@ -265,7 +265,7 @@ clean_data %>% unite("Date", c(Year, Month, Day), sep = "-") %>%
   mutate( solo_flight = !str_detect(Training_Type, "solo" ) ) %>% 
   filter( solo_flight ) %>% arrange(desc(Date)) %>% slice(1) %>% 
   select(Student_ID, totalEx) %>% 
-  anti_join(c1 %>% unite("Date", c(Year, Month, Day), sep = "-") %>% 
+  anti_join(clean_data %>% unite("Date", c(Year, Month, Day), sep = "-") %>% 
               mutate(Date = as.Date(Date)) %>%
               group_by(Student_ID) %>% arrange(Student_ID, Date) %>% 
               select( Student_ID, Training_Type, Date ) %>% 
