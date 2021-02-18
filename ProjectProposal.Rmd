@@ -114,7 +114,7 @@ for (i in 1:length(invalid_points)){
 ```
 
 # STAA57 Project Proposal 
-# Group 14 - Aditya Sandeep Kulkarni, Alec Larsen, Md Wasim Zaman, Vishal Deb Sahoo
+## Group 14 - Aditya Sandeep Kulkarni, Alec Larsen, Md Wasim Zaman, Vishal Deb Sahoo
 
 Link to the share RStudio Cloud project that created this report: https://rstudio.cloud/spaces/115177/project/2209633
 
