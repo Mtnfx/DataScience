@@ -244,7 +244,6 @@ clean_data %>% unite("Date", c(Year, Month, Day), sep = "-") %>%
   ungroup() %>% 
   summarise( `Flew Solo` = mean(totalEx) )
 ```
-
 ``` {r, echo=FALSE, warnings=FALSE} 
 clean_data %>% unite("Date", c(Year, Month, Day), sep = "-") %>% 
   mutate(Date = as.Date(Date), numEx = str_count(Exercises, ",") + 1) %>% 
@@ -264,5 +263,4 @@ clean_data %>% unite("Date", c(Year, Month, Day), sep = "-") %>%
   ungroup() %>% 
   summarise( `Never Flew Solo` = mean(totalEx) )
 ```
-
 We note that the mean number of exercises completed by students that flew solo is more than twice the mean number of exercises completed by students that never flew solo which suggests that there might be a certain level of experience or progress that a student must achieve before they fly solo.
