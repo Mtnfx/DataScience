@@ -114,7 +114,7 @@ for (i in 1:length(invalid_points)){
 ```
 
 # STAA57 Project Proposal 
-## Group 14 - Aditya Sandeep Kulkarni, Alec Larsen, Md Wasim Zaman, Vishal Deb Sahoo
+### Group 14 - Aditya Sandeep Kulkarni, Alec Larsen, Md Wasim Zaman, Vishal Deb Sahoo
 
 Link to the share RStudio Cloud project that created this report: https://rstudio.cloud/spaces/115177/project/2210076
 
@@ -122,18 +122,18 @@ Link to the share RStudio Cloud project that created this report: https://rstudi
 
 With the data given and additional data on monthly air traffic, weather and seasons, the following questions will be adressed by our analysis:
   
-  - **How can scheduling be made the most efficient?
-	We plan to suggest ways to enhance the quality and efficiency of scheduling training sessions by gauging patterns in the efficiency of instructors, duration between 
-  two sessions, the density of student enrollment every month, student performance per season. 
+##### How can scheduling be made the most efficient?
+We plan to suggest ways to enhance the quality and efficiency of scheduling training sessions by gauging patterns in the efficiency of instructors, duration between 
+ two sessions, the density of student enrollment every month, student performance per season. 
   
-  - **What are the optimal conditions for student success?
-	Our goal is to identify the conditions during training sessions that impact and, in turn, lead to student success. We consider a milestone like the first solo flight of 
-  the student as the factor expressing student training success. We account for a diverse array of metrics such as the number of exercises per hour of training, the 
-  weather and seasons during training sessions, the change in student performance for each instructor, the number of sessions required for the student to complete a
-  milestone, most efficient training type, duration of particular exercises like dual flights, completion of a common set of exercises, comparison of students who didn't
-  achieve particular milestones, etc.
+##### What are the optimal conditions for student success?
+Our goal is to identify the conditions during training sessions that impact and, in turn, lead to student success. We consider a milestone like the first solo flight of 
+the student as the factor expressing student training success. We account for a diverse array of metrics such as the number of exercises per hour of training, the 
+weather and seasons during training sessions, the change in student performance for each instructor, the number of sessions required for the student to complete a
+milestone, most efficient training type, duration of particular exercises like dual flights, completion of a common set of exercises, comparison of students who didn't
+achieve particular milestones, etc.
 
-
+Our analysis plan is dependent on determining correlations between multiple important and controllable factors in the training process. We will do this by using data analysis tools such as graphs and linear regression to determine whether one factor of the training process impacts performance and if so, what the impact of that factor is. Our analysis depends on several factors.
 
 ### Data
 
@@ -230,9 +230,9 @@ ggplot(data = Instructor_Data, mapping = aes(x = Average_Hours, y = Hourly_Exerc
 ```
 This graph clearly shows no clear correlation between average yearly hours worked and the exercises completed per hour by students. This lead us to conclude that instructors do not necessarily get better the more frequently they teach, but rather that some instructors are more effective than others. The line of best fit on this graph is not to show correlation but rather to plot the expected hours that each instructor should get based on their efficiency. Points above the line are, by our metric getting too few hours and instructors below the line are being scheduled for too many hours.
 
-To establish that flying solo can be considered to be a metric for students progress we found the mean number of exercises completed by students that flew solo including the exercises performed during first solo flight and also the mean number of exercises completed by students that never flew solo.
+To establish that flying solo can be considered to be a metric for students progress we found the mean number of exercises completed by students that flew solo including the exercises performed during first solo flight(a) and also the mean number of exercises completed by students that never flew solo(b).
 ``` {r, echo=FALSE, warnings=FALSE}
-clean_data %>% unite("Date", c(Year, Month, Day), sep = "-") %>% 
+y = as.data.frame(clean_data %>% unite("Date", c(Year, Month, Day), sep = "-") %>% 
   mutate(Date = as.Date(Date), numEx = str_count(Exercises, ",") + 1) %>% 
   group_by(Student_ID) %>% arrange(Student_ID, Date) %>% 
   mutate(totalEx = cumsum(numEx)) %>% 
@@ -241,10 +241,11 @@ clean_data %>% unite("Date", c(Year, Month, Day), sep = "-") %>%
   filter( solo_flight ) %>% slice(1) %>% 
   select(Student_ID, totalEx) %>% 
   ungroup() %>% 
-  summarise( `Flew Solo` = mean(totalEx) )
+  summarise( `Flew Solo` = mean(totalEx) ))
+print(paste("mean (a)= ",toString(as.double(y[1][1]))))
 ```
 ``` {r, echo=FALSE, warnings=FALSE} 
-clean_data %>% unite("Date", c(Year, Month, Day), sep = "-") %>% 
+x = as.data.frame(clean_data %>% unite("Date", c(Year, Month, Day), sep = "-") %>% 
   mutate(Date = as.Date(Date), numEx = str_count(Exercises, ",") + 1) %>% 
   group_by(Student_ID) %>% arrange(Student_ID, Date) %>% 
   mutate(totalEx = cumsum(numEx)) %>% 
@@ -260,6 +261,7 @@ clean_data %>% unite("Date", c(Year, Month, Day), sep = "-") %>%
               filter( solo_flight ) %>% slice(1) %>% 
               select(Student_ID), by = "Student_ID") %>% 
   ungroup() %>% 
-  summarise( `Never Flew Solo` = mean(totalEx) )
+  summarise( `Never Flew Solo` = mean(totalEx) ))
+print(paste("mean (b)= ",toString(as.double(x[1][1]))))
 ```
 We note that the mean number of exercises completed by students that flew solo is more than twice the mean number of exercises completed by students that never flew solo which suggests that there might be a certain level of experience or progress that a student must achieve before they fly solo.
