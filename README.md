@@ -43,7 +43,7 @@ This will act as a sort of message board for our group.
 - Added linear correlation information about Total Exercises vs Total Hours to all related documents
   - Modified some of Alec's code to add a linear regression and compute pearson's correlation coeffiecient
   - r = 0.98 !!!! This undoubtly shows strong correlation, unless I messed something up in the code
-- Import github project to RStudio Cloud (One is a dummy with limited space and one is on STAA57 workspace)
+- Import github project to RStudio Cloud
 - edit Vishal's code for mean generation to reduce output size
 ## Vishal
 - Importing supplement data : "import_supplemental_data.R"
