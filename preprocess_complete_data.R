@@ -39,12 +39,15 @@ raw_data %>%
           Aircraft, Duration, Training_Type, Exercises, Licence ) %>% 
           filter(! is.na(Duration)) -> clean_data
 
+#Delete if we are a few lines over the page limit
 clean_data %>% 
   distinct( Session_ID, .keep_all = T) %>% 
   # split the exercises string into a "list" column w str_split()
   mutate( Exercises = str_split(Exercises, ",") ) %>%  
   # and expand list contents into multiple rows w/ unnest()
   unnest( Exercises)
+
+#Starting here,  this is my own code. Lines culled: 31
 
 # This for loop iterates through each training session's year data. If the year is listed below 2015, it replaces the year with the year of the entries above and below it (assuming they match, but there have been no cases where they didn't in our data sets).
 # This works, as by this point in the processing, sessions are sorted by date for each instructor, then by each student.
@@ -54,7 +57,7 @@ for (i in 2:nrow(clean_data)-1){
   }
 }
 
-#This loop does the same as ghe one above but with replacing month values > 12 with the month of an adjacent datapoint from the same student.
+#This loop does the same as the one above but with replacing month values > 12 with the month of an adjacent datapoint from the same student.
 for (i in 2:nrow(clean_data)-1){
   if (clean_data[i,5] > 12 && clean_data[i-1,2] == clean_data[i,2]){
     clean_data[i,5] = clean_data[i-1,5]
@@ -64,45 +67,12 @@ for (i in 2:nrow(clean_data)-1){
   }
 }
 
-# This for loop iterates through each exercise list and checks for periods as separators. If there is a period, it replaces it with a comma.
-# This also deletes any excess commas at the start and end of lines.
-for (i in 1:nrow(clean_data)){
-  exercises = clean_data[i,10]
-  if (substr(exercises, 1, 1) == ","){
-    exercises = substr(exercises, 2, nchar(exercises))
-  }
-  
-  if (substr(exercises, nchar(exercises), nchar(exercises)) == ","){
-    exercises = substr(exercises, 1, nchar(exercises) - 1)
-  }
-  
-  for (j in 1:nchar(exercises)){
-    if (substr(exercises, j, j) == '.'){
-      exercises = paste(substr(exercises, 1, j-1), ",", substr(exercises, j+1, nchar(exercises)), sep="")
-    }
-    if (substr(exercises, j, j) == "`"){
-      exercises = paste(substr(exercises, 1, j-1), "1", substr(exercises, j+1, nchar(exercises)), sep="")
-    }
-    if (substr(exercises, j, j) == " "){
-      exercises = paste(substr(exercises, 1, j-1), ",", substr(exercises, j+1, nchar(exercises)), sep="")
-    }
-  }
-  clean_data[i,10]= exercises
-}
+# This line removes all non comma separators including periods, spaces, double commas, and backticks as well as leading and trailing commas.
+clean_data$Exercises = clean_data$Exercises %>% str_replace("^,", "") %>% str_replace_all(",$", "") %>% str_replace_all("\\`", "1") %>% str_replace_all("[:punct:]", ",") %>% str_replace_all("[:blank:]", ",") %>% str_replace_all(",,", ",")
 
-#This for loop does the same but with double commas
-for (i in 1:nrow(clean_data)){
-  exercises = clean_data[i,10]
-  for (j in 1:nchar(exercises)-1){
-    if (substr(exercises, j, j+1) == ',,'){
-      exercises = paste(substr(exercises, 1, j-1), ",", substr(exercises, j+2, nchar(exercises)), sep="")
-    }
-  }
-  clean_data[i,10]= exercises
-}
-# If efficiency matters, I may merge both for loops I wrote. However, I'd prefer to keep them separate as it makes it a lot easier to understand what's happening.
+#This algorithm deletes every extra errant data points that have listed exercises above 30 (It's safer to delete these points than to assume we know what they are as none of our results are significantly impacted)
+invalid_points = c()
 
-#This algorithm deletes every extra errant data points whose values I can't determine (Except for 2 errant exercise points that this algorithm shouldn't miss but does)
 for (i in 1:nrow(clean_data)){
   exercises = clean_data[i,10]
   is_invalid = FALSE
@@ -122,30 +92,10 @@ for (i in 1:nrow(clean_data)){
     }
   }
   if (is_invalid == TRUE){
-    clean_data = clean_data[- c(i),]
+    invalid_points = append(invalid_points, clean_data[i, 10])
   }
 }
 
-#Is this the same loop? Yes. Yes it is. I cannot figure out why but running this loop twice removes the last invalid data point tht the first run missed for some reason.
-for (i in 1:nrow(clean_data)){
-  exercises = clean_data[i,10]
-  is_invalid = FALSE
-  last_comma = 0
-  for (j in 1:nchar(exercises)){
-    if (substr(exercises, j, j) ==  ","){
-      q = substr(exercises, last_comma+1, j-1)
-      if (strtoi(substr(exercises, last_comma+1, j-1)) > 30){
-        is_invalid = TRUE
-      }
-      last_comma = j
-    }
-    if (j == nchar(exercises)){
-      if (strtoi(substr(exercises, last_comma+1, j)) > 30){
-        is_invalid = TRUE
-      }
-    }
-  }
-  if (is_invalid == TRUE){
-    clean_data = clean_data[- c(i),]
-  }
+for (i in 1:length(invalid_points)){
+  clean_data = clean_data %>% filter(Exercises != invalid_points[i])
 }
