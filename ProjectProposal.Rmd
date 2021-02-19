@@ -221,7 +221,7 @@ To properly establish the  most efficient method of training students, first we 
 new_clean_data = clean_data %>% mutate(Exercise_Count = str_count(Exercises, ',') + 1)
 
 # Graphing Information on Instructors
-Instructor_Data = new_clean_data %>% group_by(Instructor_ID) %>% summarise(Total_Hours = sum(Duration), Total_Exercises = sum(Exercise_Count), Hourly_Exercises = Total_Exercises/Total_Hours, Average_Hours = (sum(Duration)/(max(Year) - min(Year))))
+Instructor_Data = new_clean_data %>% group_by(Instructor_ID) %>% summarise(Total_Hours = sum(Duration), Total_Exercises = sum(Exercise_Count), Hourly_Exercises = Total_Exercises/Total_Hours, Years_Worked = as.numeric(max(Date)- min(Date))/365.25, Average_Hours = (sum(Duration)/Years_Worked))
 
 # Graph total hours against total exercises students completed under each instructor (with line of best fit and r value
 Coeftext = paste("r =" , toString(cor(Instructor_Data %>% select(Total_Hours), Instructor_Data %>% select(Total_Exercises), method = c("pearson"))[1][1]))
