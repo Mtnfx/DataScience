@@ -218,7 +218,7 @@ This graph suggets that in general the num of sessions conducted decreases with 
 To properly establish the  most efficient method of training students, first we must establish a measure of efficiency. By graphing exercises completed in each individual session, we determined that on a session by session basis, the exercises completed cannot be related to the duration of the session. However, by graphing the total session hours completed against the total exercises completed under each instructors supervision, we found that there is a significant correlation between training time and the number of exercises completed in the long term.
 
 ```{r, echo=FALSE, warnings=FALSE, fig.height = 4}
-new_clean_data = clean_data %>% mutate(Exercise_Count = str_count(Exercises, ',') + 1)
+new_clean_data = clean_data %>% mutate(Exercise_Count = str_count(Exercises, ',') + 1, Date = as.Date(ISOdate(Year, Month, Day)))
 
 # Graphing Information on Instructors
 Instructor_Data = new_clean_data %>% group_by(Instructor_ID) %>% summarise(Total_Hours = sum(Duration), Total_Exercises = sum(Exercise_Count), Hourly_Exercises = Total_Exercises/Total_Hours, Years_Worked = as.numeric(max(Date)- min(Date))/365.25, Average_Hours = (sum(Duration)/Years_Worked))
