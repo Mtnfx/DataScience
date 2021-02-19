@@ -134,7 +134,7 @@ weather and seasons during training sessions, the change in student performance 
 milestone, most efficient training type, duration of particular exercises like dual flights, completion of a common set of exercises, comparison of students who didn't
 achieve particular milestones, etc.
 
-In summary, our analysis plan is dependent on determining correlations between multiple important and controllable factors in the training process. We will do this by using data analysis tools such as graphs and linear regression to determine whether one factor of the training process impacts performance and if so, what the impact of that factor is. Our analysis depends on several factors.
+In summary, our analysis plan is dependent on determining correlations between multiple important and controllable factors in the training process. We will do this by using data analysis tools such as graphs and linear regression to determine whether one factor of the training process impacts performance and if so, what the impact of that factor is.
 
 ### Data
 
@@ -230,7 +230,7 @@ ggplot(data = Instructor_Data, aes(x = Total_Hours, y = Total_Exercises)) + geom
   ggtitle("Hours of Instruction by Instructors vs Total Exercises Students Completed")
 ```
 
-Since both Total Hours and Total Exercises are roughly continuous, we can use calculate Pearson's Linear Correlation Coefficient
+Since both Total Hours and Total Exercises are roughly continuous, we can use calculate Pearson's Linear Correlation Coefficient.
 We found that r ~ 0.98, which shows strong positive correlation between the variables. Given this, we concluded that for analysis spanning several months or years, the number of exercises completed per hour is a reliable efficiency metric.
 
 From this efficiency metric, we graphed the average hours each instructor worked per year against the average number of exercises students completed per hour.
