@@ -1,0 +1,82 @@
+---
+output: pdf_document
+fontsize: 11pt
+geometry: margin=1in
+---
+
+```{r, include = FALSE }
+knitr::opts_chunk$set( echo=FALSE, # hide code from document
+                       warning=FALSE, # hide warnings 
+                       message=FALSE) # hide messages 
+library(tidyverse)
+```
+
+# STAA57 W21 Draft Report 
+
+Group ? (member names)    
+
+Link to RStudio Cloud shared project: https://rstudio.cloud/
+
+***
+
+## Introduction 
+
+(*Description of questions that are being investigated*)
+
+
+
+### Data 
+
+(*Description of data used to answer the questions*)
+
+
+## Analysis 
+
+
+(*Main body of analysis, containing data summaries, visualizations, hypothesis tests, or modeling*)
+
+
+### Some Sub-Section Title
+
+
+(*Graphs should be created in R, not imported from file*)
+
+
+```{r,  fig.width = 4, fig.height = 4, fig.cap= "Graph Caption" } 
+tibble( t = seq(0, 2*pi, by=0.1) ) %>% 
+  mutate( x = 16*sin(t)^3, 
+          y = 13*cos(t)-5*cos(2*t)-2*cos(3*t)-cos(4*t) ) %>% 
+  ggplot( aes( x = x, y = y) ) + 
+  geom_polygon( fill = "pink" ) +
+  # annotate axes 
+  xlab( "abscissa" ) + 
+  ylab( "ordinate" ) + 
+  ggtitle( "Graph Title (optional)"  ) +
+  coord_fixed() 
+```
+
+### Some Sub-section Title     
+
+
+(*R output tables can be formatted nicely in .html with* `knitr::kable()`) 
+
+```{r, echo = FALSE}
+tibble( X = c("this", "my"), 
+        Y = c("is", "table") ) %>% 
+  knitr::kable( caption = "Table Caption")
+```
+
+
+
+## Summary 
+
+(*Recap of your findings and conclusions*)
+
+
+***  
+
+## Appendix 
+
+(*Everything here does not count towards page limit*)
+
+
