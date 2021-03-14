@@ -13,7 +13,7 @@ library(tidyverse)
 
 # STAA57 W21 Draft Report 
 
-Group ? (member names)    
+Group 14 (Alec Larsen, Aditya Kulkarni, Vishal Sahoo, MD Wasim)    
 
 Link to RStudio Cloud shared project: https://rstudio.cloud/
 
@@ -34,9 +34,9 @@ Link to RStudio Cloud shared project: https://rstudio.cloud/
 
 
 (*Main body of analysis, containing data summaries, visualizations, hypothesis tests, or modeling*)
+``` Short and sweet, let the gaphs do the work.```
 
-
-### Some Sub-Section Title
+### Scheduling?
 
 
 (*Graphs should be created in R, not imported from file*)
@@ -55,7 +55,7 @@ tibble( t = seq(0, 2*pi, by=0.1) ) %>%
   coord_fixed() 
 ```
 
-### Some Sub-section Title     
+### Other Sub-Section    
 
 
 (*R output tables can be formatted nicely in .html with* `knitr::kable()`) 
@@ -72,6 +72,7 @@ tibble( X = c("this", "my"),
 
 (*Recap of your findings and conclusions*)
 
+In conclusion,
 
 ***  
 
