@@ -25,8 +25,7 @@ Link to RStudio Cloud shared project: https://rstudio.cloud/
 
 *Introduction sentence*
 
-Our analysis seeks to improve two main aspects of the training process. The first aspect is scheduling. Through our analysis, we aimed to determine whether training sessions are being scheduled effectively, and if not, how they can be scheduled more efficiently to improve student performance. The second aspect our analysis covers is (*second aspect*)
-
+Our analysis seeks to improve two main aspects of the training process. The first aspect is scheduling. Through our analysis, we aimed to determine whether training sessions are being scheduled effectively, and if not, how they can be scheduled more efficiently to improve student performance. The second aspect our analysis covers the ideal conditions for student performance. We analyzed numerous factors such as wind speeds, the order exercises are completed in, and the density of air traffic during sessions.
 
 ### Data 
 
@@ -47,7 +46,7 @@ Air traffic data was also used to try to determine a relation between the time o
 (*Main body of analysis, containing data summaries, visualizations, hypothesis tests, or modeling*)
 ``` Short and sweet, let the graphs do the work.```
 
-### Scheduling?
+### Scheduling
 
 
 (*Graphs should be created in R, not imported from file*)
@@ -66,7 +65,7 @@ tibble( t = seq(0, 2*pi, by=0.1) ) %>%
   coord_fixed() 
 ```
 
-### Other Sub-Section    
+### Student Success
 
 
 (*R output tables can be formatted nicely in .html with* `knitr::kable()`) 
