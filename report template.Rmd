@@ -23,18 +23,29 @@ Link to RStudio Cloud shared project: https://rstudio.cloud/
 
 (*Description of questions that are being investigated*)
 
+*Introduction sentence*
+
+Our analysis seeks to improve two main aspects of the training process. The first aspect is scheduling. Through our analysis, we aimed to determine whether training sessions are being scheduled effectively, and if not, how they can be scheduled more efficiently to improve student performance. The second aspect our analysis covers is (*second aspect*)
 
 
 ### Data 
 
 (*Description of data used to answer the questions*)
+```This is a rough version of this section. Ideally, those who used each source in their analysis should add more details about their respective sources```
 
+To maximize the amount of analysis our team was able to do, we chose to analyze data from three sources.
+
+The main data supplied to us at the beginning of the project was mainly used. We extracted many correlations from the main data including a fairly reliable efficiency metric to determine student success, and the dates and durations of all sessions that were then used to determine how to most effectively schedule training sessions.
+
+Our team also obtained weather data for the region around the airport from the Canadian Government webite (*insert link here*). This data was used to compare the weather conditions that training sessions are currently being held in to possible ideal conditions.
+
+Air traffic data was also used to try to determine a relation between the time of year and the density of air traffic. Since it is much safer to train when air traffic is low, we intended to find whether training is generally being done is relatively low air traffic.
 
 ## Analysis 
 
 
 (*Main body of analysis, containing data summaries, visualizations, hypothesis tests, or modeling*)
-``` Short and sweet, let the gaphs do the work.```
+``` Short and sweet, let the graphs do the work.```
 
 ### Scheduling?
 
