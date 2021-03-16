@@ -5,7 +5,12 @@ Welcome everyone!
 
 This will act as a sort of message board for our group.
 
-`Wasim, as expected trendline code is confirmed to be correct. Retooled your code for the trendline to generate one of my manually made trendlines and got the same line of best fit as by manual calculation (I already verified that the manual calculation is correct.`
+## Solutions to Prof's Feedback
+##### Saving Graph Space
+- Fit two graphs on one line using command `out.width = "50%"`.
+- Both graphs must be in the same block of R code.
+- Should scale height relatively.
+
 
 ## Alec
 - Done manual Excel cleaning as best as possible.
