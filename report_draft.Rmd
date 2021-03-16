@@ -11,6 +11,102 @@ knitr::opts_chunk$set( echo=FALSE, # hide code from document
 library(tidyverse)
 ```
 
+```{r, echo=FALSE, warning=FALSE, results=FALSE, message=FALSE}
+#This is the initial data processing code that Prof. Damouras gave us. The only part of this block that was changed by Alec was filtering out all data points with no duration data.
+library(tidyverse)
+rm(list = ls())
+raw_data = NULL
+for( i in 1:17){
+  tmp = readxl::read_xlsx( "data/STAA57 Initial Data.xlsx", skip = 1, sheet = i, 
+                                     col_names =  paste( "X", 1:12, sep="" ) ) %>% 
+    mutate( Instructor_ID = i,
+            PPL = X1,
+            X1 = replace( X1, !str_detect(X1, "Student"), NA ),
+            PPL = zoo::na.locf( PPL ),
+            X1 = zoo::na.locf(X1) )
+  raw_data = bind_rows( raw_data, tmp )
+}
+rm(tmp,i)
+names( raw_data  ) = c( "Student", "Year", "Month", "Day", "Aircraft", "LF_dual", 
+"LF_solo", "Instrument_AC",  "Instrument_Sim", "CC_dual", "CC_solo", "Exercises",
+"Instructor_ID", "Licence")
+head(raw_data)
+raw_data %>%
+  filter( !is.na(Year), Year != "Year",
+          Exercises != "*NO DATA") %>% 
+  mutate_at( .vars = c(2:4), .funs = as.integer ) %>% 
+  mutate_at( .vars = c(6:11), .funs = as.numeric ) %>% 
+  mutate( Aircraft = str_to_upper(Aircraft),
+          Aircraft = replace( Aircraft, str_detect(Aircraft, "GROUND"), "GROUND"),
+          Aircraft = replace_na( Aircraft, "NA"),
+          Other = ifelse( str_detect(Aircraft,"GROUND|NA"), -1, NA ),
+          Student_ID = as.numeric( factor( paste( Student, Instructor_ID) ) ), 
+          Session_ID = row_number() ) %>% 
+  gather( key = "Training_Type", value = "Duration", 6:11, Other) %>% 
+  filter( !is.na(Duration) ) %>% 
+  mutate( Duration  = na_if(Duration, -1),
+          Aircraft = na_if(Aircraft, "NA")) %>% 
+  select( Instructor_ID, Student_ID, Session_ID, Year, Month, Day, 
+          Aircraft, Duration, Training_Type, Exercises, Licence ) %>% 
+          filter(! is.na(Duration)) -> clean_data
+clean_data %>% 
+  distinct( Session_ID, .keep_all = T) %>% 
+  # split the exercises string into a "list" column w str_split()
+  mutate( Exercises = str_split(Exercises, ",") ) %>%  
+  # and expand list contents into multiple rows w/ unnest()
+  unnest( Exercises)
+  
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+#Starting here, this is my own code.
+# This for loop iterates through each training session's year data. If the year is listed below 2015, it replaces the year with the year of the entries above and below it (assuming they match, but there have been no cases where they didn't in our data sets).
+# This works, as by this point in the processing, sessions are sorted by date for each instructor, then by each student.
+for (i in 2:nrow(clean_data)-1){
+  if (clean_data[i,4] < 2015 && clean_data[i-1,4] == clean_data[i+1,4]){
+    clean_data[i,4] = clean_data[i-1,4]
+  }
+}
+#This loop does the same as the one above but with replacing month values > 12 with the month of an adjacent datapoint from the same student.
+for (i in 2:nrow(clean_data)-1){
+  if (clean_data[i,5] > 12 && clean_data[i-1,2] == clean_data[i,2]){
+    clean_data[i,5] = clean_data[i-1,5]
+  }
+  else if (clean_data[i,5] > 12 && clean_data[i+1,2] == clean_data[i,2]){
+    clean_data[i,5] = clean_data[i+1,5]
+  }
+}
+# This line removes all non comma separators including periods, spaces, double commas, and backticks as well as leading and trailing commas.
+clean_data$Exercises = clean_data$Exercises %>% str_replace("^,", "") %>% str_replace_all(",$", "") %>% str_replace_all("\\`", "1") %>% str_replace_all("[:punct:]", ",") %>% str_replace_all("[:blank:]", ",") %>% str_replace_all(",,", ",")
+#This algorithm deletes every extra errant data points that have listed exercises above 30 (It's safer to delete these points than to assume we know what they are)
+invalid_points = c()
+for (i in 1:nrow(clean_data)){
+  exercises = clean_data[i,10]
+  is_invalid = FALSE
+  last_comma = 0
+  for (j in 1:nchar(exercises)){
+    if (substr(exercises, j, j) ==  ","){
+      q = substr(exercises, last_comma+1, j-1)
+      if (strtoi(substr(exercises, last_comma+1, j-1)) > 30){
+        is_invalid = TRUE
+      }
+      last_comma = j
+    }
+    if (j == nchar(exercises)){
+      if (strtoi(substr(exercises, last_comma+1, j)) > 30){
+        is_invalid = TRUE
+      }
+    }
+  }
+  if (is_invalid == TRUE){
+    invalid_points = append(invalid_points, clean_data[i, 10])
+  }
+}
+for (i in 1:length(invalid_points)){
+  clean_data = clean_data %>% filter(Exercises != invalid_points[i])
+}
+```
+
 # STAA57 W21 Draft Report 
 
 Group 14 (Alec Larsen, Aditya Kulkarni, Vishal Sahoo, MD Wasim)    
@@ -38,7 +134,29 @@ The main data supplied to us at the beginning of the project was mainly used. We
 
 Our team also obtained weather data for the region around the airport from the Canadian Government webite (*insert link here*). This data was used to compare the weather conditions that training sessions are currently being held in to possible ideal conditions.
 
+```{r,  echo=FALSE, warning=FALSE, message=FALSE, fig.height = 4}
+# Weather Data
+read_csv("data/en_climate_daily_ON_6155875_2015_P1D.csv", 
+         col_types = cols(Year = col_integer(), Month = col_integer(), Day = col_integer())) %>% 
+  select(Year, Month, Day, `Max Temp (°C)`, `Min Temp (°C)`, `Mean Temp (°C)`, `Total Precip (mm)`, `Spd of Max Gust (km/h)`) -> weather
+for(i in 2016:2020) {
+  loc = c("data/en_climate_daily_ON_6155875_", as.character(i), "_P1D.csv")
+  read_csv(str_c(loc, collapse = ""),
+           col_types = cols(Year = col_integer(), Month = col_integer(), Day = col_integer(),
+                            `Spd of Max Gust (km/h)` = col_character())) %>% 
+    select(Year, Month, Day, `Max Temp (°C)`, `Min Temp (°C)`, `Mean Temp (°C)`, `Total Precip (mm)`, `Spd of Max Gust (km/h)`) %>% union(weather) -> weather }
+```
+
 Air traffic data was also used to try to determine a relation between the time of year and the density of air traffic. Since it is much safer to train when air traffic is low, we intended to find whether training is generally being done is relatively low air traffic.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.height = 4}
+# Air Traffic Import Code
+air_movements <- read_csv("data/Aircraft_Movements.csv") %>% 
+  filter( Airports == "Oshawa, Ontario",  str_detect(REF_DATE, "2015|2016|2017|2018|2019|2020") ) %>% 
+  select( REF_DATE, `Civil and military movements`, VALUE) %>%
+  separate(REF_DATE, c("Year", "Month"), sep = "-") %>% 
+  mutate(Year = as.integer(Year), Month = as.integer(Month))
+```
 
 ## Analysis 
 
@@ -47,6 +165,24 @@ Air traffic data was also used to try to determine a relation between the time o
 ``` Short and sweet, let the graphs do the work.```
 
 ### Scheduling
+
+We began our analysis by establishing a reliable measure of instructor efficiency. As both the number of exercises completed and the number of hours each instructor works are continuous variables, we chose to establish an efficiency mmetric based on the correlation between these two variables.
+
+```{r, echo=FALSE, warnings=FALSE, fig.height = 4}
+new_clean_data = clean_data %>% mutate(Exercise_Count = str_count(Exercises, ',') + 1, Date = as.Date(ISOdate(Year, Month, Day)))
+# Graphing Information on Instructors
+Instructor_Data = new_clean_data %>% group_by(Instructor_ID) %>% summarise(Total_Hours = sum(Duration), Total_Exercises = sum(Exercise_Count), Hourly_Exercises = Total_Exercises/Total_Hours, Years_Worked = as.numeric(max(Date)- min(Date))/365.25, Average_Hours = (sum(Duration)/Years_Worked))
+# Graph total hours against total exercises students completed under each instructor (with line of best fit and r value
+Coeftext = paste("r =" , toString(cor(Instructor_Data %>% select(Total_Hours), Instructor_Data %>% select(Total_Exercises), method = c("pearson"))[1][1]))
+ggplot(data = Instructor_Data, aes(x = Total_Hours, y = Total_Exercises)) + geom_point()  +
+  geom_smooth(method='lm', formula= y~x, se = FALSE)+  geom_text(aes(x = 250, y = 300), label = Coeftext) +
+  ggtitle("Hours of Instruction by Instructors vs Total Exercises Students Completed")
+```
+``` {r, echo=FALSE, warnings=FALSE, fig.height = 4, fig.width=7.5}
+ggplot(data = Instructor_Data, mapping = aes(x = Average_Hours, y = Hourly_Exercises)) + geom_point() + geom_text(aes(x = Average_Hours, y = Hourly_Exercises, label = Instructor_ID, hjust = 0), nudge_x = 1) + geom_smooth(method = 'lm', formula = y~x, se = FALSE) + ggtitle("Average Hours Instructed per Year vs Average Hourly Exercises Students Completed")
+```
+
+We found that the Pearson correlation coefficient was approximately 0.98 indicating a very strong correlation. Based on this, we concluded that the number of exercises students completed under each instructor per hour of work is a strong measure of efficiency.
 
 
 (*Graphs should be created in R, not imported from file*)
