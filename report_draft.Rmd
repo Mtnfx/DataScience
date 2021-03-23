@@ -11,6 +11,7 @@ knitr::opts_chunk$set( echo=FALSE, # hide code from document
 library(tidyverse)
 library(lubridate)
 library(knitr)
+library(readr)
 ```
 
 ```{r, echo=FALSE, warning=FALSE, results=FALSE, message=FALSE}
@@ -162,11 +163,84 @@ air_movements <- read_csv("data/Aircraft_Movements.csv") %>%
 
 ## Analysis 
 
+```{r, echo=FALSE, out.width = "50%"}
+# Student ID, Total Completed Exercises before and including First Solo
+clean_data %>% unite("Date", c(Year, Month, Day), sep = "-") %>% 
+  mutate(Date = as.Date(Date), numEx = str_count(Exercises, ",") + 1) %>% 
+  group_by(Student_ID) %>% arrange(Student_ID, Date) %>% 
+  mutate(totalEx = cumsum(numEx)) %>% 
+  select( Student_ID, Training_Type, Date, totalEx ) %>% 
+  mutate( solo_flight = str_detect(Training_Type, "solo" ) ) %>% 
+  filter( solo_flight ) %>% slice(1) %>% 
+  select(Student_ID, totalEx, solo_flight) %>% 
+  ungroup() -> solo
+```
 
+```{r, echo = FALSE}
+# Student_ID Total Exercises, students that have not flown solo.
+clean_data %>% unite("Date", c(Year, Month, Day), sep = "-") %>% 
+  mutate(Date = as.Date(Date), numEx = str_count(Exercises, ",") + 1) %>% 
+  group_by(Student_ID) %>% arrange(Student_ID, Date) %>% 
+  mutate(totalEx = cumsum(numEx)) %>% 
+  select( Student_ID, Training_Type, Date, totalEx ) %>% 
+  mutate( solo_flight = !str_detect(Training_Type, "solo" ) ) %>% 
+  filter( solo_flight ) %>% arrange(desc(Date)) %>% slice(1) %>% 
+  select(Student_ID, totalEx, solo_flight) %>% 
+  anti_join(clean_data %>% unite("Date", c(Year, Month, Day), sep = "-") %>% 
+              mutate(Date = as.Date(Date)) %>%
+              group_by(Student_ID) %>% arrange(Student_ID, Date) %>% 
+              select( Student_ID, Training_Type, Date ) %>% 
+              mutate( solo_flight = str_detect(Training_Type, "solo" ) ) %>% 
+              filter( solo_flight ) %>% slice(1) %>% 
+              select(Student_ID), by = "Student_ID") %>% 
+  ungroup() -> non_solo
+  non_solo %>% mutate(solo_flight = FALSE) -> non_solo
+  
+  # Join and create boxplot of # exercises between solo and non-solo fliers.
+  solo %>% 
+  union(non_solo) %>% 
+  select(solo_flight, totalEx) %>% 
+  mutate(solo_flight = factor(solo_flight, levels = c(FALSE,TRUE), 
+                              labels = c("never flew solo", "flew solo"))) %>%
+  ggplot(aes(x=solo_flight, y=totalEx)) + geom_boxplot() + 
+  xlab("Solo Flight") + ylab("Exercises") + 
+  ggtitle("Number of Exercises Completed vs Solo Flight") +
+  theme(plot.title = element_text(hjust = 0.5))
+  
+  # Independence Test  to check significance of difference between exercises of solo and non-solo fliers.
+  solo %>% 
+  union(non_solo) %>% 
+  select(solo_flight, totalEx) %>% 
+  mutate(solo_flight = factor(solo_flight, levels = c(FALSE,TRUE), 
+                              labels = c("non-solo", "solo"))) %>%
+  coin::independence_test(totalEx ~ solo_flight, data = ., distribution = "approx")
+ ```
+ 
+ 
 (*Main body of analysis, containing data summaries, visualizations, hypothesis tests, or modeling*)
 ``` Short and sweet, let the graphs do the work.```
 
 ### Scheduling
+
+`Introduction Sentence`
+
+```{r echo=FALSE, cache=FALSE, results=FALSE, warning=FALSE, comment=FALSE}
+clean_data %>% 
+  mutate(Month = month(Month, label = T))%>%
+  group_by(Month) %>% 
+  summarise(Sessions = n_distinct(Session_ID)) %>% 
+  ggplot(aes(x = Month, y = Sessions)) + geom_bar(stat = "identity") + ggtitle("Months vs Total Number Of Sessions") + 
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+`Explanation`
+
+`Speed of Wind vs Number of Sessions`
+``` {r, echo=FALSE, warnings=FALSE, fig.height = 4}
+weather %>% drop_na(`Spd of Max Gust (km/h)`) %>% inner_join(clean_data, by = c("Year", "Month", "Day")) %>% ggplot(aes(x=`Spd of Max Gust (km/h)`)) + 
+geom_bar(stat="count") + labs(y = "Number of Sessions") + ggtitle("Speed Of Maximum Gust (km/h) vs Number Of Sessions") + 
+theme(plot.title = element_text(hjust = 0.5))
+```
 
 We began our analysis by establishing a reliable measure of instructor efficiency. As both the number of exercises completed and the number of hours each instructor works are continuous variables, we chose to establish an efficiency mmetric based on the correlation between these two variables.
 
@@ -206,6 +280,18 @@ tibble( t = seq(0, 2*pi, by=0.1) ) %>%
 
 
 (*R output tables can be formatted nicely in .html with* `knitr::kable()`) 
+
+`Seasons for student success`
+
+``` {r, echo=FALSE, warnings=FALSE, fig.height = 4}
+# Creating seasons_four table
+seasons_four <- tibble(Month = 1:12, Season = c(rep("Winter", 2), rep("Spring", 3), rep("Summer", 3), rep("Fall", 3), "Winter"))
+# Graphing Seasons against Number Of Sessions
+clean_data %>% inner_join(seasons_four, by = c("Month")) %>% group_by(Season) %>% summarise(Sessions = n_distinct(Session_ID)) %>% 
+  ggplot(aes(x = Season, y = Sessions)) + geom_bar(stat = "identity") + ggtitle("Seasons vs Total Number Of Sessions") + 
+  theme(plot.title = element_text(hjust = 0.5))
+```
+(Explanation)
 
 ```{r, echo=FALSE}
 ex_n_sessions = function(df, n){
