@@ -163,6 +163,8 @@ air_movements <- read_csv("data/Aircraft_Movements.csv") %>%
 
 ## Analysis 
 
+`Write summary of  this graph (Vishal)`
+
 ```{r, echo=FALSE, out.width = "50%"}
 # Student ID, Total Completed Exercises before and including First Solo
 clean_data %>% unite("Date", c(Year, Month, Day), sep = "-") %>% 
