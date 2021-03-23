@@ -52,6 +52,7 @@ This will act as a sort of message board for our group.
   - r = 0.98 !!!! This undoubtly shows strong correlation, unless I messed something up in the code
 - Import github project to RStudio Cloud
 - edit Vishal's code for mean generation to reduce output size
+- Tally hours of each student and check their hours against license standards (only one passed so far/ some tinkering with my code will be needed)
 ## Vishal
 - Importing supplement data : "import_supplemental_data.R"
   - (table name : variables) 
