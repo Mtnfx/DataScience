@@ -1,0 +1,92 @@
+---
+title: "Scheduling"
+author: "Aditya Kulkarni"
+date: "12 March 2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## imports
+```{r}
+library(tidyverse)
+library(lubridate)
+library(readr)
+
+climate_daily <- read_csv("data/Additional data/climate-daily.csv")
+View(climate_daily)
+
+air_movements <- read_csv("data/Additional data/Canada Air Traffic data.csv")
+View(air_movements)
+
+clean_data <- read_csv("data/Additional data/clean_data_sta_with_season.csv")
+View(clean_data)
+
+seasons_four <- tibble(
+  Month = 1:12,
+  Season = c(rep("Winter", 2), rep("Spring", 3), rep("Summer", 3), rep("Fall", 3), "Winter")
+)
+```
+
+## Creating Weather data set
+
+```{r echo=FALSE, cache=FALSE, results=FALSE, warning=FALSE, comment=FALSE}
+read_csv("data/Additional data/climate-daily.csv", 
+         col_types = cols(Year = col_integer(), Month = col_integer(), Day = col_integer())) %>% 
+  select(Year, Month, Day, `MAX_TEMPERATURE`, `MIN_TEMPERATURE`, `MEAN_TEMPERATURE`, `HEATING_DEGREE_DAYS`,
+         `COOLING_DEGREE_DAYS`, `TOTAL_PRECIPITATION`, `SPEED_MAX_GUST`) -> weather
+```
+
+## Creating Month vs Max Gust plot
+```{r echo=FALSE, cache=FALSE, results=FALSE, warning=FALSE, comment=FALSE}
+weather%>%
+  drop_na(`SPEED_MAX_GUST`) %>%
+  mutate(Month = month(Month, label = T))%>%
+  select(SPEED_MAX_GUST, Month)%>%
+  ggplot(aes(x=Month, y=SPEED_MAX_GUST)) + geom_bar(stat = "identity")
+
+```
+
+
+# Graphing Months against Number Of Sessions
+```{r echo=FALSE, cache=FALSE, results=FALSE, warning=FALSE, comment=FALSE}
+clean_data %>% 
+  mutate(Month = month(Month, label = T))%>%
+  group_by(Month) %>% 
+  summarise(Sessions = n_distinct(Session_ID)) %>% 
+  ggplot(aes(x = Month, y = Sessions)) + geom_bar(stat = "identity") + ggtitle("Months vs Total Number Of Sessions") + 
+  theme(plot.title = element_text(hjust = 0.5))
+```
+## Aircraft Traffic
+```{r echo=FALSE, cache=FALSE, results=FALSE, warning=FALSE, comment=FALSE}
+# air_movements %>%
+#   filter( Airports == "Oshawa, Ontario",  str_detect(REF_DATE, "2015|2016|2017|2018|2019|2020") ) %>%
+#   select( REF_DATE, `Civil and military movements`, VALUE) -> air_movements
+# 
+# air_movements %>%
+#   separate(REF_DATE, c("Year", "Month"), sep = "-") %>%
+#   mutate(Year = as.integer(Year), Month = as.integer(Month)) -> air_movements
+
+air_movements %>%
+  inner_join(seasons_four, by = c("Month")) -> seasonal_air_movements
+
+
+#Comparing air traffic for external data
+seasonal_air_movements %>% 
+  group_by(Month) %>%
+  mutate(Month = month(Month, label = T))%>%
+  summarise(Traffic = mean(VALUE)) %>%
+  ggplot(aes(x = Month, y = Traffic)) + geom_bar(stat = "identity")
+```
+## Gust vs Number of Sessions
+``` {r, echo=FALSE, warnings=FALSE, cache=FALSE, results=FALSE, comment=FALSE, fig.height = 4}
+weather %>% 
+  drop_na(SPEED_MAX_GUST) %>% 
+  inner_join(clean_data, by = c("Year", "Month", "Day")) %>%
+  ggplot(aes(x=SPEED_MAX_GUST)) + 
+  geom_bar(stat="count") + labs(y = "Number of Sessions") +
+  ggtitle("Speed Of Maximum Gust (km/h) vs Number Of Sessions") + theme(plot.title = element_text(hjust = 0.5))
+
+```
