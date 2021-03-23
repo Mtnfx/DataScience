@@ -1,0 +1,59 @@
+---
+title: "analysis"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+data = read_csv("clean_data_sta_with_season.csv")
+```
+
+
+
+```{r}
+ time_stats = data  %>% select(Instructor_ID,Student_ID,Duration,Session_ID
+                                                       ,Training_Type) %>%
+  mutate(Solo_Time = Duration * as.integer(str_detect(Training_Type,"solo")) ,Dual_Time = Duration * as.integer(str_detect(Training_Type,"dual||Ins")),
+         CC_Time_Dual = Duration * as.integer(str_detect(Training_Type,"CC_dual")),
+         CC_Time_Solo = Duration * as.integer(str_detect(Training_Type,"CC_solo")),
+         Ins_Dual_Time = Duration * as.integer(str_detect(Training_Type,"Ins")))%>% group_by(Instructor_ID,Student_ID,Session_ID) %>% 
+  summarise(
+    Total_Duration = sum(Duration),
+    Total_Solo = sum(Solo_Time), Total_Dual = sum(Dual_Time), Total_CC_Dual = sum(CC_Time_Dual),
+    Total_CC_Solo = sum(CC_Time_Solo), Total_Ins_Dual = sum(Ins_Dual_Time)
+  ) %>%
+  summarise(Total_Duration = sum(Total_Duration),Total_Solo = sum(Total_Solo), Total_Dual = sum(Total_Dual), Total_CC_Dual = sum(Total_CC_Dual),
+    Total_CC_Solo = sum(Total_CC_Solo), Total_Ins_Dual = sum(Total_Ins_Dual)) %>% ungroup() %>% arrange(desc(Total_Duration))
+
+time_stats
+```
+Students must have:
+need 
+total dual T
+total dual cc T
+total dual ins
+
+If a session repeats due to instruction time we count it as a seperate session
+
+total solo T
+total solo cc T
+
+17 hours of dual, 3 hours cross country,5 hours instrument
+12 hours solo with 5 hours of cc including enroute flight(idk how to test for this one)
+assume they pass the flight test
+percentage completed
+```{r}
+percents =time_stats %>% mutate(Total_Duration = ifelse(Total_Duration>45,1,Total_Duration/45)*100,Total_Solo = 
+                        ifelse(Total_Solo<12,Total_Solo/12,1)*100,Total_Dual = ifelse(Total_Dual<17,Total_Dual/17,1)*100,Total_CC_Dual = ifelse(Total_CC_Dual<3,Total_CC_Dual/3,1)*100 ,Total_CC_Solo = ifelse(Total_CC_Solo<5,Total_CC_Solo/5,1)*100 ,Total_Ins_Dual = ifelse(Total_Ins_Dual<5,Total_Ins_Dual/5,1)*100,overall = Total_Duration+Total_Solo+Total_Dual+Total_CC_Dual+Total_CC_Dual+Total_CC_Solo+Total_Ins_Dual)%>%
+  mutate(overall = overall/7) %>% arrange(desc(overall))
+percents
+ggplot(percents, aes(x=Student_ID,y=overall,color=Instructor_ID)) + geom_point()
+
+percents %>% group_by(Instructor_ID) %>% summarise(Success = mean(overall))%>%
+  ggplot(aes(x=Instructor_ID,y=Success,color=Success)) + geom_col()
+
+```
