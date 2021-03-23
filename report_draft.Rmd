@@ -251,7 +251,8 @@ new_clean_data = clean_data %>% mutate(Exercise_Count = str_count(Exercises, ','
 # Graphing Information on Instructors
 Instructor_Data = new_clean_data %>% group_by(Instructor_ID) %>% summarise(Total_Hours = sum(Duration), Total_Exercises = sum(Exercise_Count), Hourly_Exercises = Total_Exercises/Total_Hours, Years_Worked = as.numeric(max(Date)- min(Date))/365.25, Average_Hours = (sum(Duration)/Years_Worked))
 # Graph total hours against total exercises students completed under each instructor (with line of best fit and r value
-Coeftext = paste("r =" , toString(cor(Instructor_Data %>% select(Total_Hours), Instructor_Data %>% select(Total_Exercises), method = c("pearson"))[1][1]))
+coef = cor(Instructor_Data %>% select(Total_Hours), Instructor_Data %>% select(Total_Exercises), method = c("pearson"))[1][1]
+Coeftext = paste("r =" , toString(coef))
 ggplot(data = Instructor_Data, aes(x = Total_Hours, y = Total_Exercises)) + geom_point()  +
   geom_smooth(method='lm', formula= y~x, se = FALSE)+  geom_text(aes(x = 250, y = 300), label = Coeftext) +
   ggtitle("Hours of Instruction by Instructors vs Total Exercises Students Completed")
@@ -259,7 +260,7 @@ ggplot(data = Instructor_Data, aes(x = Total_Hours, y = Total_Exercises)) + geom
 ggplot(data = Instructor_Data, mapping = aes(x = Average_Hours, y = Hourly_Exercises)) + geom_point() + geom_text(aes(x = Average_Hours, y = Hourly_Exercises, label = Instructor_ID, hjust = 0), nudge_x = 1) + geom_smooth(method = 'lm', formula = y~x, se = FALSE) + ggtitle("Hours Instructed per Year vs Hourly Exercises Completed")
 ```
 
-We found that the Pearson correlation coefficient was approximately 0.98 indicating a very strong correlation. Based on this, we concluded that the number of exercises students completed under each instructor per hour of work is a strong measure of efficiency. Thus, we generated the second graph above to determine a roughly ideal distribution of hours for each instructor. Instructors whose points lie above the line are being giiven too many hours relative to average performance and instructors below the line are being giiven too few hours relative to their efficiency.
+We found that the Pearson correlation coefficient was approximately `r {coef}` indicating a very strong correlation. Based on this, we concluded that the number of exercises students completed under each instructor per hour of work is a strong measure of efficiency. Thus, we generated the second graph above to determine a roughly ideal distribution of hours for each instructor. Instructors whose points lie above the line are being giiven too many hours relative to average performance and instructors below the line are being giiven too few hours relative to their efficiency.
 
 
 (*Graphs should be created in R, not imported from file*)
@@ -325,7 +326,7 @@ build_order_table = function(df, n_sessions){
 
 build_order_table(clean_data, 50) %>% knitr::kable()
 ```
-
+The above table displays the implied order of exercises based on the session at which 70% of students had completed them at least once. This order seems to suggest that while exercises 1 to 5 are essentially mandatory, later exercises are more or less optional as through 50 sessions, excerises not listed in the table such as 12, 13, 14 and 15 were not completed by at least 70% of students.
 
 
 ## Summary 
