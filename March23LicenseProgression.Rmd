@@ -57,3 +57,23 @@ percents %>% group_by(Instructor_ID) %>% summarise(Success = mean(overall))%>%
   ggplot(aes(x=Instructor_ID,y=Success,color=Success)) + geom_col()
 
 ```
+
+```{r}
+Student_Time = data %>% unite("Date", c(Year, Month, Day), sep = "-") %>% 
+  mutate(Date = as.Date(Date)) %>% group_by(Instructor_ID,Student_ID) %>% 
+  distinct(Session_ID,.keep_all = T) %>% mutate(Diff = Date - lag(Date)) %>%
+  summarise(Time = sum(Diff,na.rm=T)) %>% ungroup()
+percents %>% inner_join(Student_Time,by = c("Student_ID","Instructor_ID")) %>%
+  ggplot(aes(x=Time,y=Total_Duration))+ geom_col() +geom_smooth()
+percents %>% inner_join(Student_Time,by = c("Student_ID","Instructor_ID")) %>%
+  ggplot(aes(x=Time,y=Total_CC_Dual))+ geom_col() +geom_smooth()
+percents %>% inner_join(Student_Time,by = c("Student_ID","Instructor_ID")) %>%
+  ggplot(aes(x=Time,y=Total_CC_Solo))+ geom_col()+geom_smooth()
+percents %>% inner_join(Student_Time,by = c("Student_ID","Instructor_ID")) %>%
+  ggplot(aes(x=Time,y=Total_Dual))+ geom_col()+geom_smooth()
+percents %>% inner_join(Student_Time,by = c("Student_ID","Instructor_ID")) %>%
+  ggplot(aes(x=Time,y=Total_Solo))+ geom_col()+geom_smooth()
+percents %>% inner_join(Student_Time,by = c("Student_ID","Instructor_ID")) %>%
+  ggplot(aes(x=Time,y=overall))+ geom_col()+geom_smooth()
+
+```
