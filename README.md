@@ -53,7 +53,7 @@ This will act as a sort of message board for our group.
 - Import github project to RStudio Cloud
 - edit Vishal's code for mean generation to reduce output size
 - Tally hours of each student and check their hours against license standards (only one passed so far/ some tinkering with my code will be needed)
-- The flight requirements seem to be a little too rigid, if they were eased on a bit more students could be passed who are close to passing(90 - 99%) requirements done
+- Add the total duration the student was in flight school and then regress using the percentage of completion of each criteria (Not very strong correlation)
 ## Vishal
 - Importing supplement data : "import_supplemental_data.R"
   - (table name : variables) 
