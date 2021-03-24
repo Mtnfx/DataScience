@@ -10,7 +10,8 @@ This will act as a sort of message board for our group.
 - Fit two graphs on one line using command `out.width = "50%"`.
 - Both graphs must be in the same block of R code.
 - Should scale height relatively.
-
+#### Formatting
+- Use inline formatting for quoting numbers (mean values from Vishal's code)
 
 ## Alec
 - Done manual Excel cleaning as best as possible.
