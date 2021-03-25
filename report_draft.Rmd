@@ -164,6 +164,18 @@ air_movements <- read_csv("data/Aircraft_Movements.csv") %>%
 ## Analysis 
 
 `Write summary of  this graph (Vishal)`
+To establish that flying solo can be considered to be a metric for students' progress we tested if there is a difference in the average number of exercises completed, prior to and including the first solo flight, by students that flew solo and the number of exercises completed by students that never flew solo.
+
+We first plotted side-by-side boxplots of the number of exercises completed by both groups of students.
+ //insert graph
+The graph suggests that there is a significant difference in the number of exercises completed between both the groups.  
+
+Hence, we conducted a hypothesis test to validate our conclusion from the graph at 5% significance level.
+
+$H_0: \mu_{solo} - \mu_{non_solo} =0$ vs $H_A: \mu_{solo} - \mu_{non_solo} \neq 0$
+ //insert independence_test()
+
+We see that the P-value is indeed very strong (<0.0001). And at 5% significance level we reject the null hypothesis and accept the alternate hypothesis. Thereby, we can conclude that a solo flight is a strong metric for students' progress as it requires a certain level of prior experience and skill.  
 
 ```{r, echo=FALSE, out.width = "50%"}
 # Student ID, Total Completed Exercises before and including First Solo
