@@ -128,14 +128,13 @@ Our analysis seeks to improve two main aspects of the training process. The firs
 
 ### Data 
 
-(*Description of data used to answer the questions*)
-```This is a rough version of this section. Ideally, those who used each source in their analysis should add more details about their respective sources```
+In answering these questions, we made the assumption in analyzing our data that all students begin their training at the same skill level. Additionally, we assume there were no unmeasurable external factors impacting the duration or efficiency of sessions. That is to say, unless a factor can be measured, it cannot be accounted for in our analysis.\
 
-To maximize the amount of analysis our team was able to do, we chose to analyze data from three sources.
+To determine when flying is the safest (lowest wind, lowest precipitation), we used weather data from Government Of Canada's Website.\
+Weather data: https://climate.weather.gc.ca/historical_data/search_historic_data_e.html \
 
-The main data supplied to us at the beginning of the project was mainly used. We extracted many correlations from the main data including a fairly reliable efficiency metric to determine student success, and the dates and durations of all sessions that were then used to determine how to most effectively schedule training sessions.
-
-Our team also obtained weather data for the region around the airport from the Canadian Government webite Weather data https://climate.weather.gc.ca/historical_data/search_historic_data_e.html. This data was used to compare the weather conditions that training sessions are currently being held in to possible ideal conditions. We will utilise information in the following variables: Year, Month, Day, MAX_TEMPERATURE, MIN_TEMPERATURE, MEAN_TEMPERATURE, HEATING_DEGREE_DAYS, COOLING_DEGREE_DAYS, TOTAL_PRECIPITATION, SPEED_MAX_GUST
+This data was used to compare the weather conditions that training sessions are currently being held in to possible ideal conditions.\
+We will utilise information in the following variables: Year, Month, Day, SPEED_MAX_GUST \
 
 ```{r echo=FALSE, cache=FALSE, results=FALSE, warning=FALSE, comment=FALSE}
 climate_daily <- read_csv("data/climate-daily.csv")
@@ -145,8 +144,9 @@ read_csv("data/Additional data/climate-daily.csv",
          `COOLING_DEGREE_DAYS`, `TOTAL_PRECIPITATION`, `SPEED_MAX_GUST`) -> weather
 ```
 
-Air traffic data was also used to try to determine a relation between the time of year and the density of air traffic. We utilise the following variables from air traffic data: Month: Month of year, Value: The number of airplanes. To help determine when air traffic is the lowest, and thus flight accident risk is the lowest, we acquired air traffic data from the suggested supplementary data.
-Air Traffic - https://open.canada.ca/data/en/dataset/b91772ed-edae-4fd4-8b80-a3e4c1d29976
+Air traffic data was also used to try to determine a relation between the time of year and the density of air traffic. To help determine when air traffic is the lowest, and thus flight accident risk is the lowest, we acquired air traffic data from the suggested supplementary data.\
+Air Traffic - https://open.canada.ca/data/en/dataset/b91772ed-edae-4fd4-8b80-a3e4c1d29976 \
+We utilise the following variables from air traffic data: Month: Month of year, Value: The number of airplanes. \
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.height = 4}
 # Air Traffic Import Code
