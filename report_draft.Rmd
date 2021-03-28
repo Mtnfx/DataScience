@@ -135,7 +135,7 @@ To maximize the amount of analysis our team was able to do, we chose to analyze 
 
 The main data supplied to us at the beginning of the project was mainly used. We extracted many correlations from the main data including a fairly reliable efficiency metric to determine student success, and the dates and durations of all sessions that were then used to determine how to most effectively schedule training sessions.
 
-Our team also obtained weather data for the region around the airport from the Canadian Government webite (*insert link here*). This data was used to compare the weather conditions that training sessions are currently being held in to possible ideal conditions.
+Our team also obtained weather data for the region around the airport from the Canadian Government webite Weather data https://climate.weather.gc.ca/historical_data/search_historic_data_e.html. This data was used to compare the weather conditions that training sessions are currently being held in to possible ideal conditions. We will utilise information in the following variables: Year, Month, Day, MAX_TEMPERATURE, MIN_TEMPERATURE, MEAN_TEMPERATURE, HEATING_DEGREE_DAYS, COOLING_DEGREE_DAYS, TOTAL_PRECIPITATION, SPEED_MAX_GUST
 
 ```{r echo=FALSE, cache=FALSE, results=FALSE, warning=FALSE, comment=FALSE}
 climate_daily <- read_csv("data/climate-daily.csv")
