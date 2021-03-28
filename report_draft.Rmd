@@ -222,7 +222,7 @@ ggplot(data = Instructor_Data, aes(x = Total_Hours, y = Total_Exercises)) + geom
 ggplot(data = Instructor_Data, mapping = aes(x = Average_Hours, y = Hourly_Exercises)) + geom_point() + geom_text(aes(x = Average_Hours, y = Hourly_Exercises, label = Instructor_ID, hjust = 0), nudge_x = 1) + geom_smooth(method = 'lm', formula = y~x, se = FALSE) + ggtitle("Hours Instructed per Year vs Hourly Exercises Completed")
 ```
 
-We found that the Pearson correlation coefficient was approximately `r {coef}` indicating a very strong correlation. Based on this, we concluded that the number of exercises students completed under each instructor per hour of work is a strong measure of efficiency. Thus, we generated the second graph above to determine a roughly ideal distribution of hours for each instructor. Instructors whose points lie above the line are being given too many hours relative to average performance and instructors below the line are being giiven too few hours relative to their efficiency.
+We found that the Pearson correlation coefficient was approximately `r {coef}` indicating a very strong correlation. Based on this, we concluded that the number of exercises students completed under each instructor per hour of work is a strong measure of efficiency. We believe that ideally instructors should be getting a number of hours directly proportional to their efficiency. Thus, we generated the second graph above to determine a roughly ideal distribution of hours for each instructor. Instructors whose points lie above the line are, by our model, being given too many hours relative to average efficiency and instructors below the line are being given too few hours relative to their efficiency. `To maximise profits, instructors should be training students as fast as possible. While there is a minimum hours limit, it is reasonable to believe that instructors that complete more exercises in a set time will have students perform better. Thus, their students will have a better chance of passing the flgiht exam the first time.`
 
 
 ### Student Success
@@ -290,7 +290,7 @@ $H_0: \mu_{solo} - \mu_{non_solo} =0$ vs $H_A: \mu_{solo} - \mu_{non_solo} \neq 
 
 We see that the P-value is indeed very strong (<0.0001). And at 5% significance level we reject the null hypothesis and accept the alternate hypothesis. Thereby, we can conclude that a solo flight is a strong metric for students' progress as it requires a certain level of prior experience and skill.
  
- 
+ We checked the data set to see if there is a specific order in which exercises should be completed. To determine the order in which the exercises should be completed, we found the session at which at least 70% of students who completed that number of sessions completed the given exercise.
  ```{r, echo=FALSE}
 ex_n_sessions = function(df, n){
   #Creates graph of proportion of students that completed each exercise at least once in their first n sessions
@@ -308,7 +308,9 @@ ex_n_sessions = function(df, n){
 build_order_table = function(df, n_sessions){
   exercises = data.frame(Exercise = integer(), Expected_Session = integer())
   for (i in 1:n_sessions){
-    prop = ex_n_sessions(df, i)
+    tmp = clean_data %>% group_by(Student_ID) %>% summarize(Count = n()) %>% filter(Count >= i)
+    stud_set = clean_data %>% inner_join(tmp, "Student_ID")
+    prop = ex_n_sessions(stud_set, i)
     for(j in 1:30){
       if(prop[j, 2] >= 0.7){
         exercises = exercises %>% add_row(Exercise = j, Expected_Session = i)
@@ -321,20 +323,7 @@ build_order_table = function(df, n_sessions){
 
 build_order_table(clean_data, 50) %>% knitr::kable()
 ```
-The above table displays the implied order of exercises based on the session at which 70% of students had completed them at least once. This order seems to suggest that while exercises 1 to 5 are essentially mandatory, later exercises are more or less optional as through 50 sessions, excerises not listed in the table such as 12, 13, 14 and 15 were not completed by at least 70% of students.
-
-```{r,  fig.width = 4, fig.height = 4, fig.cap= "Graph Caption" } 
-tibble( t = seq(0, 2*pi, by=0.1) ) %>% 
-  mutate( x = 16*sin(t)^3, 
-          y = 13*cos(t)-5*cos(2*t)-2*cos(3*t)-cos(4*t) ) %>% 
-  ggplot( aes( x = x, y = y) ) + 
-  geom_polygon( fill = "pink" ) +
-  # annotate axes 
-  xlab( "abscissa" ) + 
-  ylab( "ordinate" ) + 
-  ggtitle( "Graph Title (optional)"  ) +
-  coord_fixed() 
-```
+The above table displays the implied order of exercises based on the criteria explained above. This order seems to suggest that while exercises 1 to 5 are essentially mandatory, later exercises are more or less optional as through 50 sessions, excerises not listed in the table such as 12, 13, 14 and 15 were not completed by at least 70% of students.
 
 `Seasons for student success`
 
@@ -351,11 +340,7 @@ clean_data %>% inner_join(seasons_four, by = c("Month")) %>% group_by(Season) %>
 
 ## Summary 
 
-(*Recap of your findings and conclusions*)
-
 In conclusion,
-
-***  
 
 ## Appendix 
 
