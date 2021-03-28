@@ -1,0 +1,61 @@
+---
+title: "analysis"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+data = read_csv("clean_data_sta_with_season.csv")
+ time_stats = data  %>% select(Instructor_ID,Student_ID,Duration,Session_ID
+                                                       ,Training_Type) %>%
+  mutate(Solo_Time = Duration * as.integer(str_detect(Training_Type,"solo")) ,Dual_Time = Duration * as.integer(str_detect(Training_Type,"dual||Ins")),
+         CC_Time_Dual = Duration * as.integer(str_detect(Training_Type,"CC_dual")),
+         CC_Time_Solo = Duration * as.integer(str_detect(Training_Type,"CC_solo")),
+         Ins_Dual_Time = Duration * as.integer(str_detect(Training_Type,"Ins")))%>% group_by(Instructor_ID,Student_ID,Session_ID) %>% 
+  summarise(
+    Total_Duration = sum(Duration),
+    Total_Solo = sum(Solo_Time), Total_Dual = sum(Dual_Time), Total_CC_Dual = sum(CC_Time_Dual),
+    Total_CC_Solo = sum(CC_Time_Solo), Total_Ins_Dual = sum(Ins_Dual_Time)
+  ) %>%
+  summarise(Total_Duration = sum(Total_Duration),Total_Solo = sum(Total_Solo), Total_Dual = sum(Total_Dual), Total_CC_Dual = sum(Total_CC_Dual),
+    Total_CC_Solo = sum(Total_CC_Solo), Total_Ins_Dual = sum(Total_Ins_Dual)) %>% ungroup() %>% arrange(desc(Total_Duration))
+
+#time_stats
+```
+
+
+```{r}
+percents =time_stats %>% mutate(Total_Duration = ifelse(Total_Duration>45,1,Total_Duration/45)*100,Total_Solo = 
+                        ifelse(Total_Solo<12,Total_Solo/12,1)*100,Total_Dual = ifelse(Total_Dual<17,Total_Dual/17,1)*100,Total_CC_Dual = ifelse(Total_CC_Dual<3,Total_CC_Dual/3,1)*100 ,Total_CC_Solo = ifelse(Total_CC_Solo<5,Total_CC_Solo/5,1)*100 ,Total_Ins_Dual = ifelse(Total_Ins_Dual<5,Total_Ins_Dual/5,1)*100,overall = Total_Solo*12/42+Total_Dual*17/42+Total_CC_Dual*3/42+Total_CC_Solo*5/42+Total_Ins_Dual*5/42)%>%
+ arrange(desc(overall))
+#this is the table
+percents
+
+
+```
+
+```{r}
+Student_Time = data %>% unite("Date", c(Year, Month, Day), sep = "-") %>% 
+  mutate(Date = as.Date(Date)) %>% group_by(Instructor_ID,Student_ID) %>% 
+  distinct(Session_ID,.keep_all = T) %>% mutate(Diff = Date - lag(Date)) %>%
+  summarise(Time = sum(Diff,na.rm=T)) %>% ungroup()
+#percents %>% inner_join(Student_Time,by = c("Student_ID","Instructor_ID")) %>%
+#  ggplot(aes(x=Time,y=Total_Duration))+ geom_col() +geom_smooth()
+#percents %>% inner_join(Student_Time,by = c("Student_ID","Instructor_ID")) %>%
+#  ggplot(aes(x=Time,y=Total_CC_Dual))+ geom_col() +geom_smooth()
+#percents %>% inner_join(Student_Time,by = c("Student_ID","Instructor_ID")) %>%
+#  ggplot(aes(x=Time,y=Total_CC_Solo))+ geom_col()+geom_smooth()
+#percents %>% inner_join(Student_Time,by = c("Student_ID","Instructor_ID")) %>%
+#  ggplot(aes(x=Time,y=Total_Dual))+ geom_col()+geom_smooth()
+#percents %>% inner_join(Student_Time,by = c("Student_ID","Instructor_ID")) %>%
+#  ggplot(aes(x=Time,y=Total_Solo))+ geom_col()+geom_smooth()
+
+#this is the graph
+percents %>% inner_join(Student_Time,by = c("Student_ID","Instructor_ID")) %>% 
+  ggplot(aes(x=Time,y=overall))+ geom_point()+geom_smooth()
+
+```
