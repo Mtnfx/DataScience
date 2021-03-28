@@ -230,7 +230,7 @@ We found that the Pearson correlation coefficient was approximately `r {coef}` i
 
 ### Student Success
 
-To establish that flying solo can be considered to be a metric for students' progress we tested if there is a difference in the average number of exercises completed, prior to and including the first solo flight, by students that flew solo and the number of exercises completed by students that never flew solo.
+To establish that flying solo can be considered to be a metric for students' progress we tested if there is a difference in the average number of exercises completed, prior to and including the first solo flight, by students that flew solo and the number of exercises completed by students that never flew solo where the first solo flight is determined to be the first session with solo in training type.
 
 We first plotted side-by-side boxplots of the number of exercises completed by both groups of students.
 ```{r, echo=FALSE, out.width = "50%"}
