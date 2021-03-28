@@ -138,6 +138,12 @@ The main data supplied to us at the beginning of the project was mainly used. We
 Our team also obtained weather data for the region around the airport from the Canadian Government webite (*insert link here*). This data was used to compare the weather conditions that training sessions are currently being held in to possible ideal conditions.
 
 ```{r echo=FALSE, cache=FALSE, results=FALSE, warning=FALSE, comment=FALSE}
+  
+# Seasons Import
+seasons_four <- tibble(
+  Month = 1:12,
+  Season = c(rep("Winter", 2), rep("Spring", 3), rep("Summer", 3), rep("Fall", 3), "Winter"))
+
 climate_daily <- read_csv("data/climate-daily.csv")
 read_csv("data/Additional data/climate-daily.csv", 
          col_types = cols(Year = col_integer(), Month = col_integer(), Day = col_integer())) %>% 
@@ -158,6 +164,7 @@ air_movements %>%
   mutate(Year = as.integer(Year), Month = as.integer(Month)) -> air_movements
 air_movements %>%
   inner_join(seasons_four, by = c("Month")) -> seasonal_air_movements
+
 ```
 
 
