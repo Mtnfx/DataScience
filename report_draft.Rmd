@@ -291,6 +291,7 @@ We see that the P-value is indeed very strong (<0.0001). And at 5% significance 
  
  We checked the data set to see if there is a specific order in which exercises should be completed. To determine the order in which the exercises should be completed, we found the session at which at least 70% of students who completed that number of sessions completed the given exercise.
  ```{r, echo=FALSE}
+clean_data = clean_data %>% unite("Date", Year,Month,Day,sep="-", remove=FALSE) %>% mutate(Date = ymd(Date))
 ex_n_sessions = function(df, n){
   #Creates graph of proportion of students that completed each exercise at least once in their first n sessions
   first_n = df %>% group_by(Student_ID) %>%  top_n(n, desc(Date)) %>% distinct( Session_ID, .keep_all = T) %>% mutate( Exercises = str_split(Exercises, ",") ) %>%  unnest( Exercises) %>% group_by(Student_ID) %>% distinct(Exercises, .keep_all=TRUE)
