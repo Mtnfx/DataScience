@@ -145,7 +145,8 @@ read_csv("data/Additional data/climate-daily.csv",
          `COOLING_DEGREE_DAYS`, `TOTAL_PRECIPITATION`, `SPEED_MAX_GUST`) -> weather
 ```
 
-Air traffic data was also used to try to determine a relation between the time of year and the density of air traffic. Since it is much safer to train when air traffic is low, we intended to find whether training is generally being done is relatively low air traffic.
+Air traffic data was also used to try to determine a relation between the time of year and the density of air traffic. We utilise the following variables from air traffic data: Month: Month of year, Value: The number of airplanes. To help determine when air traffic is the lowest, and thus flight accident risk is the lowest, we acquired air traffic data from the suggested supplementary data.
+Air Traffic - https://open.canada.ca/data/en/dataset/b91772ed-edae-4fd4-8b80-a3e4c1d29976
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.height = 4}
 # Air Traffic Import Code
@@ -324,17 +325,6 @@ build_order_table = function(df, n_sessions){
 build_order_table(clean_data, 50) %>% knitr::kable()
 ```
 The above table displays the implied order of exercises based on the criteria explained above. This order seems to suggest that while exercises 1 to 5 are essentially mandatory, later exercises are more or less optional as through 50 sessions, excerises not listed in the table such as 12, 13, 14 and 15 were not completed by at least 70% of students.
-
-`Seasons for student success`
-
-``` {r, echo=FALSE, warnings=FALSE, fig.height = 4}
-# Creating seasons_four table
-seasons_four <- tibble(Month = 1:12, Season = c(rep("Winter", 2), rep("Spring", 3), rep("Summer", 3), rep("Fall", 3), "Winter"))
-# Graphing Seasons against Number Of Sessions
-clean_data %>% inner_join(seasons_four, by = c("Month")) %>% group_by(Season) %>% summarise(Sessions = n_distinct(Session_ID)) %>% 
-  ggplot(aes(x = Season, y = Sessions)) + geom_bar(stat = "identity") + ggtitle("Seasons vs Total Number Of Sessions") + 
-  theme(plot.title = element_text(hjust = 0.5))
-```
 
 (Explanation)
 
