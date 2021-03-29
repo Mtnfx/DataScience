@@ -138,7 +138,7 @@ We will utilise the information stored in the following variables: Year, Month, 
 
 ```{r echo=FALSE, cache=FALSE, results=FALSE, warning=FALSE, comment=FALSE}
 climate_daily <- read_csv("data/climate-daily.csv")
-read_csv("data/Additional data/climate-daily.csv", 
+read_csv("data/climate-daily.csv", 
          col_types = cols(Year = col_integer(), Month = col_integer(), Day = col_integer())) %>% 
   select(Year, Month, Day, `MAX_TEMPERATURE`, `MIN_TEMPERATURE`, `MEAN_TEMPERATURE`, `HEATING_DEGREE_DAYS`,
          `COOLING_DEGREE_DAYS`, `TOTAL_PRECIPITATION`, `SPEED_MAX_GUST`) -> weather
