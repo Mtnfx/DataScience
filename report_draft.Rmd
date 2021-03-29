@@ -124,17 +124,17 @@ Link to RStudio Cloud shared project: https://rstudio.cloud/
 
 *Introduction sentence*
 
-Our analysis seeks to improve two main aspects of the training process. The first aspect is scheduling. Through our analysis, we aimed to determine whether training sessions are being scheduled effectively, and if not, how they can be scheduled more efficiently to improve student performance. The second aspect our analysis covers the ideal conditions for student performance. We analyzed numerous factors such as wind speeds, the order exercises are completed in, and the density of air traffic during sessions.
+Our analysis seeks to improve two main aspects of the training process. The first aspect is scheduling. Through our analysis, we aimed to determine whether training sessions are being scheduled efficiently, and if not, how can they be scheduled more efficiently. The second aspect of our analysis covers the ideal conditions for that lead to student success.
 
 ### Data 
 
-In answering these questions, we made the assumption in analyzing our data that all students begin their training at the same skill level. Additionally, we assume there were no unmeasurable external factors impacting the duration or efficiency of sessions. That is to say, unless a factor can be measured, it cannot be accounted for in our analysis.\
+In answering these questions, we made the assumption that all students begin their training at the same skill level. Additionally, we assume there were no unmeasurable external factors impacting the duration or efficiency of sessions. That is to say, unless a factor can be measured, it cannot be accounted for in our analysis.\
 
-To determine when flying is the safest (lowest wind, lowest precipitation), we used weather data from Government Of Canada's Website.\
+To determine when flying is the safest (least wind sppeed), we used weather data from Government Of Canada's Website.\
 Weather data: https://climate.weather.gc.ca/historical_data/search_historic_data_e.html \
 
-This data was used to compare the weather conditions that training sessions are currently being held in to possible ideal conditions.\
-We will utilise information in the following variables: Year, Month, Day, SPEED_MAX_GUST \
+This data was used to compare the weather conditions during training sessions that are currently being held to possible ideal conditions.\
+We will utilise the information stored in the following variables: Year, Month, Day, SPEED_MAX_GUST \
 
 ```{r echo=FALSE, cache=FALSE, results=FALSE, warning=FALSE, comment=FALSE}
 climate_daily <- read_csv("data/climate-daily.csv")
@@ -144,7 +144,7 @@ read_csv("data/Additional data/climate-daily.csv",
          `COOLING_DEGREE_DAYS`, `TOTAL_PRECIPITATION`, `SPEED_MAX_GUST`) -> weather
 ```
 
-Air traffic data was also used to try to determine a relation between the time of year and the density of air traffic. To help determine when air traffic is the lowest, and thus flight accident risk is the lowest, we acquired air traffic data from the suggested supplementary data.\
+Air traffic data was also used to determine the density of air traffic per month. To help determine when air traffic is the lowest, and thus flight accident risk is the lowest, we acquired air traffic data from the suggested supplementary data.\
 Air Traffic - https://open.canada.ca/data/en/dataset/b91772ed-edae-4fd4-8b80-a3e4c1d29976 \
 We utilise the following variables from air traffic data: Month: Month of year, Value: The number of airplanes. \
 
@@ -167,6 +167,7 @@ air_movements %>%
 `To determine which months are more densely scheduled for training sessions, we graphed
 
 ```{r echo=FALSE, cache=FALSE, results=FALSE, warning=FALSE, comment=FALSE, out.width = '50%'}
+
 #Months vs total number of sessions
 clean_data %>% 
   mutate(Month = month(Month, label = T))%>%
@@ -175,21 +176,21 @@ clean_data %>%
   ggplot(aes(x = Month, y = Sessions)) + geom_bar(stat = "identity") + ggtitle("Months vs Total Number Of Sessions") + 
   theme(plot.title = element_text(hjust = 0.5))
   
-#Speed of max gust vs number of sessions
-  #This uses old convention for extracting season data frame. Replace with updated df.
-  weather %>% drop_na(`Spd of Max Gust (km/h)`) %>% inner_join(clean_data, by = c("Year", "Month", "Day")) %>% ggplot(aes(x=`Spd of Max Gust (km/h)`)) + 
-  geom_bar(stat="count") + labs(y = "Number of Sessions") + ggtitle("Speed Of Maximum Gust (km/h) vs Number Of Sessions") + 
-  theme(plot.title = element_text(hjust = 0.5))
-```
-The above plot suggests that as the speed of gust increases, the Number of sessions being conducted decrease which corresponds with the logical reasoning and as suggested by the plots before. The Sessions conducted per month for the given date range suggest that the demand for sessions is least in the month of April from where it starts rising and reaches its maximum in August. There is a steady increase from August upto April. The rate of decline in the demand increases and becomes steady as we move through the year upto December.
-
-```{r echo=FALSE, cache=FALSE, results=FALSE, warning=FALSE, comment=FALSE, out.width = "50%"}
-#Speed of max gust vs month
+  #Speed of max gust vs month
 weather%>%
   drop_na(`SPEED_MAX_GUST`) %>%
   mutate(Month = month(Month, label = T))%>%
   select(SPEED_MAX_GUST, Month)%>%
   ggplot(aes(x=Month, y=SPEED_MAX_GUST)) + geom_bar(stat = "identity")
+```
+The data comparing the Maximum speed of gust to the month of a year over past 5 years shows a trend line steadily increasing from January to March and then decreasing from March to the least in July. An increase is then observed from August to December. The number of sessions conducted per month for the given date range suggest that the conduction of sessions is least in the month of April from where it starts rising and reaches its maximum in August. There is a steady increase from August upto April. The rate of decline in the demand increases and becomes steady as we move through the year upto December.
+
+```{r echo=FALSE, cache=FALSE, results=FALSE, warning=FALSE, comment=FALSE, out.width = "50%"}
+#Speed of max gust vs number of sessions
+  #This uses old convention for extracting season data frame. Replace with updated df.
+  weather %>% drop_na(`Spd of Max Gust (km/h)`) %>% inner_join(clean_data, by = c("Year", "Month", "Day")) %>% ggplot(aes(x=`Spd of Max Gust (km/h)`)) + 
+  geom_bar(stat="count") + labs(y = "Number of Sessions") + ggtitle("Speed Of Maximum Gust (km/h) vs Number Of Sessions") + 
+  theme(plot.title = element_text(hjust = 0.5))
   
 #Comparing air traffic for external data
 seasons_four <- tibble(
@@ -203,7 +204,7 @@ seasonal_air_movements %>%
   summarise(Traffic = mean(VALUE)) %>%
   ggplot(aes(x = Month, y = Traffic)) + geom_bar(stat = "identity")
 ```
-The data comparing the Maximum speed of gust to the month of a year over past 5 years shows a trend line steadily increasing from January to March then decreasing from March to the least in July. An increase is then observed from August to December. The Airtraffic per month also has a steady trend with the maximum in July and a gardual decrease till December. There is an increase from January uptil July.
+On comparing the Speed of Max Gust to the Number of sessions being conducted during that day, we found out that as the speed of gust increases, the Number of sessions being conducted show a decline. The Airtraffic per month also has a steady trend with the maximum in July and a gardual decrease till December. There is an increase from January uptil July. Overall the months from May to October seem the best time to fly during the year. As the Air traffic is highest in July, and the number of sessions conducted are highest in August, the flight training is much safer already. However, as the maximum speed of gust is similar during the months of September, and the Air Traffic is even lesser than August. The flight school training sessions can be increased in the month of September.  
 
 We continued our analysis by establishing a reliable measure of instructor efficiency. As both the number of exercises completed and the number of hours each instructor works are continuous variables, we chose to establish an efficiency metric based on the correlation between these two variables.
 
@@ -222,7 +223,7 @@ ggplot(data = Instructor_Data, aes(x = Total_Hours, y = Total_Exercises)) + geom
 ggplot(data = Instructor_Data, mapping = aes(x = Average_Hours, y = Hourly_Exercises)) + geom_point() + geom_text(aes(x = Average_Hours, y = Hourly_Exercises, label = Instructor_ID, hjust = 0), nudge_x = 1) + geom_smooth(method = 'lm', formula = y~x, se = FALSE) + ggtitle("Hours Instructed per Year vs Hourly Exercises Completed")
 ```
 
-We found that the Pearson correlation coefficient was approximately `r {coef}` indicating a very strong correlation. Based on this, we concluded that the number of exercises students completed under each instructor per hour of work is a strong measure of efficiency. We believe that ideally instructors should be getting a number of hours directly proportional to their efficiency. Thus, we generated the second graph above to determine a roughly ideal distribution of hours for each instructor. Instructors whose points lie above the line are, by our model, being given too many hours relative to average efficiency and instructors below the line are being given too few hours relative to their efficiency. `To maximise profits, instructors should be training students as fast as possible. While there is a minimum hours limit, it is reasonable to believe that instructors that complete more exercises in a set time will have students perform better. Thus, their students will have a better chance of passing the flgiht exam the first time.`
+We found that the Pearson correlation coefficient was approximately `r {coef}` indicating a very strong correlation. Based on this, we concluded that the number of exercises students completed under each instructor per hour of work is a strong measure of efficiency. We believe that ideally instructors should be getting a number of hours directly proportional to their efficiency. Thus, we generated the second graph above to determine a roughly ideal distribution of hours for each instructor. Instructors whose points lie above the line are, by our model, being given too many hours relative to average efficiency and instructors below the line are being given too few hours relative to their efficiency. To maximise profits, instructors should be training students as fast as possible during the times of high demand. While there is a minimum hours limit, it is reasonable to believe that instructors that complete more exercises in a set time will have students perform better. Thus, their students will have a better chance of passing the flgiht exam the first time.`
 
 
 ### Student Success
@@ -324,7 +325,7 @@ build_order_table = function(df, n_sessions){
 
 build_order_table(clean_data, 50) %>% knitr::kable()
 ```
-The above table displays the implied order of exercises based on the criteria explained above. This order seems to suggest that while exercises 1 to 5 are essentially mandatory, later exercises are more or less optional as through 50 sessions, excerises not listed in the table such as 12, 13, 14 and 15 were not completed by at least 70% of students.
+The above table displays the implied order of exercises based on the criteria explained above. This order seems to suggest that while exercises 1 to 5 are mandatory, the later exercises are more or less optional, as through 50 sessions the excerises not listed in the table such as 12, 13, 14 and 15 were not completed by at least 70% of students.
 
 (Explanation)
 
