@@ -120,8 +120,6 @@ Link to RStudio Cloud shared project: https://rstudio.cloud/
 
 ## Introduction 
 
-(*Description of questions that are being investigated*)
-
 *Introduction sentence*
 
 Our analysis seeks to improve two main aspects of the training process. The first aspect is scheduling. Through our analysis, we aimed to determine whether training sessions are being scheduled efficiently, and if not, how can they be scheduled more efficiently. The second aspect of our analysis covers the ideal conditions for that lead to student success.
@@ -150,7 +148,7 @@ We utilise the following variables from air traffic data: Month: Month of year, 
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.height = 4}
 # Air Traffic Import Code
-air_movements <- read_csv("data/Canada Air Traffic data.csv")
+air_movements <- read_csv("data/Aircraft_movements.csv")
 air_movements %>%
   filter( Airports == "Oshawa, Ontario",  str_detect(REF_DATE, "2015|2016|2017|2018|2019|2020") ) %>%
   select( REF_DATE, `Civil and military movements`, VALUE) -> air_movements
@@ -183,12 +181,12 @@ weather%>%
   select(SPEED_MAX_GUST, Month)%>%
   ggplot(aes(x=Month, y=SPEED_MAX_GUST)) + geom_bar(stat = "identity")
 ```
-The data comparing the Maximum speed of gust to the month of a year over past 5 years shows a trend line steadily increasing from January to March and then decreasing from March to the least in July. An increase is then observed from August to December. The number of sessions conducted per month for the given date range suggest that the conduction of sessions is least in the month of April from where it starts rising and reaches its maximum in August. There is a steady increase from August upto April. The rate of decline in the demand increases and becomes steady as we move through the year upto December.
+The data comparing the Maximum speed of gust to the month of a year over past 5 years shows a trend line steadily increasing from January to March and then decreasing from March to the least in July. An increase is then observed from August to December. The number of sessions conducted per month for the given date range suggest that the conduction of sessions is least in the month of April from where it starts rising and reaches its maximum in August. There is a steady increase from August upto April. The rate of decline in the demand increases and becomes steady as we move through the year up to December.
 
 ```{r echo=FALSE, cache=FALSE, results=FALSE, warning=FALSE, comment=FALSE, out.width = "50%"}
 #Speed of max gust vs number of sessions
   #This uses old convention for extracting season data frame. Replace with updated df.
-  weather %>% drop_na(`Spd of Max Gust (km/h)`) %>% inner_join(clean_data, by = c("Year", "Month", "Day")) %>% ggplot(aes(x=`Spd of Max Gust (km/h)`)) + 
+  weather %>% drop_na(`SPEED_MAX_GUST`) %>% inner_join(clean_data, by = c("Year", "Month", "Day")) %>% ggplot(aes(x=`SPEED_MAX_GUST`)) + 
   geom_bar(stat="count") + labs(y = "Number of Sessions") + ggtitle("Speed Of Maximum Gust (km/h) vs Number Of Sessions") + 
   theme(plot.title = element_text(hjust = 0.5))
   
@@ -223,7 +221,7 @@ ggplot(data = Instructor_Data, aes(x = Total_Hours, y = Total_Exercises)) + geom
 ggplot(data = Instructor_Data, mapping = aes(x = Average_Hours, y = Hourly_Exercises)) + geom_point() + geom_text(aes(x = Average_Hours, y = Hourly_Exercises, label = Instructor_ID, hjust = 0), nudge_x = 1) + geom_smooth(method = 'lm', formula = y~x, se = FALSE) + ggtitle("Hours Instructed per Year vs Hourly Exercises Completed")
 ```
 
-We found that the Pearson correlation coefficient was approximately `r {coef}` indicating a very strong correlation. Based on this, we concluded that the number of exercises students completed under each instructor per hour of work is a strong measure of efficiency. We believe that ideally instructors should be getting a number of hours directly proportional to their efficiency. Thus, we generated the second graph above to determine a roughly ideal distribution of hours for each instructor. Instructors whose points lie above the line are, by our model, being given too many hours relative to average efficiency and instructors below the line are being given too few hours relative to their efficiency. To maximise profits, instructors should be training students as fast as possible during the times of high demand. While there is a minimum hours limit, it is reasonable to believe that instructors that complete more exercises in a set time will have students perform better. Thus, their students will have a better chance of passing the flgiht exam the first time.`
+We found that the Pearson correlation coefficient was approximately `r {coef}` indicating a very strong correlation. Based on this, we concluded that the number of exercises students completed under each instructor per hour of work is a strong measure of efficiency. We believe that ideally instructors should be getting a number of hours directly proportional to their efficiency. Thus, we generated the second graph above to determine a roughly ideal distribution of hours for each instructor. Instructors whose points lie above the line are, by our model, being given too many hours relative to average efficiency and instructors below the line are being given too few hours relative to their efficiency. To maximize profits, instructors should be training students as fast as possible during the times of high demand. While there is a minimum hours limit, it is reasonable to believe that instructors that complete more exercises in a set time will have students perform better. Thus, their students will have a better chance of passing the flgiht exam the first time.`
 
 
 ### Student Success
@@ -273,6 +271,7 @@ clean_data %>% unite("Date", c(Year, Month, Day), sep = "-") %>%
   ggtitle("Number of Exercises Completed vs Solo Flight") +
   theme(plot.title = element_text(hjust = 0.5))
   ```
+  
 The graph suggests that there is a significant difference in the number of exercises completed between both the groups.  
 
 Hence, we conducted a hypothesis test to validate our conclusion from the graph at 5% significance level.
@@ -323,16 +322,15 @@ build_order_table = function(df, n_sessions){
   return(exercises)
 }
 
-build_order_table(clean_data, 50) %>% knitr::kable()
+tbl = build_order_table(clean_data, 50) 
+tbl1 = tbl %>% filter(Expected_Session <= 7)
+tbl2 = tbl %>% filter(Expected_Session > 7)
+kable(list(tbl1,tbl2))
 ```
-The above table displays the implied order of exercises based on the criteria explained above. This order seems to suggest that while exercises 1 to 5 are mandatory, the later exercises are more or less optional, as through 50 sessions the excerises not listed in the table such as 12, 13, 14 and 15 were not completed by at least 70% of students.
+The above table displays the implied order of exercises based on the criteria explained above. This order seems to suggest that while exercises 1 to 5 are mandatory, the later exercises are more or less optional, as through 50 sessions the exercises not listed in the table such as 12, 13, 14 and 15 were not completed by at least 70% of students.
 
-(Explanation)
-
-`Wasim's Table/Graphs`
-
-```{r, echo=FALSE, warnings=FALSE}
- data = read_csv("clean_data_sta_with_season.csv")
+```{r}
+data = clean_data
  time_stats = data  %>% select(Instructor_ID,Student_ID,Duration,Session_ID
                                                        ,Training_Type) %>%
   mutate(Solo_Time = Duration * as.integer(str_detect(Training_Type,"solo")) ,Dual_Time = Duration * as.integer(str_detect(Training_Type,"dual||Ins")),
@@ -346,25 +344,45 @@ The above table displays the implied order of exercises based on the criteria ex
   ) %>%
   summarise(Total_Duration = sum(Total_Duration),Total_Solo = sum(Total_Solo), Total_Dual = sum(Total_Dual), Total_CC_Dual = sum(Total_CC_Dual),
     Total_CC_Solo = sum(Total_CC_Solo), Total_Ins_Dual = sum(Total_Ins_Dual)) %>% ungroup() %>% arrange(desc(Total_Duration))
-time_stats
+#time_stats
+percents =time_stats %>% mutate(Total_Duration = ifelse(Total_Duration>45,1,Total_Duration/45)*100,Total_Solo = 
+                        ifelse(Total_Solo<12,Total_Solo/12,1)*100,Total_Dual = ifelse(Total_Dual<17,Total_Dual/17,1)*100,Total_CC_Dual = ifelse(Total_CC_Dual<3,Total_CC_Dual/3,1)*100 ,Total_CC_Solo = ifelse(Total_CC_Solo<5,Total_CC_Solo/5,1)*100 ,Total_Ins_Dual = ifelse(Total_Ins_Dual<5,Total_Ins_Dual/5,1)*100,Overall = Total_Duration*45/87+Total_Solo*12/87+Total_Dual*17/87+Total_CC_Dual*3/87+Total_CC_Solo*5/87+Total_Ins_Dual*5/87)%>%
+ arrange(desc(Overall))
+percents%>%select(Student_ID,Overall,Total_Duration,Total_Solo,Total_Dual,Total_CC_Dual,Total_CC_Solo,Total_Ins_Dual) %>% top_n(10, Overall) %>% kable()
 ```
 
-```{r, echo = FALSE, warnings = FALSE, out.width="50%"}
-percents =time_stats %>% mutate(Total_Duration = ifelse(Total_Duration>45,1,Total_Duration/45)*100,Total_Solo = 
-                        ifelse(Total_Solo<12,Total_Solo/12,1)*100,Total_Dual = ifelse(Total_Dual<17,Total_Dual/17,1)*100,Total_CC_Dual = ifelse(Total_CC_Dual<3,Total_CC_Dual/3,1)*100 ,Total_CC_Solo = ifelse(Total_CC_Solo<5,Total_CC_Solo/5,1)*100 ,Total_Ins_Dual = ifelse(Total_Ins_Dual<5,Total_Ins_Dual/5,1)*100,overall = Total_Duration+Total_Solo+Total_Dual+Total_CC_Dual+Total_CC_Dual+Total_CC_Solo+Total_Ins_Dual)%>%
-  mutate(overall = overall/7) %>% arrange(desc(overall))
-percents
-ggplot(percents, aes(x=Student_ID,y=overall,color=Instructor_ID)) + geom_point()
-percents %>% group_by(Instructor_ID) %>% summarise(Success = mean(overall))%>%
-  ggplot(aes(x=Instructor_ID,y=Success,color=Success)) + geom_col()
 
+```{r, warning=FALSE,  out.width = "75%", fig.align="center"}
 Student_Time = data %>% unite("Date", c(Year, Month, Day), sep = "-") %>% 
   mutate(Date = as.Date(Date)) %>% group_by(Instructor_ID,Student_ID) %>% 
   distinct(Session_ID,.keep_all = T) %>% mutate(Diff = Date - lag(Date)) %>%
   summarise(Time = sum(Diff,na.rm=T)) %>% ungroup()
-percents %>% inner_join(Student_Time,by = c("Student_ID","Instructor_ID")) %>%
-  ggplot(aes(x=Time,y=overall))+ geom_col()+geom_smooth()
+#percents %>% inner_join(Student_Time,by = c("Student_ID","Instructor_ID")) %>%
+#  ggplot(aes(x=Time,y=Total_Duration))+ geom_col() +geom_smooth()
+#percents %>% inner_join(Student_Time,by = c("Student_ID","Instructor_ID")) %>%
+#  ggplot(aes(x=Time,y=Total_CC_Dual))+ geom_col() +geom_smooth()
+#percents %>% inner_join(Student_Time,by = c("Student_ID","Instructor_ID")) %>%
+#  ggplot(aes(x=Time,y=Total_CC_Solo))+ geom_col()+geom_smooth()
+#percents %>% inner_join(Student_Time,by = c("Student_ID","Instructor_ID")) %>%
+#  ggplot(aes(x=Time,y=Total_Dual))+ geom_col()+geom_smooth()
+#percents %>% inner_join(Student_Time,by = c("Student_ID","Instructor_ID")) %>%
+#  ggplot(aes(x=Time,y=Total_Solo))+ geom_col()+geom_smooth()
+percents %>% inner_join(Student_Time,by = c("Student_ID","Instructor_ID")) %>% 
+  ggplot(aes(x=Time,y=Overall))+ geom_point()+geom_smooth()+labs(title = "Overall Percentage Completion VS Time in Flight School",x = "Time in School",y="Overall % completed")
 ```
+
+We have analyzed how close each student has come to completing their pilot license, based on each category.
+Total_Duration is total number of flight hours(45 needed).
+Total_Solo is the total number of hours flown solo(12 needed).
+Total_Dual is total number of hours flown dual(17 needed).
+Total_CC_Dual is total number of dual hours flown cross country(3 needed).
+Total_CC_Solo is total number of solo hours flown cross country(5 needed).
+Total_Ins_Dual is the total number of dual instrument hours(5 needed).
+We assume each student has done 10 hours of pre-flight training.
+We can see only Student# 88 passes the course with 100% completion, however multiple students have come very close to completion. Here completion is taken as a weighted mean of % completion of each category.
+Furthermore,
+Plotting the total time a student was in flight school against overall percentage completion of flight license, we see that students that come close to completion ,do so in a varying amount of time. Thus we hypothesize that students finish the course on at their own pace.
+
 ## Summary 
 
 In conclusion,
@@ -372,5 +390,3 @@ In conclusion,
 ## Appendix 
 
 (*Everything here does not count towards page limit*)
-
-
