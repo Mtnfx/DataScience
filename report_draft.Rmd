@@ -152,7 +152,7 @@ We utilise the following variables from air traffic data: Month: Month of year, 
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.height = 4}
 # Air Traffic Import Code
-air_movements <- read_csv("data/Aircraft_movements.csv")
+air_movements <- read_csv("data/Aircraft_Movements.csv")
 air_movements %>%
   filter( Airports == "Oshawa, Ontario",  str_detect(REF_DATE, "2015|2016|2017|2018|2019|2020") ) %>%
   select( REF_DATE, `Civil and military movements`, VALUE) -> air_movements
