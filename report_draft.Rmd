@@ -1,5 +1,7 @@
 ---
-output: pdf_document
+output:
+  pdf_document: default
+  word_document: default
 fontsize: 11pt
 geometry: margin=1in
 ---
@@ -223,7 +225,7 @@ ggplot(data = Instructor_Data, aes(x = Total_Hours, y = Total_Exercises)) + geom
 ggplot(data = Instructor_Data, mapping = aes(x = Average_Hours, y = Hourly_Exercises)) + geom_point() + geom_text(aes(x = Average_Hours, y = Hourly_Exercises, label = Instructor_ID, hjust = 0), nudge_x = 1) + geom_smooth(method = 'lm', formula = y~x, se = FALSE) + ggtitle("Hours Instructed per Year vs Hourly Exercises Completed")
 ```
 
-We found that the Pearson correlation coefficient was approximately `r {coef}` indicating a very strong correlation. Based on this, we concluded that the number of exercises students completed under each instructor per hour of work is a strong measure of efficiency. We believe that ideally instructors should be getting a number of hours directly proportional to their efficiency. Thus, we generated the second graph above to determine a roughly ideal distribution of hours for each instructor. Instructors whose points lie above the line are, by our model, being given too many hours relative to average efficiency and instructors below the line are being given too few hours relative to their efficiency. To maximize profits, instructors should be training students as fast as possible during the times of high demand. While there is a minimum hours limit, it is reasonable to believe that instructors that complete more exercises in a set time will have students perform better. Thus, their students will have a better chance of passing the flgiht exam the first time.`
+We found that the Pearson correlation coefficient was approximately `r {coef}` indicating a very strong correlation. Based on this, we concluded that the number of exercises students completed under each instructor per hour of work is a strong measure of efficiency. We believe that ideally instructors should be getting a number of hours directly proportional to their efficiency. Thus, we generated the second graph above to determine a roughly ideal distribution of hours for each instructor. Instructors whose points lie above the line are, by our model, being given too many hours relative to average efficiency and instructors below the line are being given too few hours relative to their efficiency. To maximize profits, instructors should be training students as fast as possible during the times of high demand. While there is a minimum hours limit, it is reasonable to believe that instructors that complete more exercises in a set time will have students perform better. Thus, their students will have a better chance of passing the flight exam the first time.`
 
 
 ### Student Success
@@ -294,7 +296,7 @@ We see that the P-value is indeed very strong (<0.0001). And at 5% significance 
  
  We checked the data set to see if there is a specific order in which exercises should be completed. To determine the order in which the exercises should be completed, we found the session at which at least 70% of students who completed that number of sessions completed the given exercise.
  
- ```{r, echo=FALSE}
+ ```{r, echo=FALSE, warning=FALSE}
 clean_data = clean_data %>% unite("Date", Year,Month,Day,sep="-", remove=FALSE) %>% mutate(Date = ymd(Date))
 ex_n_sessions = function(df, n){
   #Creates graph of proportion of students that completed each exercise at least once in their first n sessions
@@ -326,14 +328,17 @@ build_order_table = function(df, n_sessions){
 }
 
 tbl = build_order_table(clean_data, 50) 
-tbl1 = tbl %>% filter(Expected_Session <= 7)
-tbl2 = tbl %>% filter(Expected_Session > 7)
-kable(list(tbl1,tbl2))
+tbl1 = tbl %>% slice(1:8)
+tbl2 = tbl %>% slice(9:16)
+tbl3 = tbl %>% slice(17:24)
+kable(list(tbl1,tbl2, tbl3))
 ```
-The above table displays the implied order of exercises based on the criteria explained above. This order seems to suggest that while exercises 1 to 5 are mandatory, the later exercises are more or less optional, as through 50 sessions the exercises not listed in the table such as 12, 13, 14 and 15 were not completed by at least 70% of students.
 
-We analysed how many students met the flight license requirements, and compared their progress.
-We have analysed how close each student has come to completing their pilot license requirement, based on each category.
+The above table displays the implied order of exercises based on the criteria explained above. This order seems to suggest that while exercises 1 to 5 are important to complete immediately, the later exercises require much more experience, as exercises 19, 22, 23, and 24 were not completed by 70% of students until after 40 or more sessions.
+
+
+We analyzed how many students met the flight license requirements, and compared their progress.
+We have analyzed how close each student has come to completing their pilot license requirement, based on each category.
 The percentage of completion of the total hours requirement(45hrs needed), total solo hours requirement(12hrs needed), the total dual hours requirement(17hrs needed),
 the total dual cross-country hours requirement(3hrs needed),
 the total solo cross-country hours requirement(5hrs needed), and the total instrument hours requirement(5hrs needed).
@@ -393,7 +398,9 @@ We can also see a linear trend in the beginning of the graph which becomes somew
 
 ## Summary 
 
-We concluded there 
+We concluded there are several aspects of the training school's training process that can be adjusted to reliably create a more efficient system. More efficient instructors, as determined by our efficiency metric, should be assigned more students, especially during busy periods. This will allow the flight school to maximize the number of students going through the school and thus will increase profits. Additionally, the flight school should aim to train more students in the month of September as wind conditions are similar to the month of August but total air traffic decreases, thus making flying in September likely safer. 
+
+A benchmark for student success was determined to be the student's first solo flight. Students who have completed a solo flight on average are much more experienced. Taking a measure of when 70% of students had completed a specific exercise, we derived a suggested order of exercises. Finally, we concluded that there is currently no set pace for completing the flight course as students with varying course completion have been in the course for inconsistent periods of time.
 
 ## Appendix 
 
