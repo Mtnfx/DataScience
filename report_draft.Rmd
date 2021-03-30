@@ -122,6 +122,8 @@ Link to RStudio Cloud shared project: https://rstudio.cloud/
 
 *Introduction sentence*
 
+The aim of our report is to highlight several aspects of the training and scheduling process of the flight school to determine what changes can be made to most effectively train students.
+
 Our analysis seeks to improve two main aspects of the training process. The first aspect is scheduling. Through our analysis, we aimed to determine whether training sessions are being scheduled efficiently, and if not, how can they be scheduled more efficiently. The second aspect of our analysis covers the ideal conditions for that lead to student success.
 
 ### Data 
@@ -226,9 +228,10 @@ We found that the Pearson correlation coefficient was approximately `r {coef}` i
 
 ### Student Success
 
-To establish that flying solo can be considered to be a metric for students' progress we tested if there is a difference in the average number of exercises completed, prior to and including the first solo flight, by students that flew solo and the number of exercises completed by students that never flew solo where the first solo flight is determined to be the first session with solo in training type.
+To establish that flying solo can be considered to be a metric for students' progress, we tested if there is a difference in the average number of exercises completed by students that flew solo and the number of exercises completed by students that never flew solo. To ensure the data is comparable, we counted only the sessions up to and  including the first solo flight. The first solo flight is determined to be the first session with solo in training type.
 
 We first plotted side-by-side boxplots of the number of exercises completed by both groups of students.
+
 ```{r, echo=FALSE, out.width = "50%"}
 # Student ID, Total Completed Exercises before and including First Solo
 clean_data %>% unite("Date", c(Year, Month, Day), sep = "-") %>% 
