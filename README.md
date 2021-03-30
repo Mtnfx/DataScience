@@ -56,6 +56,7 @@ This will act as a sort of message board for our group.
 - Tally hours of each student and check their hours against license standards (only one passed so far/ some tinkering with my code will be needed)
 - Add the total duration the student was in flight school and then regress using the percentage of completion of each criteria (Not very strong correlation)
 - Wrote summaries and conclusions for flight license progress
+- made vishal's output inline
 ## Vishal
 - Importing supplement data : "import_supplemental_data.R"
   - (table name : variables) 
