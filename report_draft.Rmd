@@ -14,6 +14,7 @@ library(tidyverse)
 library(lubridate)
 library(knitr)
 library(readr)
+library(kableExtra)
 ```
 
 ```{r, echo=FALSE, warning=FALSE, results=FALSE, message=FALSE}
@@ -126,7 +127,9 @@ Link to RStudio Cloud shared project: https://rstudio.cloud/
 
 The profitability of a flight school business is reliant upon two critical factors: The efficiency of flight training and the success of students post that training.
 
-Our analysis seeks to improve two main aspects of the training process. The first aspect is scheduling. Through our analysis, we aimed to determine whether training sessions are being scheduled efficiently, and if not, how can they be scheduled more efficiently. The second aspect of our analysis covers the ideal conditions for that lead to student success.
+Our analysis seeks to improve two main aspects of the training process. The first aspect is scheduling. Through our analysis, we aimed to determine whether training sessions are being scheduled efficiently, and if not, how can they be scheduled more efficiently. The second aspect of our analysis covers the ideal conditions that lead to student success.
+
+We conducted our analysis through a series of graphs, tables, and indepenedence tests to check our hypotheses.
 
 ### Data 
 
@@ -161,7 +164,6 @@ air_movements %>%
   mutate(Year = as.integer(Year), Month = as.integer(Month)) -> air_movements
 ```
 
-
 ## Analysis 
 
 ### Scheduling
@@ -185,7 +187,7 @@ weather%>%
   select(SPEED_MAX_GUST, Month)%>%
   ggplot(aes(x=Month, y=SPEED_MAX_GUST)) + geom_bar(stat = "identity")
 ```
-The data comparing the Maximum speed of gust to the month of a year over past 5 years shows a trend line steadily increasing from January to March and then decreasing from March to the least in July. An increase is then observed from August to December. The number of sessions conducted per month for the given date range suggest that the conduction of sessions is least in the month of April from where it starts rising and reaches its maximum in August. There is a steady increase from August upto April. The rate of decline in the demand increases and becomes steady as we move through the year up to December.
+The data comparing the Maximum speed of gust to the month of a year over past 5 years shows a trend line steadily increasing from January to March and then decreasing from March to the least in July. An increase is then observed from August to December. The number of sessions conducted per month for the given date range suggest that the conduction of sessions is least in the month of April from where it starts rising and reaches its maximum in August. There is a steady increase from August up to April. The rate of decline in the demand increases and becomes steady as we move through the year up to December.
 
 ```{r echo=FALSE, cache=FALSE, results=FALSE, warning=FALSE, comment=FALSE, out.width = "50%"}
 #Speed of max gust vs number of sessions
@@ -226,7 +228,6 @@ ggplot(data = Instructor_Data, mapping = aes(x = Average_Hours, y = Hourly_Exerc
 ```
 
 We found that the Pearson correlation coefficient was approximately `r {coef}` indicating a very strong correlation. Based on this, we concluded that the number of exercises students completed under each instructor per hour of work is a strong measure of efficiency. We believe that ideally instructors should be getting a number of hours directly proportional to their efficiency. Thus, we generated the second graph above to determine a roughly ideal distribution of hours for each instructor. Instructors whose points lie above the line are, by our model, being given too many hours relative to average efficiency and instructors below the line are being given too few hours relative to their efficiency. To maximize profits, instructors should be training students as fast as possible during the times of high demand. While there is a minimum hours limit, it is reasonable to believe that instructors that complete more exercises in a set time will have students perform better. Thus, their students will have a better chance of passing the flight exam the first time.`
-
 
 ### Student Success
 
@@ -294,7 +295,7 @@ $H_0: \mu_{solo} - \mu_{non_solo} =0$ vs $H_A: \mu_{solo} - \mu_{non_solo} \neq 
 
 We see that the P-value is indeed very strong (<0.0001). And at 5% significance level we reject the null hypothesis and accept the alternate hypothesis. Thereby, we can conclude that a solo flight is a strong metric for students' progress as it requires a certain level of prior experience and skill.
  
- We checked the data set to see if there is a specific order in which exercises should be completed. To determine the order in which the exercises should be completed, we found the session at which at least 70% of students who completed that number of sessions completed the given exercise.
+ We checked the training data to see if there is a specific order in which exercises should be completed. To determine the order in which the exercises should be completed, we found the session at which at least 70% of students who completed that number of sessions completed the given exercise.
  
  ```{r, echo=FALSE, warning=FALSE}
 clean_data = clean_data %>% unite("Date", Year,Month,Day,sep="-", remove=FALSE) %>% mutate(Date = ymd(Date))
@@ -331,11 +332,10 @@ tbl = build_order_table(clean_data, 50)
 tbl1 = tbl %>% slice(1:8)
 tbl2 = tbl %>% slice(9:16)
 tbl3 = tbl %>% slice(17:24)
-kable(list(tbl1,tbl2, tbl3))
+kable(list(tbl1,tbl2, tbl3)) %>% kable_styling(latex_options = "hold_position")
 ```
 
 The above table displays the implied order of exercises based on the criteria explained above. This order seems to suggest that while exercises 1 to 5 are important to complete immediately, the later exercises require much more experience, as exercises 19, 22, 23, and 24 were not completed by 70% of students until after 40 or more sessions.
-
 
 We analyzed how many students met the flight license requirements, and compared their progress.
 We have analyzed how close each student has come to completing their pilot license requirement, based on each category.
