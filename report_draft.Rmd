@@ -122,7 +122,7 @@ Link to RStudio Cloud shared project: https://rstudio.cloud/
 
 *Introduction sentence*
 
-The aim of our report is to highlight several aspects of the training and scheduling process of the flight school to determine what changes can be made to most effectively train students.
+The profitability of a flight school business is reliant upon two critical factors: The efficiency of flight training and the success of students post that training.
 
 Our analysis seeks to improve two main aspects of the training process. The first aspect is scheduling. Through our analysis, we aimed to determine whether training sessions are being scheduled efficiently, and if not, how can they be scheduled more efficiently. The second aspect of our analysis covers the ideal conditions for that lead to student success.
 
@@ -228,10 +228,9 @@ We found that the Pearson correlation coefficient was approximately `r {coef}` i
 
 ### Student Success
 
-To establish that flying solo can be considered to be a metric for students' progress, we tested if there is a difference in the average number of exercises completed by students that flew solo and the number of exercises completed by students that never flew solo. To ensure the data is comparable, we counted only the sessions up to and  including the first solo flight. The first solo flight is determined to be the first session with solo in training type.
+To establish that flying solo can be considered to be a metric for students' progress we tested if there is a difference in the average number of exercises completed, prior to and including the first solo flight, by students that flew solo and the number of exercises completed by students that never flew solo where the first solo flight is determined to be the first session with solo in training type.
 
 We first plotted side-by-side boxplots of the number of exercises completed by both groups of students.
-
 ```{r, echo=FALSE, out.width = "50%"}
 # Student ID, Total Completed Exercises before and including First Solo
 clean_data %>% unite("Date", c(Year, Month, Day), sep = "-") %>% 
@@ -294,6 +293,7 @@ $H_0: \mu_{solo} - \mu_{non_solo} =0$ vs $H_A: \mu_{solo} - \mu_{non_solo} \neq 
 We see that the P-value is indeed very strong (<0.0001). And at 5% significance level we reject the null hypothesis and accept the alternate hypothesis. Thereby, we can conclude that a solo flight is a strong metric for students' progress as it requires a certain level of prior experience and skill.
  
  We checked the data set to see if there is a specific order in which exercises should be completed. To determine the order in which the exercises should be completed, we found the session at which at least 70% of students who completed that number of sessions completed the given exercise.
+ 
  ```{r, echo=FALSE}
 clean_data = clean_data %>% unite("Date", Year,Month,Day,sep="-", remove=FALSE) %>% mutate(Date = ymd(Date))
 ex_n_sessions = function(df, n){
@@ -332,7 +332,18 @@ kable(list(tbl1,tbl2))
 ```
 The above table displays the implied order of exercises based on the criteria explained above. This order seems to suggest that while exercises 1 to 5 are mandatory, the later exercises are more or less optional, as through 50 sessions the exercises not listed in the table such as 12, 13, 14 and 15 were not completed by at least 70% of students.
 
-```{r}
+We analysed how many students met the flight license requirements, and compared their progress.
+We have analysed how close each student has come to completing their pilot license requirement, based on each category.
+The percentage of completion of the total hours requirement(45hrs needed), total solo hours requirement(12hrs needed), the total dual hours requirement(17hrs needed),
+the total dual cross-country hours requirement(3hrs needed),
+the total solo cross-country hours requirement(5hrs needed), and the total instrument hours requirement(5hrs needed).
+Overall is the weighted mean of each category (based on hours), which is used to estimate their overall progress percentage towards their flight license.
+There could be a bias, as students that have been in the program should have a much higher overall progress.
+Thus, we graph the performance of each student against their enrollment duration in the flight school.
+
+We assume each student has completed 10 hours of pre-flight training.
+
+```{r, warning=FALSE, out.width = "50%", fig.align = "left"}
 data = clean_data
  time_stats = data  %>% select(Instructor_ID,Student_ID,Duration,Session_ID
                                                        ,Training_Type) %>%
@@ -351,11 +362,13 @@ data = clean_data
 percents =time_stats %>% mutate(Total_Duration = ifelse(Total_Duration>45,1,Total_Duration/45)*100,Total_Solo = 
                         ifelse(Total_Solo<12,Total_Solo/12,1)*100,Total_Dual = ifelse(Total_Dual<17,Total_Dual/17,1)*100,Total_CC_Dual = ifelse(Total_CC_Dual<3,Total_CC_Dual/3,1)*100 ,Total_CC_Solo = ifelse(Total_CC_Solo<5,Total_CC_Solo/5,1)*100 ,Total_Ins_Dual = ifelse(Total_Ins_Dual<5,Total_Ins_Dual/5,1)*100,Overall = Total_Duration*45/87+Total_Solo*12/87+Total_Dual*17/87+Total_CC_Dual*3/87+Total_CC_Solo*5/87+Total_Ins_Dual*5/87)%>%
  arrange(desc(Overall))
-percents%>%select(Student_ID,Overall,Total_Duration,Total_Solo,Total_Dual,Total_CC_Dual,Total_CC_Solo,Total_Ins_Dual) %>% top_n(10, Overall) %>% kable()
+tbl1 = percents%>%select(Student_ID,Overall) %>% slice(1:10)
+tbl2 = percents%>%select(Student_ID,Overall) %>% slice(11:20)
+tbl3 = percents%>%select(Student_ID,Overall) %>% slice(21:30)
+kable(list(tbl1,tbl2,tbl3))
 ```
 
-
-```{r, warning=FALSE,  out.width = "75%", fig.align="center"}
+```{r, echo=FALSE, out.width="50%", fig.align = "center"}
 Student_Time = data %>% unite("Date", c(Year, Month, Day), sep = "-") %>% 
   mutate(Date = as.Date(Date)) %>% group_by(Instructor_ID,Student_ID) %>% 
   distinct(Session_ID,.keep_all = T) %>% mutate(Diff = Date - lag(Date)) %>%
@@ -374,21 +387,13 @@ percents %>% inner_join(Student_Time,by = c("Student_ID","Instructor_ID")) %>%
   ggplot(aes(x=Time,y=Overall))+ geom_point()+geom_smooth()+labs(title = "Overall Percentage Completion VS Time in Flight School",x = "Time in School",y="Overall % completed")
 ```
 
-We have analyzed how close each student has come to completing their pilot license, based on each category.
-Total_Duration is total number of flight hours(45 needed).
-Total_Solo is the total number of hours flown solo(12 needed).
-Total_Dual is total number of hours flown dual(17 needed).
-Total_CC_Dual is total number of dual hours flown cross country(3 needed).
-Total_CC_Solo is total number of solo hours flown cross country(5 needed).
-Total_Ins_Dual is the total number of dual instrument hours(5 needed).
-We assume each student has done 10 hours of pre-flight training.
-We can see only Student# 88 passes the course with 100% completion, however multiple students have come very close to completion. Here completion is taken as a weighted mean of % completion of each category.
-Furthermore,
-Plotting the total time a student was in flight school against overall percentage completion of flight license, we see that students that come close to completion ,do so in a varying amount of time. Thus we hypothesize that students finish the course on at their own pace.
+We observed that only Student# 88 completed all the requirements for the pilot's license, however multiple students have come very close to completion.
+Furthermore, from our graph, we see that students that come close to completion, do so in a varying amount of time. Thus we hypothesize that students finish the course at their own pace.
+We can also see a linear trend in the beginning of the graph which becomes somewhat logarithmic later. This is due to the high number of beginner students with low completion percentages, and the students that complete the course in a longer period of time.
 
 ## Summary 
 
-In conclusion,
+We concluded there 
 
 ## Appendix 
 
