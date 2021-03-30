@@ -62,16 +62,16 @@ percents %>% inner_join(Student_Time,by = c("Student_ID","Instructor_ID")) %>%
 Summary:
 We wanted to analyse how many students meet the flight license requirements, and their progress compares.
 We have analysed how close each student has come to completing their pilot license, based on each category.
-
-The % completion of the total hours requirement(45hrs needed),total solo hours requirement(12hrs needed),the total dual hours requirement(17hrs needed),the total dual cross-country hours requirement(3hrs needed) , the total solo cross-country hours requirement(5hrs needed),and the total hours requirement(5hrs needed).
-
-overall is the weighted mean of each criteria (based on hours) , which is used to estimate their overall progress percentage towards their flight license.
-
+The % completion of the total hours requirement(45hrs needed),total solo hours requirement(12hrs needed),the total dual hours requirement(17hrs needed),
+the total dual cross-country hours requirement(3hrs needed) ,
+the total solo cross-country hours requirement(5hrs needed),and the total hours requirement(5hrs needed).
+overall is the weighted mean of each category (based on hours) , which is used to estimate their overall progress percentage towards their flight license.
 There could be a bias, as students that have been in the program should have a much higher overall progress.
-
 Thus graph the performance of each student against theri time in flight school.
+
 Assumption:
 We assume each student has done 10 hours of pre-flight training.
+
 Conclusion:
 We can see only Student# 88 passes the course with 100% completion, however multiple students have come very close to completion.
 Furthermore,
