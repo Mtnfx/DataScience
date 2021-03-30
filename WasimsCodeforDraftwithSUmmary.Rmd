@@ -59,14 +59,21 @@ percents %>% inner_join(Student_Time,by = c("Student_ID","Instructor_ID")) %>%
   ggplot(aes(x=Time,y=overall))+ geom_point()+geom_smooth()+labs(title = "Overall Percentage Completion VS Time in Flight School",x = "Time in School",y="Overall % completed")
 
 ```
+Summary:
+We wanted to analyse how many students meet the flight license requirements, and their progress compares.
 We have analysed how close each student has come to completing their pilot license, based on each category.
-Total_Duration is total number of flight hours(45 needed).
-Total_Solo is the total number of hours flown solo(12 needed).
-Total_Dual is total number of hours flown dual(17 needed).
-Total_CC_Dual is total number of dual hours flown crosscountry(3 needed).
-Total_CC_Solo is total number of solo hours flown crosscountry(5 needed).
-Total_Ins_Dual is the total number of dual instrument hours(5 needed).
+
+The % completion of the total hours requirement(45hrs needed),total solo hours requirement(12hrs needed),the total dual hours requirement(17hrs needed),the total dual cross-country hours requirement(3hrs needed) , the total solo cross-country hours requirement(5hrs needed),and the total hours requirement(5hrs needed).
+
+overall is the weighted mean of each criteria (based on hours) , which is used to estimate their overall progress percentage towards their flight license.
+
+There could be a bias, as students that have been in the program should have a much higher overall progress.
+
+Thus graph the performance of each student against theri time in flight school.
+Assumption:
 We assume each student has done 10 hours of pre-flight training.
-We can see only Student# 88 passes the course with 100% completion, however multiple students have come very close to completion. Here completion is taken as a weighted mean of % completion of each category.
+Conclusion:
+We can see only Student# 88 passes the course with 100% completion, however multiple students have come very close to completion.
 Furthermore,
-Plotting the total time a student was in flight school against overall percentage completion of flight license, we see that students that come close to completion ,do so in a varying amount of time. Thus we hypothesize that students finish the course on at their own pace.
+From our graph, we see that students that come close to completion ,do so in a varying amount of time. Thus we hypothesize that students finish the course on at their own pace.
+We can also see a linear line in the beginning which becomes somewhat logarithmic. This is due to high number of beginner students with low completion percentages ,and students that finish the course in a longer strech of time.
