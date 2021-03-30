@@ -122,9 +122,6 @@ Link to RStudio Cloud shared project: https://rstudio.cloud/
 ***
 
 ## Introduction 
-
-*Introduction sentence*
-
 The profitability of a flight school business is reliant upon two critical factors: The efficiency of flight training and the success of students post that training.
 
 Our analysis seeks to improve two main aspects of the training process. The first aspect is scheduling. Through our analysis, we aimed to determine whether training sessions are being scheduled efficiently, and if not, how can they be scheduled more efficiently. The second aspect of our analysis covers the ideal conditions that lead to student success.
@@ -401,7 +398,3 @@ We can also see a linear trend in the beginning of the graph which becomes somew
 We concluded there are several aspects of the training school's training process that can be adjusted to reliably create a more efficient system. More efficient instructors, as determined by our efficiency metric, should be assigned more students, especially during busy periods. This will allow the flight school to maximize the number of students going through the school and thus will increase profits. Additionally, the flight school should aim to train more students in the month of September as wind conditions are similar to the month of August but total air traffic decreases, thus making flying in September likely safer. 
 
 A benchmark for student success was determined to be the student's first solo flight. Students who have completed a solo flight on average are much more experienced. Taking a measure of when 70% of students had completed a specific exercise, we derived a suggested order of exercises. Finally, we concluded that there is currently no set pace for completing the flight course as students with varying course completion have been in the course for inconsistent periods of time.
-
-## Appendix 
-
-(*Everything here does not count towards page limit*)
