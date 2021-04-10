@@ -306,7 +306,7 @@ unnested_clean_data %>%
   theme(plot.title = element_text(hjust = 0.5))
   ```
   
-The boxplot suggests that there is a significant difference in the number of exercises completed between both the groups. Hence, we attempted to find the collection of exercises that were typically completed before a student flew solo and graphed the average count of each exercise completed at least once to report our findings. Additionally, we discovered that each instructor's qualifying collection of exercises to fly solo differed from others' with instructors 3 and 11 requiring lesser frequencies of exercises 16,17,18,30 than the average and 4,6,7,9 requiring higher. Moreover, instructors 10 and 14 do not have a distinguishing qualifying collection with exercise counts for both groups of students, those who flew solo and those who did not, are very close to each other (see note 3 in appendix for corresponding tables).
+The boxplot suggests that there is a significant difference in the number of exercises completed between both the groups. Hence, we attempted to find the collection of exercises that were typically completed before a student flew solo and graphed the average count of each exercise completed. Additionally, we discovered that each instructor's qualifying collection of exercises to fly solo differed from others' with instructors 3 and 11 requiring lesser frequencies of exercises 16,17,18,30 than the average and 4,6,7,9 requiring higher. Moreover, instructors 10 and 14 do not have a distinguishing qualifying collection with exercise counts for both groups of students are very close to each other (see note 3 in appendix for corresponding tables).
 
 We checked the training data to see if there is a specific order in which exercises should be completed. To determine the order in which the exercises should be completed, we found the session at which at least 70% of students who completed that number of sessions, completed the given exercise.
  
@@ -439,7 +439,8 @@ results_from_test = z[5] #A string so modify as you need for inline input
 
 We see that the P-value is indeed very strong (<0.0001). And at 5% significance level we reject the null hypothesis and accept the alternate hypothesis. Thereby, we can conclude that a solo flight is a strong metric for students' progress as it requires a certain level of prior experience and skill.
 
-3. Tables 
+3. 
+Instructor vs Avg Exercise Count of students before first solo flight
 ```{r, echo = FALSE, warnings = FALSE}
 unnested_clean_data %>% 
   unite("Date", c(Year, Month, Day), sep = "-") %>% 
@@ -481,11 +482,11 @@ avg_ex_non_solo_per_ins %>%
          prop_18 = ((`18.y`-`18.x`)/`18.x`), prop_30 = ((`30.y`-`30.x`)/`30.x`)) %>%
   select(Instructor_ID, prop_16, prop_17, prop_18, prop_30) -> prop_per_ins
 
-kable(avg_ex_solo_per_ins, 
-      caption = "Instructor vs Avg Exercise Count before first solo flight") %>% 
+kable(avg_ex_solo_per_ins) %>% 
   kable_styling(latex_options = "hold_position")
-
-kable(prop_per_ins, 
-      caption = "Instructor vs Proportional change in avg Exercise Count") %>% 
+```
+Instructor vs Avg Exercise Count of students who never flew solo
+```
+kable(avg_ex_non_solo_per_ins) %>% 
   kable_styling(latex_options = "hold_position")
 ```
