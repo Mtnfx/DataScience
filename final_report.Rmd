@@ -177,6 +177,28 @@ weather%>%
   mutate(Month = month(Month, label = T))%>%
   select(SPEED_MAX_GUST, Month)%>%
   ggplot(aes(x=Month, y=SPEED_MAX_GUST)) + geom_bar(stat = "identity") + ggtitle("Month vs Speed of Max Gust")
+  clean_data %>% 
+  distinct( Session_ID, .keep_all = T) %>% 
+  # split the exercises string into a "list" column w str_split()
+  mutate( Exercises = str_split(Exercises, ",") ) %>%  
+  # and expand list contents into multiple rows w/ unnest()
+  unnest( Exercises) -> unnested_clean_data
+
+unnested_clean_data %>% 
+  unite("Date", c(Year, Month, Day), sep = "-") %>% 
+  mutate(Date = as.Date(Date)) %>% 
+  inner_join(date_of_solo, by = "Student_ID") %>% 
+  filter(Date.x < Date.y) %>% 
+  arrange(Exercises) %>% 
+  mutate( Exercises = as.integer(Exercises)) %>% 
+  mutate(Exercises = factor(Exercises)) %>% 
+  group_by(Exercises) %>%
+  summarise( count = n() ) %>% 
+  ggplot(aes(x=Exercises, y = count/36)) + 
+  ylab("Average Count") +
+  geom_bar(stat = "identity") +
+  ggtitle("Average Count vs Exercise") +
+  theme(plot.title = element_text(hjust = 0.5))
 ```
 The data comparing the maximum speed of gust to the month of a year over past 5 years shows a trend line steadily increasing from January to March and then decreasing from March to the least in July. An increase is then observed from August to December. The number of sessions conducted per month for the given date range suggest that the conduction of sessions is least in the month of April from where it starts rising and reaches its maximum in August. There is a steady increase from August up to April. The rate of decline in the demand increases and becomes steady as we move through the year up to December.
 
@@ -215,10 +237,10 @@ ggplot(data = Instructor_Data, aes(x = Total_Hours, y = Total_Exercises)) + geom
   geom_smooth(method='lm', formula= y~x, se = FALSE)+  geom_text(aes(x = 250, y = 300), label = Coeftext) +
   ggtitle("Hours of Instruction by Instructors vs Total Exercises Students Completed")
 
-ggplot(data = Instructor_Data, mapping = aes(x = Average_Hours, y = Hourly_Exercises)) + geom_point() + geom_text(aes(x = Average_Hours, y = Hourly_Exercises, label = Instructor_ID, hjust = 0), nudge_x = 1) + geom_smooth(method = 'lm', formula = y~x, se = FALSE) + ggtitle("Hours Instructed per Year vs Hourly Exercises Completed")
+ggplot(data = Instructor_Data, mapping = aes(x = Average_Hours, y = Hourly_Exercises)) + geom_point() + geom_text(aes(x = Average__Yearly_Hours, y = Hourly_Exercises, label = Instructor_ID, hjust = 0), nudge_x = 1) + geom_smooth(method = 'lm', formula = y~x, se = FALSE) + ggtitle("Hours Instructed per Year vs Hourly Exercises Completed")
 ```
 
-We found that the Pearson correlation coefficient was approximately `r {coef}` indicating a very strong correlation. Based on this, we concluded that the number of exercises students completed under each instructor per hour of work is a strong measure of efficiency. We believe that ideally instructors should be getting a number of hours directly proportional to their efficiency. Thus, we generated the second graph above to determine a roughly ideal distribution of hours for each instructor. Instructors whose points lie above the line are, by our model, being given too many hours relative to average efficiency and instructors below the line are being given too few hours relative to their efficiency. To maximize profits, instructors should be training students as fast as possible during the times of high demand. While there is a minimum hours limit, it is reasonable to believe that instructors that complete more exercises in a set time will have students perform better. Thus, their students will have a better chance of passing the flight exam the first time.`
+Average yearly hours for each instructor is defined as the difference between the first and last session each instructor conducted divided by the apporximate length of a year (365.25 days). We found that the Pearson correlation coefficient was approximately `r {coef}` indicating a very strong correlation. Based on this, we concluded that the number of exercises students completed under each instructor per hour of work is a strong measure of efficiency. We believe that ideally instructors should be getting a number of hours directly proportional to their efficiency. Thus, we generated the second graph above to determine a roughly ideal distribution of hours for each instructor. Instructors whose points lie above the line are, by our model, being given too many hours relative to average efficiency and instructors below the line are being given too few hours relative to their efficiency. To maximize profits, instructors should be training students as fast as possible during the times of high demand. While there is a minimum hours limit, it is reasonable to believe that instructors that complete more exercises in a set time will have students perform better. Thus, their students will have a better chance of passing the flight exam the first time.`
 
 ### Student Success
 
