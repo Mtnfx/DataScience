@@ -162,6 +162,7 @@ air_movements %>%
 ### Scheduling
 
 ```{r echo=FALSE, cache=FALSE, results=FALSE, warning=FALSE, comment=FALSE, out.width = '50%'}
+
 #Months vs total number of sessions
 clean_data %>% 
   mutate(Month = month(Month, label = T))%>%
@@ -206,12 +207,14 @@ We continued our analysis by establishing a reliable measure of instructor effic
 new_clean_data = clean_data %>% mutate(Exercise_Count = str_count(Exercises, ',') + 1, Date = as.Date(ISOdate(Year, Month, Day)))
 # Graphing Information on Instructors
 Instructor_Data = new_clean_data %>% group_by(Instructor_ID) %>% summarise(Total_Hours = sum(Duration), Total_Exercises = sum(Exercise_Count), Hourly_Exercises = Total_Exercises/Total_Hours, Years_Worked = as.numeric(max(Date)- min(Date))/365.25, Average_Hours = (sum(Duration)/Years_Worked))
+
 # Graph total hours against total exercises students completed under each instructor (with line of best fit and r value
 coef = cor(Instructor_Data %>% select(Total_Hours), Instructor_Data %>% select(Total_Exercises), method = c("pearson"))[1][1]
 Coeftext = paste("r =" , toString(coef))
 ggplot(data = Instructor_Data, aes(x = Total_Hours, y = Total_Exercises)) + geom_point()  +
   geom_smooth(method='lm', formula= y~x, se = FALSE)+  geom_text(aes(x = 250, y = 300), label = Coeftext) +
   ggtitle("Hours of Instruction by Instructors vs Total Exercises Students Completed")
+
 ggplot(data = Instructor_Data, mapping = aes(x = Average_Hours, y = Hourly_Exercises)) + geom_point() + geom_text(aes(x = Average_Hours, y = Hourly_Exercises, label = Instructor_ID, hjust = 0), nudge_x = 1) + geom_smooth(method = 'lm', formula = y~x, se = FALSE) + ggtitle("Hours Instructed per Year vs Hourly Exercises Completed")
 ```
 
@@ -279,6 +282,7 @@ $H_0: \mu_{solo} - \mu_{non_solo} =0$ vs $H_A: \mu_{solo} - \mu_{non_solo} \neq 
   mutate(solo_flight = factor(solo_flight, levels = c(FALSE,TRUE), 
                               labels = c("non-solo", "solo"))) %>%
   coin::independence_test(totalEx ~ solo_flight, data = ., distribution = "approx"))
+
 results_from_test = z[5] #A string so modify as you need for inline input
 ```
 
@@ -302,6 +306,7 @@ ex_n_sessions = function(df, n){
   }
   return(ex_cmp_proportion)
 }
+
 build_order_table = function(df, n_sessions){
   exercises = data.frame(Exercise = integer(), Expected_Session = integer())
   for (i in 1:n_sessions){
@@ -317,6 +322,7 @@ build_order_table = function(df, n_sessions){
   exercises= exercises %>% arrange(Expected_Session) %>% distinct(Exercise, .keep_all = TRUE)
   return(exercises)
 }
+
 tbl = build_order_table(clean_data, 50) 
 tbl1 = tbl %>% slice(1:8)
 tbl2 = tbl %>% slice(9:16)
@@ -327,12 +333,8 @@ kable(list(tbl1,tbl2, tbl3)) %>% kable_styling(latex_options = "hold_position")
 The above table displays the implied order of exercises based on the criteria explained above. This order seems to suggest that while exercises 1 to 5 are important to complete immediately, the later exercises require much more experience, as exercises 19, 22, 23, and 24 were not completed by 70% of students until after 40 or more sessions.
 
 We analyzed how many students met the flight license requirements, and compared their progress.
-We have analyzed how close each student has come to completing their pilot license requirement, based on each category.
-The percentage of completion of the total hours requirement(45hrs needed), total solo hours requirement(12hrs needed), the total dual hours requirement(17hrs needed),
-the total dual cross-country hours requirement(3hrs needed),
-the total solo cross-country hours requirement(5hrs needed), and the total instrument hours requirement(5hrs needed).
-Overall is the weighted mean of each category (based on hours), which is used to estimate their overall progress percentage towards their flight license.
-There could be a bias, as students that have been in the program longer would have a much higher overall progress.
+We have analyzed how close each student has come to completing their pilot license requirement, based on each requiremennt needed to graduate (for exact requirements, see note 1 in appendix).
+Overall is the weighted mean of each requirement (based on hours), which is used to estimate each students' overall progress percentage towards their flight license.
 Thus, we graph the performance of each student against their enrollment duration in the flight school. We assume each student has completed 10 hours of pre-flight training.
 
 ```{r, warning=FALSE, out.width = "50%", fig.align = "left"}
@@ -360,7 +362,7 @@ tbl3 = percents%>%select(Student_ID,Overall) %>% slice(21:30)
 kable(list(tbl1,tbl2,tbl3), caption="Top 30 Students by Course Completion")
 ```
 
-```{r, echo=FALSE, out.width="50%", fig.align = "center"}
+```{r, echo=FALSE, out.width="50%"}
 Student_Time = data %>% unite("Date", c(Year, Month, Day), sep = "-") %>% 
   mutate(Date = as.Date(Date)) %>% group_by(Instructor_ID,Student_ID) %>% 
   distinct(Session_ID,.keep_all = T) %>% mutate(Diff = Date - lag(Date)) %>%
@@ -376,13 +378,25 @@ Student_Time = data %>% unite("Date", c(Year, Month, Day), sep = "-") %>%
 #percents %>% inner_join(Student_Time,by = c("Student_ID","Instructor_ID")) %>%
 #  ggplot(aes(x=Time,y=Total_Solo))+ geom_col()+geom_smooth()
 percents %>% inner_join(Student_Time,by = c("Student_ID","Instructor_ID")) %>% 
-  ggplot(aes(x=Time,y=Overall))+ geom_point()+geom_smooth()+labs(title = "Overall Percentage Completion VS Time in Flight School",x = "Time in School",y="Overall % completed")
+  ggplot(aes(x=Time,y=Overall))+ geom_point()+geom_smooth()+labs(title = "Overall Percentage Completion VS Time in Flight School (All Students)", x = "Time in School",y="Overall % completed")
+
+percents %>% filter(Total_Solo>0) %>% inner_join(Student_Time,by = c("Student_ID","Instructor_ID")) %>% 
+  ggplot(aes(x=Time,y=Overall))+ geom_point()+geom_smooth()+labs(title = "Overall Percentage Completion VS Time in Flight School (Students Who Flew Solo)",x = "Time in School",y="Overall % completed")
 ```
 
-`Note that the variable Time In School is equal to the difference between the first and last session a student completed` We observed that only Student# 88 completed all the requirements for the pilot's license, however multiple students have come very close to completion.
+Note that time in school is defined as the difference (in days) between the first and the last session a student completes. We observed that only Student #88 completed all the requirements for the pilot's license, however multiple students have come very close to completion.
 Furthermore, from our graph, we see that students that come close to completion, do so in a varying amount of time. Thus we hypothesize that students finish the course at their own pace.
 We can also see a linear trend in the beginning of the graph which becomes somewhat logarithmic later. This is due to the high number of beginner students with low completion percentages, and the students that complete the course in a longer period of time.
 
 ## Summary 
 
 We concluded there are several aspects of the training school's training process that can be adjusted to create a more efficient system. More efficient instructors should be assigned more students, especially during busy periods. This will allow the flight school to maximize the number of students going through the school and thus will increase profits. Additionally, the flight school should aim to train more students in the month of September as wind conditions are similar to the month of August but total air traffic decreases, thus making flying in September safer. A benchmark for student success was determined to be the student's first solo flight. Taking a measure of when 70% of students had completed a specific exercise, we derived a suggested order of exercises. Finally, we concluded that there is currently no set pace for completing the flight course as students with varying course completion have been in the course for inconsistent periods of time.
+
+
+## Appendix
+1. the exact training time requirements to complete the flight course are listed as follows:
+- 45 Total Flight Hours
+- 17 Total  Dual Flight Hours
+- 3 Total Dual Cross Country Hours
+- 5 Solo Cross Country Hours
+- 5 Instrument Hours
