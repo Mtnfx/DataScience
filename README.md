@@ -10,10 +10,9 @@ Project for STAA57
 -	Break down air traffic by aircraft type
 -	Be explicit in what locations air traffic covers
 -	Consider a single year air traffic analysis (Maybe average?)
--	Describe Average_Hours variable (instructor efficiency)
--	Clarify Time_In_School variable 
--	Filter by first solo flight for completion?
--	Expected session for exercise graph was well formatted and well done
+-	Describe Average_Hours variable (instructor efficiency) 
+-	Clarify Time_In_School variable `DONE`
+-	Filter by first solo flight for completion? `DONE`
 
 
 Welcome everyone!
