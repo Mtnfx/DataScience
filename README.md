@@ -1,6 +1,21 @@
 # DataScience
 Project for STAA57
 
+## Project Final Report Checklist
+-	Recommend putting introduction in list form
+-	Being more explicit regarding defining student success in intro
+-	Bias in first graph? (Center closed in April 2020, possibly scrap data from 2020)
+-	Fix >39 wind speed processing error
+-	Histograms should not have gaps (Use density or scatter instead?)
+-	Break down air traffic by aircraft type
+-	Be explicit in what locations air traffic covers
+-	Consider a single year air traffic analysis (Maybe average?)
+-	Describe Average_Hours variable (instructor efficiency)
+-	Clarify Time_In_School variable 
+-	Filter by first solo flight for completion?
+-	Expected session for exercise graph was well formatted and well done
+
+
 Welcome everyone!
 
 This will act as a sort of message board for our group.
