@@ -244,9 +244,7 @@ Average yearly hours for each instructor is defined as the difference between th
 
 ### Student Success
 
-To establish that flying solo can be considered to be a metric for students' progress we tested if there is a difference in the average number of exercises completed by students that flew solo and the number of exercises completed by students that never flew solo. Only exercises coompleted up to and including  the first solo flight count for this comparison. The first solo flight is determined to be the first session with solo in training type.
-
-We first plotted side-by-side boxplots of the number of exercises completed by both groups of students.
+To establish that flying solo can be considered to be a metric for students' progress we tested if there is a difference in the average number of exercises completed by students that flew solo and the number of exercises completed by students that never flew solo. Only exercises coompleted up to and including  the first solo flight count for this comparison. The first solo flight is determined to be the first session with solo in training type. We first plotted side-by-side boxplots of the number of exercises completed by both groups of students.
 ```{r, echo=FALSE, out.width = "50%"}
 # Student ID, Total Completed Exercises before and including First Solo
 clean_data %>% unite("Date", c(Year, Month, Day), sep = "-") %>% 
@@ -288,31 +286,35 @@ clean_data %>% unite("Date", c(Year, Month, Day), sep = "-") %>%
   xlab("Solo Flight") + ylab("Exercises") + 
   ggtitle("Number of Exercises Completed vs Solo Flight") +
   theme(plot.title = element_text(hjust = 0.5))
+  
+  clean_data %>% 
+  distinct( Session_ID, .keep_all = T) %>% 
+  # split the exercises string into a "list" column w str_split()
+  mutate( Exercises = str_split(Exercises, ",") ) %>%  
+  # and expand list contents into multiple rows w/ unnest()
+  unnest( Exercises) -> unnested_clean_data
+  
+  #Bargraph of average count of exercises.
+unnested_clean_data %>% 
+  unite("Date", c(Year, Month, Day), sep = "-") %>% 
+  mutate(Date = as.Date(Date)) %>% 
+  inner_join(date_of_solo, by = "Student_ID") %>% 
+  filter(Date.x < Date.y) %>% 
+  arrange(Exercises) %>% 
+  mutate( Exercises = as.integer(Exercises)) %>% 
+  mutate(Exercises = factor(Exercises)) %>% 
+  group_by(Exercises) %>%
+  summarise( count = n() ) %>% 
+  ggplot(aes(x=Exercises, y = count/36)) + 
+  ylab("Average Count") +
+  geom_bar(stat = "identity") +
+  ggtitle("Average Count vs Exercise") +
+  theme(plot.title = element_text(hjust = 0.5))
   ```
   
-The graph suggests that there is a significant difference in the number of exercises completed between both the groups.  
+The boxplot suggests that there is a significant difference in the number of exercises completed between both the groups. Hence, we attempted to find the collection of exercises that were typically completed before a student flew solo and graphed the average count of each exercise completed at least once to report our findings. Additionally, we discovered that each instructors qualifying collection differed from others' with instructors 3 and 11 requiring lesser frequencies of exercises 16,17,18,30 than the average and 4,6,7,9 requiring higher. Moreover, instructors 10 and 14 do not have a distinguishing qualifying collection with proportional changes in frequencies between -1 and 1.
 
-Hence, we conducted a hypothesis test to validate our conclusion from the graph at 5% significance level.
-
-$H_0: \mu_{solo} - \mu_{non_solo} =0$ vs $H_A: \mu_{solo} - \mu_{non_solo} \neq 0$
-
-```{r, echo = FALSE, warnings = FALSE}
-  
-  # Independence Test  to check significance of difference between exercises of solo and non-solo fliers.
-  z = capture.output(solo %>% union(non_solo) %>% 
-  select(solo_flight, totalEx) %>% 
-  mutate(solo_flight = factor(solo_flight, levels = c(FALSE,TRUE), 
-                              labels = c("non-solo", "solo"))) %>%
-  coin::independence_test(totalEx ~ solo_flight, data = ., distribution = "approx"))
-
-results_from_test = z[5] #A string so modify as you need for inline input
-```
-
-`r {results_from_test}`
-
-We see that the P-value is indeed very strong (<0.0001). And at 5% significance level we reject the null hypothesis and accept the alternate hypothesis. Thereby, we can conclude that a solo flight is a strong metric for students' progress as it requires a certain level of prior experience and skill.
- 
- We checked the training data to see if there is a specific order in which exercises should be completed. To determine the order in which the exercises should be completed, we found the session at which at least 70% of students who completed that number of sessions, completed the given exercise.
+We checked the training data to see if there is a specific order in which exercises should be completed. To determine the order in which the exercises should be completed, we found the session at which at least 70% of students who completed that number of sessions, completed the given exercise.
  
  ```{r, echo=FALSE, warning=FALSE}
 clean_data = clean_data %>% unite("Date", Year,Month,Day,sep="-", remove=FALSE) %>% mutate(Date = ymd(Date))
@@ -422,3 +424,24 @@ We concluded there are several aspects of the training school's training process
 - 3 Total Dual Cross Country Hours
 - 5 Solo Cross Country Hours
 - 5 Instrument Hours
+
+
+2. We conducted a hypothesis test to validate our conclusion from the boxplot of mean exercises completed between students that flew solo and those that did not at 5% significance level.
+
+$H_0: \mu_{solo} - \mu_{non_solo} =0$ vs $H_A: \mu_{solo} - \mu_{non_solo} \neq 0$
+
+```{r, echo = FALSE, warnings = FALSE}
+  
+  # Independence Test  to check significance of difference between exercises of solo and non-solo fliers.
+  z = capture.output(solo %>% union(non_solo) %>% 
+  select(solo_flight, totalEx) %>% 
+  mutate(solo_flight = factor(solo_flight, levels = c(FALSE,TRUE), 
+                              labels = c("non-solo", "solo"))) %>%
+  coin::independence_test(totalEx ~ solo_flight, data = ., distribution = "approx"))
+
+results_from_test = z[5] #A string so modify as you need for inline input
+```
+
+`r {results_from_test}`
+
+We see that the P-value is indeed very strong (<0.0001). And at 5% significance level we reject the null hypothesis and accept the alternate hypothesis. Thereby, we can conclude that a solo flight is a strong metric for students' progress as it requires a certain level of prior experience and skill.
