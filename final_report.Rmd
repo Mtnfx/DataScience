@@ -198,7 +198,7 @@ seasons_four <- tibble(
 air_movements %>%
   inner_join(seasons_four, by = c("Month"))%>%
   rename(movement_type = 'Civil and military movements' )%>%
-  filter(movement_type != 'Total civil movements' & movement_type != 'Total military movements') ->
+  filter(movement_type == 'Total civil movements' | movement_type == 'Total military movements') ->
 seasonal_air_movements
 
 seasonal_air_movements %>%
