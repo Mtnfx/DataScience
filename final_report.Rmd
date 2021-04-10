@@ -117,12 +117,15 @@ for (i in 1:length(invalid_points)){
 
 Group 14 (Alec Larsen, Aditya Kulkarni, Vishal Sahoo, MD Wasim)    
 
-Link to RStudio Cloud shared project: https://rstudio.cloud/spaces/115177/project/2210076
+Link to RStudio Cloud shared project: https://rstudio.cloud/spaces/115177/project/2422226
 
 ***
 
 ## Introduction 
-The profitability of a flight school business is reliant upon two critical factors: The efficiency of flight training and the success of students post that training. Our analysis seeks to improve two main aspects of the training process. The first aspect is scheduling. Through our analysis, we aimed to determine whether training sessions are being scheduled efficiently, and if not, how can they be scheduled more efficiently. The second aspect of our analysis covers the ideal conditions that lead to student success. We define student success as completion of the first solo flight and subsequently the completion of the course. We conducted our analysis through a series of graphs, tables, and statistical tests to prove or disprove our predictions.
+The profitability of a flight school business is reliant upon two critical factors: The efficiency of flight training and the success of students post that training. The two aspects of training we will focus on are: 
+- Scheduling: We aimed to determine whether training sessions are being planned efficiently, and if not, how can they can be. 
+- Student Success: We determine the ideal conditions that lead to student success. We define student success as completion of the first solo flight and subsequently, the completion of the course. 
+We conducted our analysis through a series of graphs, tables, and statistical tests to prove or disprove our predictions.
 
 ### Data 
 
@@ -159,7 +162,6 @@ air_movements %>%
 ### Scheduling
 
 ```{r echo=FALSE, cache=FALSE, results=FALSE, warning=FALSE, comment=FALSE, out.width = '50%'}
-
 #Months vs total number of sessions
 clean_data %>%
   filter(Year!="2020" & Year!="2015")%>%
@@ -200,7 +202,6 @@ air_movements %>%
   rename(movement_type = 'Civil and military movements' )%>%
   filter(movement_type == 'Total civil movements' | movement_type == 'Total military movements') ->
 seasonal_air_movements
-
 seasonal_air_movements %>%
   filter(Year == "2019")%>%
   group_by(Month, movement_type)%>%
@@ -215,14 +216,12 @@ We continued our analysis by establishing a reliable measure of instructor effic
 new_clean_data = clean_data %>% mutate(Exercise_Count = str_count(Exercises, ',') + 1, Date = as.Date(ISOdate(Year, Month, Day)))
 # Graphing Information on Instructors
 Instructor_Data = new_clean_data %>% group_by(Instructor_ID) %>% summarise(Total_Hours = sum(Duration), Total_Exercises = sum(Exercise_Count), Hourly_Exercises = Total_Exercises/Total_Hours, Years_Worked = as.numeric(max(Date)- min(Date))/365.25, Average_Hours = (sum(Duration)/Years_Worked))
-
 # Graph total hours against total exercises students completed under each instructor (with line of best fit and r value
 coef = cor(Instructor_Data %>% select(Total_Hours), Instructor_Data %>% select(Total_Exercises), method = c("pearson"))[1][1]
 Coeftext = paste("r =" , toString(coef))
 ggplot(data = Instructor_Data, aes(x = Total_Hours, y = Total_Exercises)) + geom_point()  +
   geom_smooth(method='lm', formula= y~x, se = FALSE)+  geom_text(aes(x = 250, y = 300), label = Coeftext) +
   ggtitle("Hours of Instruction by Instructors vs Total Exercises Students Completed")
-
 ggplot(data = Instructor_Data, mapping = aes(x = Average_Hours, y = Hourly_Exercises)) + geom_point() + geom_text(aes(x = Average_Hours, y = Hourly_Exercises, label = Instructor_ID, hjust = 0), nudge_x = 1) + geom_smooth(method = 'lm', formula = y~x, se = FALSE) + ggtitle("Hours Instructed per Year vs Hourly Exercises Completed")
 ```
 
@@ -306,7 +305,7 @@ unnested_clean_data %>%
   theme(plot.title = element_text(hjust = 0.5))
   ```
   
-The boxplot suggests that there is a significant difference in the number of exercises completed between both the groups. Hence, we attempted to find the collection of exercises that were typically completed before a student flew solo and graphed the average count of each exercise completed. Additionally, we discovered that each instructor's qualifying collection of exercises to fly solo differed from others' with instructors 3 and 11 requiring lesser frequencies of exercises 16,17,18,30 than the average and 4,6,7,9 requiring higher. Moreover, instructors 10 and 14 do not have a distinguishing qualifying collection with exercise counts for both groups of students are very close to each other (see note 3 in appendix for corresponding tables).
+The boxplot suggests that there is a significant difference in the number of exercises completed between both the groups. Hence, we attempted to find the collection of exercises that were typically completed before a student flew solo and graphed the average count of each exercise completed. Additionally, we discovered that each instructor's qualifying collection of exercises to fly solo differed from others' with instructors 3 and 11 requiring lesser frequencies of exercises 16,17,18,30 than the average and 4,6,7,9 requiring higher. Moreover, instructors 10 and 14 do not have a distinguishing qualifying collection with exercise counts for both groups of students are very close to each other (see note 2 in appendix for corresponding tables).
 
 We checked the training data to see if there is a specific order in which exercises should be completed. To determine the order in which the exercises should be completed, we found the session at which at least 70% of students who completed that number of sessions, completed the given exercise.
  
@@ -324,7 +323,6 @@ ex_n_sessions = function(df, n){
   }
   return(ex_cmp_proportion)
 }
-
 build_order_table = function(df, n_sessions){
   exercises = data.frame(Exercise = integer(), Expected_Session = integer())
   for (i in 1:n_sessions){
@@ -340,7 +338,6 @@ build_order_table = function(df, n_sessions){
   exercises= exercises %>% arrange(Expected_Session) %>% distinct(Exercise, .keep_all = TRUE)
   return(exercises)
 }
-
 tbl = build_order_table(clean_data, 50) 
 tbl1 = tbl %>% slice(1:8)
 tbl2 = tbl %>% slice(9:16)
@@ -351,7 +348,7 @@ kable(list(tbl1,tbl2, tbl3), caption="Suggested Order of Exercises") %>% kable_s
 The above table displays the implied order of exercises based on the criteria explained above. This order seems to suggest that while exercises 1 to 5 are important to complete immediately, the later exercises require much more experience, as exercises 19, 22, 23, and 24 were not completed by 70% of students until after 40 or more sessions.
 
 We analyzed how many students met the flight license requirements, and compared their progress based on the amount of time spent in the program.
-We have analyzed how close each student has come to completing their pilot license requirement, based on each requirement needed to graduate (for exact requirements, see note 1 in appendix).
+We have analyzed how close each student has come to completing their pilot license requirement, based on each requirement needed to graduate (for exact requirements, see note 3 in appendix).
 Overall is the weighted mean of each requirement (based on hours), which is used to estimate each students' overall progress percentage towards their flight license.
 
 ```{r, warning=FALSE, out.width = "50%", fig.align = "left"}
@@ -396,7 +393,6 @@ Student_Time = data %>% unite("Date", c(Year, Month, Day), sep = "-") %>%
 #  ggplot(aes(x=Time,y=Total_Solo))+ geom_col()+geom_smooth()
 percents %>% inner_join(Student_Time,by = c("Student_ID","Instructor_ID")) %>% 
   ggplot(aes(x=Time,y=Overall))+ geom_point()+geom_smooth()+labs(title = "Overall Percentage Completion VS Time in Flight School (All Students)", x = "Time in School",y="Overall % completed")
-
 percents %>% filter(Total_Solo>0) %>% inner_join(Student_Time,by = c("Student_ID","Instructor_ID")) %>% 
   ggplot(aes(x=Time,y=Overall))+ geom_point()+geom_smooth()+labs(title = "Overall Percentage Completion VS Time in Flight School (Students Who Flew Solo)",x = "Time in School",y="Overall % completed")
 ```
@@ -411,15 +407,11 @@ We concluded there are several aspects of the training school's training process
 
 
 ## Appendix
-1. the exact training time requirements to complete the flight course are listed as follows:
-- 45 Total Flight Hours
-- 17 Total  Dual Flight Hours
-- 3 Total Dual Cross Country Hours
-- 5 Solo Cross Country Hours
-- 5 Instrument Hours
+
+#### Note 1:
 
 
-2. We conducted a hypothesis test to validate our conclusion from the boxplot of mean exercises completed between students that flew solo and those that did not at 5% significance level.
+We conducted a hypothesis test to validate our conclusion from the boxplot of mean exercises completed between students that flew solo and those that did not at 5% significance level.
 
 $H_0: \mu_{solo} - \mu_{non_solo} =0$ vs $H_A: \mu_{solo} - \mu_{non_solo} \neq 0$
 
@@ -431,7 +423,6 @@ $H_0: \mu_{solo} - \mu_{non_solo} =0$ vs $H_A: \mu_{solo} - \mu_{non_solo} \neq 
   mutate(solo_flight = factor(solo_flight, levels = c(FALSE,TRUE), 
                               labels = c("non-solo", "solo"))) %>%
   coin::independence_test(totalEx ~ solo_flight, data = ., distribution = "approx"))
-
 results_from_test = z[5] #A string so modify as you need for inline input
 ```
 
@@ -439,13 +430,15 @@ results_from_test = z[5] #A string so modify as you need for inline input
 
 We see that the P-value is indeed very strong (<0.0001). And at 5% significance level we reject the null hypothesis and accept the alternate hypothesis. Thereby, we can conclude that a solo flight is a strong metric for students' progress as it requires a certain level of prior experience and skill.
 
-3. 
+
+#### Note 2:
+
+
 Instructor vs Avg Exercise Count of students before first solo flight
 ```{r, echo = FALSE, warnings = FALSE}
 unnested_clean_data %>% 
   unite("Date", c(Year, Month, Day), sep = "-") %>% 
   mutate(Date = as.Date(Date)) -> cd
-
 cd %>% 
   inner_join(date_of_solo, by = "Student_ID") %>% 
   filter(Date.x < Date.y) %>% 
@@ -461,7 +454,6 @@ cd %>%
   group_by(Instructor_ID) %>% 
   summarise( `16` = sum(`16`)/n(), `17` = sum(`17`)/n(), `18` = sum(`18`)/n(),
              `30` = sum(`30`)/n()) -> avg_ex_solo_per_ins
-
 cd %>%
   anti_join(date_of_solo, by = "Student_ID") %>% 
   arrange(Exercises) %>% 
@@ -475,7 +467,6 @@ cd %>%
   group_by(Instructor_ID) %>% 
   summarise( `16` = sum(`16`)/n(), `17` = sum(`17`)/n(), `18` = sum(`18`)/n(),
              `30` = sum(`30`)/n()) -> avg_ex_non_solo_per_ins
-
 avg_ex_non_solo_per_ins %>% 
   inner_join(avg_ex_solo_per_ins, by = "Instructor_ID", fill_na = 0) %>% 
   mutate(prop_16 = ((`16.y`-`16.x`)/`16.x`), prop_17 = ((`17.y`-`17.x`)/`17.x`),
@@ -485,8 +476,29 @@ avg_ex_non_solo_per_ins %>%
 kable(avg_ex_solo_per_ins) %>% 
   kable_styling(latex_options = "hold_position")
 ```
+
 Instructor vs Avg Exercise Count of students who never flew solo
-```
+```{r, echo = FALSE, warnings = FALSE}
 kable(avg_ex_non_solo_per_ins) %>% 
   kable_styling(latex_options = "hold_position")
 ```
+
+
+#### Note 3:
+
+
+The exact training time requirements to complete the flight course are listed as follows:
+
+- 45 Total Flight Hours
+
+- 17 Total  Dual Flight Hours
+
+- 3 Total Dual Cross Country Hours
+
+- 5 Solo Cross Country Hours
+
+- 5 Instrument Hours
+
+The following pdf contains exact specifications for training requirements:
+
+https://durhamflightcentre.com/wp-content/uploads/2018/09/PPLredbird_Dec15.pdf
