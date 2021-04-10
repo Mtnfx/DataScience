@@ -420,7 +420,6 @@ We concluded there are several aspects of the training school's training process
 - 5 Solo Cross Country Hours
 - 5 Instrument Hours
 
-
 2. We conducted a hypothesis test to validate our conclusion from the boxplot of mean exercises completed between students that flew solo and those that did not at 5% significance level.
 
 $H_0: \mu_{solo} - \mu_{non_solo} =0$ vs $H_A: \mu_{solo} - \mu_{non_solo} \neq 0$
@@ -440,3 +439,5 @@ results_from_test = z[5] #A string so modify as you need for inline input
 `r {results_from_test}`
 
 We see that the P-value is indeed very strong (<0.0001). And at 5% significance level we reject the null hypothesis and accept the alternate hypothesis. Thereby, we can conclude that a solo flight is a strong metric for students' progress as it requires a certain level of prior experience and skill.
+
+3. 
