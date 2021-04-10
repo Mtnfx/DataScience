@@ -177,7 +177,7 @@ weather%>%
   select(SPEED_MAX_GUST, Month)%>%
   ggplot(aes(x=Month, y=SPEED_MAX_GUST)) + geom_bar(stat = "identity") + ggtitle("Month vs Speed of Max Gust")
 ```
-The data comparing the maximum speed of gust to the month of a year over past 5 years shows a trend line steadily increasing from January to March and then decreasing from March to the least in July. An increase is then observed from August to December. The number of sessions conducted per month for the given date range suggest that the conduction of sessions is least in the month of April from where it starts rising and reaches its maximum in August. There is a steady increase from August up to April. The rate of decline in the demand increases and becomes steady as we move through the year up to December.
+The data comparing the maximum speed of gust to the month of a year from 2011 to 2019 shows a trend line steadily increasing from January to March and then decreasing from March to the least in September. An increase is then observed till December. The number of sessions conducted per month for the given date range suggest that the conduction of sessions is least in the month of Januaru from where it starts rising and reaches its maximum in August. There is a steady increase from August up to December. A dramatic increase is observed in the month of May.
 
 ```{r echo=FALSE, cache=FALSE, results=FALSE, warning=FALSE, comment=FALSE, out.width = "50%"}
 #Speed of max gust vs number of sessions
@@ -208,7 +208,7 @@ seasonal_air_movements %>%
   ggplot(aes(x = Month, y = VALUE)) + geom_col(aes(fill = movement_type)) + theme(legend.position="bottom", legend.direction="horizontal",
                    legend.title = element_blank()) + ggtitle("Month vs Air Traffic")
 ```
-On comparing the speed of max gust to the number of sessions being conducted during that day, we found out that as the speed of gust increases, the Number of sessions being conducted show a decline. The Air traffic per month also has a steady trend with the maximum in July and a gradual decrease till December. There is an increase from January until July. Overall the months from May to October seem the best time to fly during the year. As the Air traffic is highest in July, and the number of sessions conducted are highest in August, the flight training is much safer already. However, as the maximum speed of gust is similar during the months of September and June, and the Air Traffic is even lesser than August. The flight school training sessions can be increased in the month of September.  
+On comparing the speed of max gust to the number of sessions being conducted during that day, we found out that as the speed of gust increases, the Number of sessions being conducted are reduced. The Air traffic per month also has a trend with an overall rise from January to the maximum in July and an overall decrease till December. The months from May to October seem the best time to fly during the year. As the Air traffic is highest in July, and the number of sessions conducted are highest in August, the flight training is safety compliant already. Considering all factors, September could be the most ideal month to increase flight training.  
 
 We continued our analysis by establishing a reliable measure of instructor efficiency. As both the number of exercises completed and the number of hours each instructor works are continuous variables, we chose to establish an efficiency metric based on the correlation between these two variables.
 
