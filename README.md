@@ -4,11 +4,11 @@ Project for STAA57
 ## Project Final Report Checklist
 -	Recommend putting introduction in list form
 -	Being more explicit regarding defining student success in intro
--	Bias in first graph? (Center closed in April 2020, possibly scrap data from 2020) `DONE BUT TO BE ADDED`
--	Fix >39 wind speed processing error `DONE BUT TO BE ADDED`
--	Histograms should not have gaps (Use density or scatter instead?) `DONE BUT TO BE ADDED`
--	Break down air traffic by aircraft type `DONE BUT TO BE ADDED`
--	Be explicit in what locations air traffic covers `DONE BUT TO BE ADDED`
+-	Bias in first graph? (Center closed in April 2020, possibly scrap data from 2020) `DONE`
+-	Fix >39 wind speed processing error `DONE`
+-	Histograms should not have gaps (Use density or scatter instead?) `DONE`
+-	Break down air traffic by aircraft type `DONE`
+-	Be explicit in what locations air traffic covers `DONE`
 -	Consider a single year air traffic analysis (Maybe average?) `DONE BUT TO BE ADDED`
 -	Describe Average_Hours variable (instructor efficiency) `DONE`
 -	Clarify Time_In_School variable `DONE`
