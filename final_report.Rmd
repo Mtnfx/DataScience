@@ -148,10 +148,7 @@ We utilise the following variables from air traffic data: Month: Month of year, 
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.height = 4}
 # Air Traffic Import Code
-air_movements <- read_csv("data/Aircraft_Movements.csv")
-air_movements %>%
-  filter( Airports == "Oshawa, Ontario",  str_detect(REF_DATE, "2015|2016|2017|2018|2019|2020") ) %>%
-  select( REF_DATE, `Civil and military movements`, VALUE) -> air_movements
+air_movements <- read_csv("data/Canada Air Traffic data.csv")
 air_movements %>%
   separate(REF_DATE, c("Year", "Month"), sep = "-") %>%
   mutate(Year = as.integer(Year), Month = as.integer(Month)) -> air_movements
@@ -164,7 +161,8 @@ air_movements %>%
 ```{r echo=FALSE, cache=FALSE, results=FALSE, warning=FALSE, comment=FALSE, out.width = '50%'}
 
 #Months vs total number of sessions
-clean_data %>% 
+clean_data %>%
+  filter(Year!="2020" & Year!="2015")%>%
   mutate(Month = month(Month, label = T))%>%
   group_by(Month) %>% 
   summarise(Sessions = n_distinct(Session_ID)) %>% 
@@ -173,53 +171,41 @@ clean_data %>%
   
   #Speed of max gust vs month
 weather%>%
+  filter(Year!="2010" & Year!="2020" ) %>%
   drop_na(`SPEED_MAX_GUST`) %>%
   mutate(Month = month(Month, label = T))%>%
   select(SPEED_MAX_GUST, Month)%>%
   ggplot(aes(x=Month, y=SPEED_MAX_GUST)) + geom_bar(stat = "identity") + ggtitle("Month vs Speed of Max Gust")
-  clean_data %>% 
-  distinct( Session_ID, .keep_all = T) %>% 
-  # split the exercises string into a "list" column w str_split()
-  mutate( Exercises = str_split(Exercises, ",") ) %>%  
-  # and expand list contents into multiple rows w/ unnest()
-  unnest( Exercises) -> unnested_clean_data
-
-unnested_clean_data %>% 
-  unite("Date", c(Year, Month, Day), sep = "-") %>% 
-  mutate(Date = as.Date(Date)) %>% 
-  inner_join(date_of_solo, by = "Student_ID") %>% 
-  filter(Date.x < Date.y) %>% 
-  arrange(Exercises) %>% 
-  mutate( Exercises = as.integer(Exercises)) %>% 
-  mutate(Exercises = factor(Exercises)) %>% 
-  group_by(Exercises) %>%
-  summarise( count = n() ) %>% 
-  ggplot(aes(x=Exercises, y = count/36)) + 
-  ylab("Average Count") +
-  geom_bar(stat = "identity") +
-  ggtitle("Average Count vs Exercise") +
-  theme(plot.title = element_text(hjust = 0.5))
 ```
 The data comparing the maximum speed of gust to the month of a year over past 5 years shows a trend line steadily increasing from January to March and then decreasing from March to the least in July. An increase is then observed from August to December. The number of sessions conducted per month for the given date range suggest that the conduction of sessions is least in the month of April from where it starts rising and reaches its maximum in August. There is a steady increase from August up to April. The rate of decline in the demand increases and becomes steady as we move through the year up to December.
 
 ```{r echo=FALSE, cache=FALSE, results=FALSE, warning=FALSE, comment=FALSE, out.width = "50%"}
 #Speed of max gust vs number of sessions
   #This uses old convention for extracting season data frame. Replace with updated df.
-  weather %>% drop_na(`SPEED_MAX_GUST`) %>% inner_join(clean_data, by = c("Year", "Month", "Day")) %>% ggplot(aes(x=`SPEED_MAX_GUST`)) + 
-  geom_bar(stat="count") + labs(y = "Number of Sessions") + ggtitle("Speed Of Maximum Gust (km/h) vs Number Of Sessions") + 
-  theme(plot.title = element_text(hjust = 0.5))
+weather %>% 
+  mutate(SPEED_MAX_GUST = replace(SPEED_MAX_GUST, SPEED_MAX_GUST<32, 32))%>%
+  drop_na(SPEED_MAX_GUST) %>%
+  inner_join(clean_data, by = c("Year", "Month", "Day")) %>%
+  ggplot(aes(x=SPEED_MAX_GUST)) + 
+  geom_point(stat="count") + labs(y = "Number of Sessions") +
+  ggtitle("Speed Of Maximum Gust (km/h) vs Number Of Sessions") + theme(plot.title = element_text(hjust = 0.5))
   
 #Comparing air traffic for external data
 seasons_four <- tibble(
   Month = 1:12,
   Season = c(rep("Winter", 2), rep("Spring", 3), rep("Summer", 3), rep("Fall", 3), "Winter"))
+  
 air_movements %>%
-  inner_join(seasons_four, by = c("Month")) -> seasonal_air_movements
-seasonal_air_movements %>% 
-  group_by(Month) %>%
+  inner_join(seasons_four, by = c("Month"))%>%
+  rename(movement_type = 'Civil and military movements' )%>%
+  filter(movement_type != 'Total civil movements' & movement_type != 'Total military movements') ->
+seasonal_air_movements
+
+seasonal_air_movements %>%
+  filter(Year == "2019")%>%
+  group_by(Month, movement_type)%>%
   mutate(Month = month(Month, label = T))%>%
-  summarise(Traffic = mean(VALUE)) %>%
-  ggplot(aes(x = Month, y = Traffic)) + geom_bar(stat = "identity") + ggtitle("Month vs Air Traffic")
+  ggplot(aes(x = Month, y = VALUE)) + geom_col(aes(fill = movement_type)) + ggtitle("Month vs Air Traffic")
 ```
 On comparing the speed of max gust to the number of sessions being conducted during that day, we found out that as the speed of gust increases, the Number of sessions being conducted show a decline. The Air traffic per month also has a steady trend with the maximum in July and a gradual decrease till December. There is an increase from January until July. Overall the months from May to October seem the best time to fly during the year. As the Air traffic is highest in July, and the number of sessions conducted are highest in August, the flight training is much safer already. However, as the maximum speed of gust is similar during the months of September and June, and the Air Traffic is even lesser than August. The flight school training sessions can be increased in the month of September.  
 
