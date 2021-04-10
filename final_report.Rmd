@@ -287,6 +287,14 @@ clean_data %>% unite("Date", c(Year, Month, Day), sep = "-") %>%
   ggtitle("Number of Exercises Completed vs Solo Flight") +
   theme(plot.title = element_text(hjust = 0.5))
   
+  clean_data %>% unite("Date", c(Year, Month, Day), sep = "-") %>% 
+  mutate(Date = as.Date(Date)) %>% 
+  group_by(Student_ID) %>% arrange(Student_ID, Date) %>%
+  select( Student_ID, Training_Type, Date) %>% 
+  mutate( solo_flight = str_detect(Training_Type, "solo" ) ) %>% 
+  filter( solo_flight ) %>% slice(1) %>% 
+  select(Student_ID, Date) -> date_of_solo
+  
   clean_data %>% 
   distinct( Session_ID, .keep_all = T) %>% 
   # split the exercises string into a "list" column w str_split()
