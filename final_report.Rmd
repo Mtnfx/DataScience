@@ -113,7 +113,7 @@ for (i in 1:length(invalid_points)){
 }
 ```
 
-# STAA57 W21 Draft Report 
+# STAA57 W21 Final Report 
 
 Group 14 (Alec Larsen, Aditya Kulkarni, Vishal Sahoo, MD Wasim)    
 
